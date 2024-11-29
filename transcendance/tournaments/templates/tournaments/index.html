@@ -1,0 +1,14 @@
+{%include "common/s_begin.html" with title="Games"%}
+
+<h1>Welcom tournaments</h1>
+{% if tournament %}
+    {{tournament}}
+    <ul>
+        {% for t in tournament%}
+        <li> <a href="{% url 'tournaments:show_tournament' t.name %}">{{t.name}}</a> </li>
+        {%endfor%}
+
+    </ul>
+{%endif%}
+
+{%include "common/s_end.html"%} 

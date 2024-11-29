@@ -1,0 +1,16 @@
+{%include "common/s_begin.html" with title="Games"%}
+
+    <h1>Welcom tournament page</h1>
+    {{tournament}}
+
+    <ul>
+        {% for p in tournament.players.all %}
+            <li> {{p.name}} </li>
+        {%endfor%}
+    </ul>
+    <p> <a href="{% url 'tournaments:index' %}">&laquo; Back </a></p>
+    
+</body>
+
+</html>
+{% include "common/s_end.html" %} 

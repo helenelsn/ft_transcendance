@@ -1,0 +1,9 @@
+{% include "common/s_begin.html" %}
+
+<h1>Welcom login</h1>
+
+{% include "common/s_form.html" with form=form %}
+
+<p> <a href="{% url 'accounts:index' %}">&laquo; Back </a></p>
+    
+{% include "common/s_end.html" %}
