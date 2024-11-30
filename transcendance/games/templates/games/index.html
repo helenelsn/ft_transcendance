@@ -1,15 +1,4 @@
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>{{ title }}</title>
-</head>
-
-<body>
-    <h1>Welcom</h1>
-    <p>{{sample}}</p>
-    
-</body>
-
-</html>
+{% extends "games/g_base.html" %}
+{% block content %}
+<a href="{% url 'games:settings' %}"> Create game </a>
+{% endblock %}

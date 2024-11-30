@@ -1,15 +1,12 @@
-{%include "common/s_begin.html" with title="Games"%}
+{% extends "accounts/g_form.html" %}
+
+{% comment %} {%include "common/s_begin.html" with title="Games"%}
 
     <h1>Welcom create</h1>
-    {% comment %} <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save changes</button>
-    </form> {% endcomment %}
     {%include "common/s_form.html" with form=form%}
     <p> <a href="{% url 'tournaments:index' %}">&laquo; Back </a></p>
     
 </body>
 
 </html>
-{%include "common/s_end.html"%} 
+{%include "common/s_end.html"%}  {% endcomment %}
