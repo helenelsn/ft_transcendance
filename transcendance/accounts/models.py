@@ -9,7 +9,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     bio = models.TextField(default="lorem")
-    friends = models.ManyToManyField('self')
+    friends = models.ManyToManyField('self', symmetrical=True,)
     
 
     @receiver(post_save, sender=User)

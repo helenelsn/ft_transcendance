@@ -1,9 +1,1 @@
-{% include "common/s_begin.html" %}
-
-<h1>Welcom register</h1>
-
-{% include "common/s_form.html" with form=form %}
-
-<p> <a href="{% url 'accounts:login' %}">&laquo; Back </a></p>
-    
-{% include "common/s_end.html" %}
+{% extends "accounts/g_form.html" %}

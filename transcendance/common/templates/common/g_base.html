@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <title>{% block title %}My amazing site{% endblock %}</title>
+</head>
+
+
+<body>
+    <div id="sidebar">
+        {% block sidebar %}
+        {%include "accounts/s_account.html"%}
+        <ul>
+            {% comment %} <li><a href="">Home</a></li> {% endcomment %}
+            <li><a href="{% url 'games:index' %}">Games</a></li>
+            <li><a href="{% url 'tournaments:index' %}">Tournaments</a></li>
+            <li><a href="{% url 'accounts:index' %}">Account</a></li>
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

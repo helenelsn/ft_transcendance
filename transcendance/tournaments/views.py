@@ -23,4 +23,4 @@ def create_tournament(request):
             return redirect(f"{app_name}:index")
     else:
         form = TournamentForm()
-    return render(request, f'{app_name}/create_tournament.html', {"form": form})
+    return render(request, f'{app_name}/create_tournament.html', {"forms": {form}})

@@ -1,12 +1,14 @@
-{% include "common/s_begin.html" with  title="Accounts"%}
+{% extends "accounts/g_base.html" %}
+
+{% block content %}
 
 {% if user.is_authenticated %}
     <p>Connected as {{user.username}} | <a href="{% url 'accounts:logout' %}"> logout </a></p>
     <h1>Welcom {{user.username}}</h1>
-    <p>Bio {{user.profile.bio}}</p>
+    <p>Bio: {{user.profile.bio}}</p>
 
 {% else %}
     <p>You're currently anonymous</p>
 {% endif %}
 
-{% include "common/s_end.html" %}
+{% endblock %}

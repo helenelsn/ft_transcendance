@@ -1,4 +1,6 @@
-{%include "common/s_begin.html" with title="Games"%}
+{%extends "tournaments/g_base.html"%}
+
+{% block content %}
 
 <h1>Welcom tournaments</h1>
 {% if tournament %}
@@ -11,4 +13,6 @@
     </ul>
 {%endif%}
 
-{%include "common/s_end.html"%} 
+<li> <a href="{% url 'tournaments:create_tournament' %}"> add </a> </li>
+
+{% endblock %}

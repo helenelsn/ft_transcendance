@@ -1,0 +1,22 @@
+{% extends "common/g_base.html" %}
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {%for f in forms%}
+        {{ f.as_p }}
+        {%endfor%}
+    </table>
+    <button type={% block submission_action %}"
+                submit"{% endblock %}>
+                {% block submission_name %}
+                "submit"
+                {% endblock %}
+    </button>
+</form>
+    {% block additionnal_content %}
+    
+    {% endblock %}
+
+{% endblock %}

@@ -1,5 +1,10 @@
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <table>
+        {%for f in form%}
+        {{ f.as_p }}
+        {%endfor%}
+    </table>
     <button type="submit">submit</button>
 </form>

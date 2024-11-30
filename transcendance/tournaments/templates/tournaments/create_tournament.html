@@ -1,11 +1,12 @@
 {%include "common/s_begin.html" with title="Games"%}
 
     <h1>Welcom create</h1>
-    <form method="post">
+    {% comment %} <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save changes</button>
-    </form>
+    </form> {% endcomment %}
+    {%include "common/s_form.html" with form=form%}
     <p> <a href="{% url 'tournaments:index' %}">&laquo; Back </a></p>
     
 </body>
