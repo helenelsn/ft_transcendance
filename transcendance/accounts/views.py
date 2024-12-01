@@ -4,15 +4,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from .forms import ProfileChangeForms, RelationshipForm
-from .models import User
+from .forms import ProfileChangeForm
+from .models import User, Profile
 # Create your views here.
 
 app_name = "accounts"
 home = f'{app_name}/index.html'
 
 def index(request):
-    #should redirect to accounts page if user is connected or anonymous welcom page
     if request.user.is_authenticated:
         return redirect(f'{app_name}:profile_page', request.user.username)
     return render(request, home, {})
@@ -50,24 +49,16 @@ def show_profile(request, username):
     print(username , request.user.username, request.user.is_authenticated)
     if not request.user.is_authenticated:
         raise PermissionDenied("You must be logged in")
-    # if username != request.user.username:
-    #     raise PermissionDenied("Try to see another profile that your s")
     return render(request, f'{app_name}/profile_page.html', {"profile":User.objects.filter(username=username).get()})
     
 
 @login_required
 def edit_profile(request):
-    return render(request, f'{app_name}/edit_profile.html', {"forms": ProfileChangeForms(request).to_set()})
-
-@login_required
-def handle_relationship(request):
     if request.method == 'POST':
-        form = RelationshipForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
+        profile_form = ProfileChangeForm(request.POST, instance = Profile.objects.filter(user=request.user).get())
+        if profile_form.is_valid():
+            profile_form.save()
     else:
-        form = RelationshipForm(instance=request.user.profile)
-    return render(request, f'{app_name}/relationship.html' ,{"forms" :{ form}})
+        profile_form = ProfileChangeForm(instance = Profile.objects.filter(user=request.user).get())
+    return render(request, f'{app_name}/edit_profile.html', {"forms": [profile_form]})
 
-def remove_relationship(request, user : int, other: int):
-    return redirect(f'{app_name}:relationship')

@@ -10,7 +10,6 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('profile_page/<username>', views.show_profile, name='profile_page'),
     path('edit/', views.edit_profile, name='edit'),
-    # path('<tournament_name>', views.show_tournament, name='show_tournament')
-    path('relationship/', views.handle_relationship, name='relationship'),
-    path('relationship/delete_friend/<int:user>/int<other>', views.remove_relationship, name='relationship'),
+    # path('relationship/', views.handle_relationship, name='relationship'),
+    # path('relationship/delete_friend/<int:user>/int<other>', views.remove_relationship, name='relationship'),
 ]

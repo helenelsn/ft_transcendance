@@ -1,0 +1,19 @@
+{% extends "relationship/g_base.html" %}
+{% block content %}
+<table>
+    <tr>
+        <th> Username </th>
+        <th> Friend </th>
+        <th> Block </th>
+    </tr>
+    {% for u in all_user %}
+        <tr>
+            <td> {{ u.username }} </td>
+            <td> <a href="{% url 'relationship:friend_request' u.username %}">f</a> </td>
+            <td> unimplemented </td>
+        </tr>
+    {% endfor %}
+
+
+</table>
+{% endblock %}

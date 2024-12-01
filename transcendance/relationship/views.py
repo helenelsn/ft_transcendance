@@ -9,5 +9,12 @@ def index(request):
                "show_url" : f"accounts:profile_page"}
     return render(request, f'{app_name}/index.html', context)
 
-def friend_request(request):
+def all_user(request):
+    return render(request, f'{app_name}/all_user.html', {'all_user' : User.objects.all()})
+    
+
+def friend_request(request, username):
     return render(request, f'{app_name}/friend_request.html', {})
+
+def delete_friend(request, username):
+    return render(request, f'{app_name}/index.html', {})

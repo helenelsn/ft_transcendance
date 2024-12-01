@@ -1,15 +1,13 @@
 {% extends "accounts/g_base.html" %}
 
 {% block content %}
-
-{{profile}}
-<h1>{{profile.username|upper}}</h1>
-<p>Bio: {{profile.profile.bio}}</p>
-{% if user.is_authenticated and user.username == profile.username %}
-<a href="{% url 'accounts:edit' %}"> edit </a>
-{% else %}
-    <a href="{% url 'relationship:friend_request' %}"> friend request </a>
-    {% comment %} friend_request {% endcomment %}
-{% endif %}
+    <h1>{{profile.username|upper}}</h1>
+    <p>Bio: {{profile.profile.bio}}</p>
+    
+    {% if user.is_authenticated and user.username == profile.username %}
+        <p><a href="{% url 'accounts:edit' %}"> edit </a></p>
+    {% else %}
+        <p><a href="{% url 'relationship:friend_request' profile.username %}"> friend request </a></p>
+    {% endif %}
 
 {% endblock %}
