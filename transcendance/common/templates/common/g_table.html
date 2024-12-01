@@ -1,0 +1,41 @@
+{% extends "relationship/g_base.html" %}
+{% comment %} 
+context = {
+        'objects': object_list_to_treat,
+        'field': field_to_get,
+        'redir': url_to_redir
+    } 
+{% endcomment %}
+
+{% load tags %}
+{% block content %}
+{% comment %} <h1>
+{{objects}}
+{{field}}
+{{redir}}
+</h1> {% endcomment %}
+<table>
+    <tr>
+        <th> {{field|upper}} </th>
+        {% block optional_actions %}
+        {% endblock %}
+        {% comment %} {% if action_cond %}
+            {% for opt_field in optional_field%}
+                <th> opt_field </th>
+            {% endfor %}
+        {% endif %} {% endcomment %}
+    </tr>
+    {% for o in objects %}
+        <tr>
+            <th> {% include  'common/g_href_by_attr.html' with field=field object=o redir=redir %} </th>
+            {% comment %} <td> {{ u.username }} </td>
+            {% if action_cond %}
+                <td> <a href="{% url 'relationship:friend_request' u.username %}"> friend? </a> </td>
+                <td> unimplemented </td>
+            {% endif %} {% endcomment %}
+        </tr>
+    {% endfor %}
+
+
+</table>
+{% endblock %}

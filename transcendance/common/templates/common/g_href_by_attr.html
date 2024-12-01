@@ -1,0 +1,12 @@
+{% load tags %}
+{% get_obj_attr object field as field%}
+<a href="{% url redir field %}">{{object}}</a>
+
+{% comment %} 
+represent url off an object with redir to with pbj.field as argument
+to_def ={
+    object: object_to_get_field_from,
+    field: field_to_get,
+    redir: url_to_redir
+} 
+{% endcomment %}

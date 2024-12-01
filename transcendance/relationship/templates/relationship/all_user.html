@@ -1,4 +1,5 @@
-{% extends "relationship/g_base.html" %}
+{% extends "common/g_table.html" %}
+{% comment %} {% extends "relationship/g_base.html" %}
 {% block content %}
 <table>
     <tr>
@@ -16,8 +17,8 @@
                 <td> unimplemented </td>
             {% endif %}
         </tr>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
 
-
+{% comment %} 
 </table>
-{% endblock %}
+{% endblock %} {% endcomment %}

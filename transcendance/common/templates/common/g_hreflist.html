@@ -1,24 +1,15 @@
 {% extends "common/g_base.html" %}
-{% load tags %}
+
 {% block content %}
-
-{% comment %} {% if objects and attribut %} {% endcomment %}
-
 
 <ul>
     {% for o in objects%}
-        {% get_obj_attr o show_attribut as show_name%}
-        {% get_obj_attr o link_attribut as link_name%}
-        <li> <a href="{% url redir link_name %}">{{show_name}}</a> </li>
+        <li> {% include  'common/g_href_by_attr.html' with field=field object=o%} </li>
     {% empty  %}
         "No available"
     {% endfor %}
 </ul>
-
-
-
-{% comment %} {%endif%} {% endcomment %}
-
-<li> <a href="{% url 'tournaments:create_tournament' %}"> add </a> </li>
+{% block more_content %}
+{% endblock %}
 
 {% endblock %}

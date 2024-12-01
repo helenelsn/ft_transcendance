@@ -1,5 +1,8 @@
 {%extends "common/g_hreflist.html"%}
 
+{% block more_content %}
+<li> <a href="{% url 'tournaments:create_tournament' %}"> add </a> </li>
+{% endblock %}
 {% comment %} {% block content %}
 
 <h1>Welcom tournaments</h1>
