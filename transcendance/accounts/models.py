@@ -10,6 +10,7 @@ class Profile(models.Model):
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     bio = models.TextField(default="lorem")
     friends = models.ManyToManyField('self', symmetrical=True,)
+    # friend_requests = models.ManyToManyField('self', symmetrical=False, )
     
 
     @receiver(post_save, sender=User)
