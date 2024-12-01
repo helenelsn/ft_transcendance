@@ -20,3 +20,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_read = models.BooleanField(default=False)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)

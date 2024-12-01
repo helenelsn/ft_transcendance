@@ -16,8 +16,10 @@ def all_user(request):
     
 @login_required
 def friend_request(request, username):
+    
     return render(request, f'{app_name}/friend_request.html', {})
 
 @login_required
 def delete_friend(request, username):
     return render(request, f'{app_name}/index.html', {})
+
