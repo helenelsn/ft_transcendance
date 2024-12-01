@@ -7,8 +7,9 @@
 
 <ul>
     {% for o in objects%}
-        {% get_obj_attr o attribut as name%}
-        <li> <a href="{% url show_url name %}">{{name}}</a> </li>
+        {% get_obj_attr o show_attribut as show_name%}
+        {% get_obj_attr o link_attribut as link_name%}
+        <li> <a href="{% url redir link_name %}">{{show_name}}</a> </li>
     {% empty  %}
         "No available"
     {% endfor %}

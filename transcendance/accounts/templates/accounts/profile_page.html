@@ -1,6 +1,7 @@
 {% extends "accounts/g_base.html" %}
 
 {% block content %}
+    {% include "accounts/notification.html" with unread_notifications=unread_notifications%}
     <h1>{{profile.username|upper}}</h1>
     <p>Bio: {{profile.profile.bio}}</p>
     

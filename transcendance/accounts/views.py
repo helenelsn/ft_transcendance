@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from .forms import ProfileChangeForm
-from .models import User, Profile
+from .models import User, Profile, Notification
 # Create your views here.
 
 app_name = "accounts"
@@ -21,12 +21,11 @@ def index(request):
     return render(request, home, {})
 
 def back_to_home():
+    
     return redirect(f'{app_name}:index')
 
 def login_user(request):
     if request.method == 'POST':
-        print("username=",f'{request.POST["username"]}', "password=", f'{request.POST["password"]}')
-        print(User.objects.get(username=request.POST["username"]).password)
         user = authenticate(request=request, username=request.POST["username"], password=request.POST["password"])
         if user is not None:
             login(request, user)
@@ -51,13 +50,25 @@ def register_user(request):
     form = UserCreationForm()
     return render(request, f"{app_name}/register.html", {"forms" : {form}})
 
+
 def show_profile(request, username):
-    print(username , request.user.username, request.user.is_authenticated)
     if not request.user.is_authenticated:
         raise PermissionDenied("You must be logged in")
-    return render(request, f'{app_name}/profile_page.html', {"profile":User.objects.filter(username=username).get()})
+    context = {
+            "profile":User.objects.filter(username=username).get(),
+            "objects" : Notification.objects.filter(user=request.user).filter(is_read=False).all(),
+            "show_attribut" : "message",
+            "link_attribut" : "id",
+            "redir" : f"{app_name}:show_notif"
+        }
     
-
+    print(f'--------------------{Notification.objects.filter(user=request.user)}  {request.user.notification_set}-------------------')
+    return render(request, f'{app_name}/profile_page.html', context)
+    
+def show_notif(request, notif_id):
+    return redirect(f'{app_name}:index')
+    
+    
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
@@ -66,5 +77,6 @@ def edit_profile(request):
             profile_form.save()
     else:
         profile_form = ProfileChangeForm(instance = Profile.objects.filter(user=request.user).get())
+        
     return render(request, f'{app_name}/edit_profile.html', {"forms": [profile_form]})
 

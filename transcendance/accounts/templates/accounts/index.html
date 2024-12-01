@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 {% if user.is_authenticated %}
     <p>Connected as {{user.username}} | <a href="{% url 'accounts:logout' %}"> logout </a></p>
     <h1>Welcom {{user.username}}</h1>

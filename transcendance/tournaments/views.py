@@ -6,8 +6,9 @@ app_name = 'tournaments'
 
 def index(request):
     context = {"objects" : Tournament.objects.all(),
-               "attribut" : "name",
-               "show_url" : f"{app_name}:show_tournament"}
+               "show_attribut" : "name",
+               "link_attribut" : "name",
+               "redir" : f"{app_name}:show_tournament"}
     
     return render(request, f'{app_name}/index.html', context)
 

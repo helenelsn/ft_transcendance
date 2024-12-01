@@ -26,3 +26,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.message

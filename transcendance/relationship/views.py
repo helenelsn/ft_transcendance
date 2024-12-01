@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Relation
@@ -19,9 +19,11 @@ def all_user(request):
 def friend_request(request, username):
     #create new relation friend requesr and send notif
     # if Relation.objects.get(myself=username, other=request.u)
-    relation = Relation.objects.create(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=2)
-    relation.save()
-    return render(request, f'{app_name}/friend_request.html', {})
+    Relation(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=2).create_relation()
+    # relation = Relation.objects.create(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=2)
+    # relation.save()
+    return redirect(f'{app_name}:index')
+    # return render(request, f'{app_name}/friend_request.html', {})
 
 @login_required
 def delete_friend(request, username):
