@@ -1,7 +1,10 @@
 from django.shortcuts import render
-
+from accounts.models import User
 # Create your views here.
 app_name = 'relationship'
 
 def index(request):
-    return render(request, f'{app_name}/index.html', {})
+    context = {"objects" : User.objects.all(),
+               "attribut" : "username",
+               "show_url" : f"accounts:profile_page"}
+    return render(request, f'{app_name}/index.html', context)

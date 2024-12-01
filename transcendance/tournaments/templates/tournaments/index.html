@@ -1,6 +1,6 @@
-{%extends "tournaments/g_base.html"%}
+{%extends "common/g_hreflist.html"%}
 
-{% block content %}
+{% comment %} {% block content %}
 
 <h1>Welcom tournaments</h1>
 {% if tournament %}
@@ -15,4 +15,4 @@
 
 <li> <a href="{% url 'tournaments:create_tournament' %}"> add </a> </li>
 
-{% endblock %}
+{% endblock %} {% endcomment %}

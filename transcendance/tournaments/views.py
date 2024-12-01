@@ -5,7 +5,10 @@ from .forms import TournamentForm
 app_name = 'tournaments'
 
 def index(request):
-    context = {"tournament" : Tournament.objects.all()}
+    context = {"objects" : Tournament.objects.all(),
+               "attribut" : "name",
+               "show_url" : f"{app_name}:show_tournament"}
+    
     return render(request, f'{app_name}/index.html', context)
 
 

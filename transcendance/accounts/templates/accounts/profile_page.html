@@ -1,0 +1,12 @@
+{% extends "accounts/g_base.html" %}
+
+{% block content %}
+
+{{profile}}
+<h1>{{profile.username|upper}}</h1>
+<p>Bio: {{profile.profile.bio}}</p>
+{% if user.is_authenticated and user.username == profile.username %}
+<a href="{% url 'accounts:edit' %}"> edit </a>
+{% endif %}
+
+{% endblock %}

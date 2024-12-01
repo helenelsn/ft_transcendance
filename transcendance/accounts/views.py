@@ -13,11 +13,8 @@ home = f'{app_name}/index.html'
 
 def index(request):
     #should redirect to accounts page if user is connected or anonymous welcom page
-    with open("accounts/sample_username.tkt") as names:
-        for n in names:
-            User.objects.create_user(username=n, password=n)
     if request.user.is_authenticated:
-        return redirect(f'{app_name}:homepage', request.user.username)
+        return redirect(f'{app_name}:profile_page', request.user.username)
     return render(request, home, {})
 
 def back_to_home():
@@ -53,9 +50,9 @@ def show_profile(request, username):
     print(username , request.user.username, request.user.is_authenticated)
     if not request.user.is_authenticated:
         raise PermissionDenied("You must be logged in")
-    if username != request.user.username:
-        raise PermissionDenied("Try to see another profile that your s")
-    return render(request, f'{app_name}/homepage.html')
+    # if username != request.user.username:
+    #     raise PermissionDenied("Try to see another profile that your s")
+    return render(request, f'{app_name}/profile_page.html', {"profile":User.objects.filter(username=username).get()})
     
 
 @login_required
