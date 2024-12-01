@@ -3,14 +3,18 @@
 <table>
     <tr>
         <th> Username </th>
+        {% if user.is_authenticated %}
         <th> Friend </th>
         <th> Block </th>
+        {% endif %}
     </tr>
     {% for u in all_user %}
         <tr>
             <td> {{ u.username }} </td>
-            <td> <a href="{% url 'relationship:friend_request' u.username %}"> friend? </a> </td>
-            <td> unimplemented </td>
+            {% if user.is_authenticated %}
+                <td> <a href="{% url 'relationship:friend_request' u.username %}"> friend? </a> </td>
+                <td> unimplemented </td>
+            {% endif %}
         </tr>
     {% endfor %}
 
