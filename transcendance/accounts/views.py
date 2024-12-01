@@ -12,6 +12,10 @@ app_name = "accounts"
 home = f'{app_name}/index.html'
 
 def index(request):
+    # for i in range(100):
+    #     User.objects.create_user(username=f'user{i}',
+    #                              password=f'ViveLeVent{i}')
+        
     if request.user.is_authenticated:
         return redirect(f'{app_name}:profile_page', request.user.username)
     return render(request, home, {})
@@ -21,6 +25,8 @@ def back_to_home():
 
 def login_user(request):
     if request.method == 'POST':
+        print("username=",f'{request.POST["username"]}', "password=", f'{request.POST["password"]}')
+        print(User.objects.get(username=request.POST["username"]).password)
         user = authenticate(request=request, username=request.POST["username"], password=request.POST["password"])
         if user is not None:
             login(request, user)

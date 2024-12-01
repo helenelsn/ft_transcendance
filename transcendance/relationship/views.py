@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
+from .models import Relation
 # Create your views here.
 app_name = 'relationship'
 
@@ -16,7 +17,10 @@ def all_user(request):
     
 @login_required
 def friend_request(request, username):
-    
+    #create new relation friend requesr and send notif
+    # if Relation.objects.get(myself=username, other=request.u)
+    relation = Relation.objects.create(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=2)
+    relation.save()
     return render(request, f'{app_name}/friend_request.html', {})
 
 @login_required
