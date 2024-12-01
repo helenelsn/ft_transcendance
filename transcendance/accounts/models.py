@@ -17,8 +17,5 @@ class Profile(models.Model):
         profile, created = Profile.objects.get_or_create(user=instance)  
         profile.save()
 
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-
     def __str__(self):
         return self.user.username

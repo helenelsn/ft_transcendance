@@ -15,7 +15,6 @@ class ProfileChangeForms():
             self.user_form = UserChangeForm(request.POST, instance = request.user)
             if self.is_valid():
                 self.save()
-                # return redirect(f"{app_name}:index")
         else:
             self.profile_form = ProfileChangeForm(instance = Profile.objects.filter(user=request.user).get())
             self.user_form = UserChangeForm(instance = request.user)
@@ -38,7 +37,6 @@ class ProfileChangeForms():
     #         raise forms.ValidationError("3 letter min")
     #     return name
     
-
 class RelationshipForm(forms.ModelForm):
     class Meta:
         model = Profile

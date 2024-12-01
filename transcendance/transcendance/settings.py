@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'common',
     'games',
     'tournaments',
+    "relationship"
 ]
 
 MIDDLEWARE = [
