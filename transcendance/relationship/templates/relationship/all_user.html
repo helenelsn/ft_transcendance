@@ -9,7 +9,7 @@
     {% for u in all_user %}
         <tr>
             <td> {{ u.username }} </td>
-            <td> <a href="{% url 'relationship:friend_request' u.username %}">f</a> </td>
+            <td> <a href="{% url 'relationship:friend_request' u.username %}"> friend? </a> </td>
             <td> unimplemented </td>
         </tr>
     {% endfor %}

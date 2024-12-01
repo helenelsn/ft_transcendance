@@ -4,10 +4,11 @@ from accounts.models import User
 app_name = 'relationship'
 
 def index(request):
-    context = {"objects" : User.objects.all(),
-               "attribut" : "username",
-               "show_url" : f"accounts:profile_page"}
-    return render(request, f'{app_name}/index.html', context)
+    return render(request, f'{app_name}/all_user.html', {'all_user' : User.objects.all()})
+    # context = {"objects" : User.objects.all(),
+    #            "attribut" : "username",
+    #            "show_url" : f"accounts:profile_page"}
+    # return render(request, f'{app_name}/index.html', context)
 
 def all_user(request):
     return render(request, f'{app_name}/all_user.html', {'all_user' : User.objects.all()})
