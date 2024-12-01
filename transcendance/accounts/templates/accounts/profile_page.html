@@ -7,6 +7,9 @@
 <p>Bio: {{profile.profile.bio}}</p>
 {% if user.is_authenticated and user.username == profile.username %}
 <a href="{% url 'accounts:edit' %}"> edit </a>
+{% else %}
+    <a href="{% url 'relationship:friend_request' %}"> friend request </a>
+    {% comment %} friend_request {% endcomment %}
 {% endif %}
 
 {% endblock %}
