@@ -1,5 +1,6 @@
 Accounts
     //Deal with profile and user gestion
+
     Done
         on url => http://localhost:8000/accounts/
 
@@ -13,9 +14,8 @@ Accounts
         global => better presenation
         edit => hide private user field for non admin in progress
         relationship => complete table for user relation managment
-
-        tournments => 
-        gamehistory =>
+        gamehistory => show game history on profile page
+        tournments => show tounrament history on profile page?
 
 Common
     some templates and css file for all aplication
@@ -39,5 +39,7 @@ Tournaments
         invite players
         create games
         alert player when games start
-        
 
+
+Relationship
+    app to handle bloqued user, friend, chat?

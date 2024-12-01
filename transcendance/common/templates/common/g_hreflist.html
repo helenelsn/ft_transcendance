@@ -1,0 +1,23 @@
+{% extends "common/g_base.html" %}
+{% load tags %}
+{% block content %}
+
+{% comment %} {% if objects and attribut %} {% endcomment %}
+
+
+<ul>
+    {% for o in objects%}
+        {% get_obj_attr o attribut as name%}
+        <li> <a href="{% url show_url name %}">{{name}}</a> </li>
+    {% empty  %}
+        "No available"
+    {% endfor %}
+</ul>
+
+
+
+{% comment %} {%endif%} {% endcomment %}
+
+<li> <a href="{% url 'tournaments:create_tournament' %}"> add </a> </li>
+
+{% endblock %}
