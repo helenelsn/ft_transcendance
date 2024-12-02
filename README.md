@@ -12,8 +12,7 @@ Accounts
 
     todo
         global => better presenation
-        edit => hide private user field for non admin in progress
-        relationship => complete table for user relation managment
+        edit => give access to username and password change
         gamehistory => show game history on profile page
         tournments => show tounrament history on profile page?
 
@@ -43,3 +42,4 @@ Tournaments
 
 Relationship
     app to handle bloqued user, friend, chat?
+    

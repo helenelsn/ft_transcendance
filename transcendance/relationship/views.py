@@ -11,9 +11,8 @@ def index(request):
         'field': 'username',
         'redir': 'accounts:profile_page',
         'action_cond': request.user.is_authenticated,
-        'actions':{'friend' : 'relationship:friend_request'},
+        'actions':{'friend' : 'relationship:friend_request', 'block' : 'relationship:delete_friend'},
         # 'action_names': ['friend', 'block',],
-        'actions_redirs':['relationship:friend_request', 'relationship:delete_friend']
     } 
     # 'redir': 'relationship:friend_request',
     # print(f'----------------{context}--------------')
