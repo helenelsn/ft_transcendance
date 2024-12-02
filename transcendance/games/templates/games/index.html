@@ -1,4 +1,11 @@
-{% extends "games/g_base.html" %}
+{% extends "common/g_base.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+    'app_name' : app_name,
+} 
+{% endcomment %}
+{% load filters %}
 {% block content %}
-<a href="{% url 'games:settings' %}"> Create game </a>
+<a href="{% url app_name|app_redir:'settings' %}"> Create game </a>
 {% endblock %}

@@ -1,4 +1,10 @@
-{% extends "games/g_base.html" %}
+{% extends "common/g_base.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+    'app_name' : app_name,
+} 
+{% endcomment %}
 {% block content %}
 <p><a href="{% url 'games:lose' 0%}"> Lose  </a></p>
 <p><a href="{% url 'games:win' 0%}"> Win </a></p>
