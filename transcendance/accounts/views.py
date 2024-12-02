@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from .forms import ProfileChangeForm
 from .models import User, Profile, Notification
+from .utils import accounts_context
 # Create your views here.
 
 app_name = "accounts"
@@ -18,10 +19,9 @@ def index(request):
         
     if request.user.is_authenticated:
         return redirect(f'{app_name}:profile_page', request.user.username)
-    return render(request, home, {})
+    return render(request, home, accounts_context())
 
 def back_to_home():
-    
     return redirect(f'{app_name}:index')
 
 def login_user(request):
@@ -33,7 +33,7 @@ def login_user(request):
         else:
             messages.info(request, "Username or password incorret")
     form = AuthenticationForm()
-    return render(request, f"{app_name}/login.html",  {"forms": {form}})
+    return render(request, f"{app_name}/login.html",  accounts_context({"forms": {form}}))
 
 def logout_user(request):
     logout(request)
@@ -48,18 +48,18 @@ def register_user(request):
         else:
             messages.info(request, "Username or password incorret")
     form = UserCreationForm()
-    return render(request, f"{app_name}/register.html", {"forms" : {form}})
+    return render(request, f"{app_name}/register.html", accounts_context({"forms" : {form}}))
 
 
 def show_profile(request, username):
     if not request.user.is_authenticated:
         raise PermissionDenied("You must be logged in")
-    context = {
+    context = accounts_context({
             "profile":User.objects.filter(username=username).get(),
             "objects" : Notification.objects.filter(user=request.user).filter(is_read=False).all(),
             "field" : "id",
             "redir" : f"{app_name}:show_notif"
-        }
+        })
     return render(request, f'{app_name}/profile_page.html', context)
     
 def show_notif(request, notif_id):
@@ -75,5 +75,5 @@ def edit_profile(request):
     else:
         profile_form = ProfileChangeForm(instance = Profile.objects.filter(user=request.user).get())
         
-    return render(request, f'{app_name}/edit_profile.html', {"forms": [profile_form]})
+    return render(request, f'{app_name}/edit_profile.html', accounts_context({"forms": [profile_form]}))
 

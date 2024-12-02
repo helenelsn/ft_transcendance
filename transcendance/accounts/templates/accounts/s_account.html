@@ -1,6 +1,14 @@
+{% comment %} 
+snippets html to show user information if he is connected => included in common base
+context = {
+} 
+{% endcomment %}
+{% load filters %}
+{% block content %}
 {% if user.is_authenticated %}
-    <p>Connected as {{user.username}} | <a href="{% url 'accounts:logout' %}"> logout </a></p>
+    <p>Connected as {{user.username}} | <a href="{% url 'accounts'|app_redir:'logout' %}"> logout </a></p>
 {% else %}
-    <p><a href="{% url 'accounts:login' %}"> login </a></p>
-    <p><a href="{% url 'accounts:register' %}"> register </a></p>
+    <p><a href="{% url 'accounts'|app_redir:'login' %}"> login </a></p>
+    <p><a href="{% url 'accounts'|app_redir:'register' %}"> register </a></p>
 {% endif %}
+{% endblock %}

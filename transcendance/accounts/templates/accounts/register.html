@@ -1,1 +1,8 @@
-{% extends "accounts/g_form.html" %}
+{% extends "common/g_form.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+    'form' : register_form,
+    'app_name' : app_name,
+} 
+{% endcomment %}

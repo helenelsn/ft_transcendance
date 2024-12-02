@@ -1,14 +1,19 @@
-{% extends "accounts/g_base.html" %}
+{% extends "common/g_base.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% load filters %}
+{% comment %} 
+context = {
+    'app_name' : app_name,
+}
+{% endcomment %}
+
 
 {% block content %}
-
-
 {% if user.is_authenticated %}
-    <p>Connected as {{user.username}} | <a href="{% url 'accounts:logout' %}"> logout </a></p>
+    <p>Connected as {{user.username}} | <a href="{% url app_name|app_redir:'logout' %}"> logout </a></p>
     <h1>Welcom {{user.username}}</h1>
     <p>Bio: {{user.profile.bio}}</p>
-    <a href="{% url 'accounts:edit' %}"> edit </a>
-
+    <a href="{% url app_name|app_redir:'edit' %}"> edit </a>
 {% else %}
     <p>You're currently anonymous</p>
 {% endif %}

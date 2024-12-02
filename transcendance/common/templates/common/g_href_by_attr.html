@@ -1,13 +1,3 @@
-{% load tags %}
-{% get_obj_attr object field as field%}
-<a href="{% url redir field %}">
-{% if display %}
-    {{display}}
-{% else %}
-    {{object}}
-{% endif %}
-</a>
-
 {% comment %} 
 represent url off an object with redir to with pbj.field as argument
 context ={
@@ -17,3 +7,13 @@ context ={
     'display': display_name_default_is_object
 } 
 {% endcomment %}
+
+{% load tags %}
+{% get_obj_attr object field as field%}
+<a href="{% url redir field %}">
+{% if display %}
+    {{display}}
+{% else %}
+    {{object}}
+{% endif %}
+</a>

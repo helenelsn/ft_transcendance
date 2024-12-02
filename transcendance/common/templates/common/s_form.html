@@ -1,3 +1,9 @@
+{% comment %} 
+snippet form form include
+context = {
+    'forms' : [form,],
+}
+ {% endcomment %}
 <form method="post">
     {% csrf_token %}
 
