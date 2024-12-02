@@ -6,22 +6,38 @@ from common.utils import redir_to_index
 
 app_name = 'notifications'
 
-# Create your views here.
-
-
-
 @login_required
 def index(request):
     context = get_action_table_context(
         app_name=app_name,
-        objects=Notification.objects.filter(user=request.user).order_by('is_read'),
+        objects=Notification.get_user_unreads_notifs(request.user),
         field='id',
-        # diplay='message',
         url_to_redir='notifications:show_notif',
         actions={'mark as read' : f'notifications:read_notif', 'delete' : f'notifications:delete_notif'},
+        d={
+            'endredir':'all_notif',
+            'endredir_mess': 'show all',
+        },
     ) 
     print(f'{app_name}/index.html')
-    return render(request, f'{app_name}/notification_table.html',context )
+    return render(request, f'{app_name}/index.html',context )
+
+@login_required
+def all_notif(request):
+    context = get_action_table_context(
+        app_name=app_name,
+        objects=Notification.get_user_notifs(request.user),
+        field='id',
+        url_to_redir='notifications:show_notif',
+        actions={'mark as read' : f'notifications:read_notif', 'delete' : f'notifications:delete_notif'},
+        d= {
+            'endredir':'index',
+            'endredir_mess': 'mask read',
+        },
+    ) 
+    print(f'{app_name}/index.html')
+    return render(request, f'{app_name}/index.html',context )
+
 
 @login_required
 def show_notif(request, notif_id):

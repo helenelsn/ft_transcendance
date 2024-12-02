@@ -10,11 +10,19 @@ class Notification(models.Model):
     
     @staticmethod
     def filter_user_notifs(user):
-        return Notification.objects.filter(user=user)
+        return Notification.objects.filter(user=user).order_by('timestamp')
     
     @staticmethod
     def filter_notif(notif_id, user):
         return Notification.filter_user_notifs( user,).filter(pk=notif_id)
+    
+    @staticmethod
+    def get_user_notifs(user):
+        return Notification.filter_user_notifs(user).all()
+    
+    @staticmethod
+    def get_user_unreads_notifs(user):
+        return Notification.filter_user_notifs(user).filter(is_read=False).all()
     
     def __str__(self):
         return self.message
