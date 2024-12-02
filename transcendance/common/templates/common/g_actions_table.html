@@ -5,22 +5,18 @@ context = {
         'field': field_to_get,
         'redir': url_to_redir,
         'display': display_name_default_is_object
-        'action_cond': action_cond_to_add_actions,
         'actions': {'name': 'redir',},
     } 
 {% endcomment %}
 {% load filters %}
-{% block optional_actions_name %}
-    {% if action_cond %}
-        {% for action in actions%}
+{% block actions_name %}
+    {% for action in actions%}
             <th> {{action}} </th>
-        {% endfor %}
-    {% endif %}
+    {% endfor %}
 {% endblock %}
 
-{% block optional_actions %}
-
+{% block actions %}
     {% for action in actions %}
-        <th>  {% include  'common/g_href_by_attr.html' with field=field object=o redir=actions|dict_val:action display=action %}  </th> 
+            <th> {% include  'common/g_href_by_attr.html' with field=field object=o redir=actions|dict_val:action display=action %}  </th> 
     {% endfor %}
 {% endblock %}

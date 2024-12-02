@@ -6,6 +6,6 @@ context = {
 } 
 {% endcomment %}
 {% load filters %}
-{% block content %}
+{% block child_content %}
 <a href="{% url app_name|app_redir:'settings' %}"> Create game </a>
 {% endblock %}

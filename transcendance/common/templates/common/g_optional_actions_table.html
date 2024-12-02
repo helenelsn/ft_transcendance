@@ -1,0 +1,27 @@
+{% extends "common/g_table.html" %}
+{% comment %} 
+context = {
+        'objects': object_list_to_treat,
+        'field': field_to_get,
+        'redir': url_to_redir,
+        'display': display_name_default_is_object
+        'action_cond': action_cond_to_add_actions,
+        'actions': {'name': 'redir',},
+    } 
+{% endcomment %}
+{% load filters %}
+{% block actions_name %}
+    {% for action in actions%}
+        {% if action_cond %}
+            <th> {{action}} </th>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block actions %}
+    {% for action in actions %}
+        {% if action_cond %}
+            <th> {% include  'common/g_href_by_attr.html' with field=field object=o redir=actions|dict_val:action display=action %}  </th> 
+            {% endif %}
+    {% endfor %}
+{% endblock %}

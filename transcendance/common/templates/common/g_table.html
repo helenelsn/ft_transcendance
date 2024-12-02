@@ -9,26 +9,19 @@ context = {
 {% endcomment %}
 
 {% load tags %}
-{% block content %}
+{% block child_content %}
 <table>
     <tr>
         <th> {{field|upper}} </th>
-        {% block optional_actions_name %}
+        {% block actions_name %}
         {% endblock %}
     </tr>
     {% for o in objects %}
         <tr>
             <th> {% include  'common/g_href_by_attr.html' with field=field object=o redir=redir %} </th>
-            {% block optional_actions %}
+            {% block actions %}
             {% endblock %}
-            {% comment %} <td> {{ u.username }} </td>
-            {% if action_cond %}
-                <td> <a href="{% url 'relationship:friend_request' u.username %}"> friend? </a> </td>
-                <td> unimplemented </td>
-            {% endif %} {% endcomment %}
         </tr>
     {% endfor %}
-
-
 </table>
 {% endblock %}

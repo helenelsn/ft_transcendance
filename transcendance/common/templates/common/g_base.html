@@ -30,7 +30,9 @@ context ={
     </div>
 
     <div id="content">
+        {% block child_content %}{% endblock %}
         {% block content %}{% endblock %}
+        {% block more_content %}{% endblock %}
     </div>
 </body>
 </html>

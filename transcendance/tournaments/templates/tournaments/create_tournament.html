@@ -1,13 +1,8 @@
-{% extends "accounts/g_form.html " %}
-
-{% comment %} {%include "common/s_begin.html" with title="Games"%}
-
-    <h1>Welcom create</h1>
-    {%include "common/s_form.html" with form=form%}
-    <p> <a href="{% url 'tournaments:index' %}">&laquo; Back </a></p>
-    
-</body>
-
-</html>
-
-{%include "common/s_end.html"%}  {% endcomment %}
+{% extends "common/g_form.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+    'form' : profile_form,
+    'app_name' : app_name,
+} 
+{% endcomment %}
