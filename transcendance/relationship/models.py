@@ -1,6 +1,6 @@
 from typing import Any
 from django.db import models
-from accounts.models import Profile, Notification
+from accounts.models import Profile
 # Create your models here.
 
 NEUTRAL = 0

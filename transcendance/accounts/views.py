@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from .forms import ProfileChangeForm
-from .models import User, Profile, Notification
+from .models import User, Profile
+from notifications.models import Notification
 from common.utils import get_context, get_form_context
 # Create your views here.
 
@@ -62,8 +63,8 @@ def show_profile(request, username):
         })
     return render(request, f'{app_name}/profile_page.html', context)
     
-def show_notif(request, notif_id):
-    return redirect(f'{app_name}:index')
+# def show_notif(request, notif_id):
+#     return redirect(f'{app_name}:index')
     
     
 @login_required

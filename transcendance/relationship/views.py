@@ -2,12 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Relation, FRIEND, NEUTRAL, BLOCKED, REQUEST
-from common.utils import get_table_with_optional_action_context
+from common.utils import get_optional_action_table_context
 # Create your views here.
 app_name = 'relationship'
 
 def index(request):
-    context = get_table_with_optional_action_context(
+    context = get_optional_action_table_context(
         app_name=app_name,
         objects=User.objects.all(),
         field='username',

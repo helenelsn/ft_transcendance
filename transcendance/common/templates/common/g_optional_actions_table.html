@@ -11,17 +11,18 @@ context = {
 {% endcomment %}
 {% load filters %}
 {% block actions_name %}
+
+    {% if action_cond %}
     {% for action in actions%}
-        {% if action_cond %}
             <th> {{action}} </th>
-        {% endif %}
     {% endfor %}
+        {% endif %}
 {% endblock %}
 
 {% block actions %}
-    {% for action in actions %}
         {% if action_cond %}
+    {% for action in actions %}
             <th> {% include  'common/g_href_by_attr.html' with field=field object=o redir=actions|dict_val:action display=action %}  </th> 
-            {% endif %}
     {% endfor %}
+            {% endif %}
 {% endblock %}

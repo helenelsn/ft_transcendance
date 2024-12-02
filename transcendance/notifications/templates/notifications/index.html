@@ -1,1 +1,7 @@
-{% extends "notifications/g_base.html" %}
+{% extends "common/g_base.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+    'app_name' : app_name,
+}
+{% endcomment %}

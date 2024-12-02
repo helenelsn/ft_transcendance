@@ -1,21 +1,19 @@
 {% extends "common/g_base.html" %}
 {% include "common/title.html" with app_name=app_name %}
 {% comment %} 
-todo : take only user?
 context = {
     'app_name' : app_name
 } 
 {% endcomment %}
 {% load filters %}
 {% block content %}
-    {% comment %} {% include "accounts/notification_list.html" with unread_notifications=unread_notifications%} {% endcomment %}
     <h1>{{profile.username|upper}}</h1>
     <p>Bio: {{profile.profile.bio}}</p>
     
     {% if user.is_authenticated and user.username == profile.username %}
         <p><a href="{% url app_name|app_redir:'edit' %}"> edit </a></p>
     {% else %}
-        <p><a href="{% url 'relationship'|app_redir:'friend_request' profile.username %}"> friend request </a></p>
+        <p><a href="{% url 'relationship'|app_redir:'send_friend_request' profile.username %}"> friend request </a></p>
     {% endif %}
 
 {% endblock %}

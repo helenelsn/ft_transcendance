@@ -10,8 +10,6 @@ class Profile(models.Model):
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     bio = models.TextField(default="lorem")
     friends = models.ManyToManyField('self', symmetrical=True,)
-    # friend_requests = models.ManyToManyField('self', symmetrical=False, )
-    
 
     @receiver(post_save, sender=User)
     def create_or_update_user_profile(sender, instance, created, **kwargs):
@@ -20,16 +18,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_read = models.BooleanField(default=False)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    # type => defining actions 
-    # base_action : delete, mark as read/unread
-    # invitation : accept /decline => read
-    
-    def __str__(self):
-        return self.message
-    

@@ -10,5 +10,5 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('profile_page/<username>', views.show_profile, name='profile_page'),
     path('edit/', views.edit_profile, name='edit'),
-    path('show_notif/<int:notif_id>', views.show_notif, name='show_notif'),
+    # path('show_notif/<int:notif_id>', views.show_notif, name='show_notif'),
 ]

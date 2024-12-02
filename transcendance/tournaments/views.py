@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Tournament
 from .forms import TournamentForm
-from common.utils import get_context, get_form_context, get_table_with_optional_action_context, get_table_context
+from common.utils import get_context, get_form_context, get_optional_action_table_context, get_table_context
 
 app_name = 'tournaments'
 
