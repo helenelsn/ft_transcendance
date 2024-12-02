@@ -10,17 +10,17 @@ def index(request):
         'objects': User.objects.all(),
         'field': 'username',
         'redir': 'accounts:profile_page',
+        'action_cond': request.user.is_authenticated,
+        'actions':{'friend' : 'relationship:friend_request'},
+        # 'action_names': ['friend', 'block',],
+        'actions_redirs':['relationship:friend_request', 'relationship:delete_friend']
     } 
     # 'redir': 'relationship:friend_request',
     # print(f'----------------{context}--------------')
     return render(request, f'{app_name}/all_user.html', context)
-    # context = {"objects" : User.objects.all(),
-    #            "attribut" : "username",
-    #            "show_url" : f"accounts:profile_page"}
-    # return render(request, f'{app_name}/index.html', context)
 
-def all_user(request):
-    return render(request, f'{app_name}/all_user.html', context)
+# def all_user(request):
+#     return render(request, f'{app_name}/all_user.html', context)
     
 @login_required
 def friend_request(request, username):
@@ -29,5 +29,6 @@ def friend_request(request, username):
 
 @login_required
 def delete_friend(request, username):
+    Relation(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=3).create_relation()
     return render(request, f'{app_name}/index.html', {})
 
