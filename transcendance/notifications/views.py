@@ -7,20 +7,44 @@ from common.utils import redir_to_index
 app_name = 'notifications'
 
 # Create your views here.
+
+
+
+@login_required
 def index(request):
     context = get_action_table_context(
         app_name=app_name,
-        objects=Notification.objects.all(),
-        field='message',
-        url_to_redir='accounts:profile_page',
-        actions={'mark as read' : f'relationship:send_friend_request', 'delete' : f'relationship:block_user'},
+        objects=Notification.objects.filter(user=request.user).order_by('is_read'),
+        field='id',
+        # diplay='message',
+        url_to_redir='notifications:show_notif',
+        actions={'mark as read' : f'notifications:read_notif', 'delete' : f'notifications:delete_notif'},
     ) 
     print(f'{app_name}/index.html')
     return render(request, f'{app_name}/notification_table.html',context )
 
 @login_required
 def show_notif(request, notif_id):
-    notif = get_object_or_404(Notification.objects.filter(pk=notif_id).filter(user=request.user))
+    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
     print(f'---------------------{notif}')
+    return redir_to_index(app_name)
+
+@login_required
+def read_notif(request, notif_id):
+    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
+    notif.is_read = True
+    notif.save()
+    return redir_to_index(app_name)
+    
+@login_required
+def unread_notif(request, notif_id):
+    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
+    notif.is_read = False
+    notif.save()
+    return redir_to_index(app_name)
+
+@login_required
+def delete_notif(request, notif_id):
+    Notification.filter_notif(notif_id, request.user).delete()
     return redir_to_index(app_name)
     

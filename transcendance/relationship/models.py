@@ -1,7 +1,9 @@
 from typing import Any
 from django.db import models
 from accounts.models import Profile
+from notifications.models import Notification
 # Create your models here.
+
 
 NEUTRAL = 0
 FRIEND = 1
@@ -59,8 +61,7 @@ class Relation(models.Model):
     def is_bloqued(self):
         other_pov = self.get_or_create_other_pov()
         return other_pov is not None and other_pov.relation == BLOCKED
-        
-    # def send_request(self):
+    
         
     def update_relation(self, from_user, to_user, type):
         rel, created = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get_or_create()
