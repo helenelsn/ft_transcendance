@@ -57,12 +57,9 @@ def show_profile(request, username):
     context = {
             "profile":User.objects.filter(username=username).get(),
             "objects" : Notification.objects.filter(user=request.user).filter(is_read=False).all(),
-            # "show_attribut" : "message",
             "field" : "id",
             "redir" : f"{app_name}:show_notif"
         }
-    
-    print(f'--------------------{Notification.objects.filter(user=request.user)}  {request.user.notification_set}-------------------')
     return render(request, f'{app_name}/profile_page.html', context)
     
 def show_notif(request, notif_id):
