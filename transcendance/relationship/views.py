@@ -39,6 +39,10 @@ def accept_friend_request(request, username):
     return update_relation(request, FRIEND, username)
 
 @login_required
+def deny_friend_request(request, username):
+    return update_relation(request, NEUTRAL, username)
+
+@login_required
 def delete_friend(request, username):
     return update_relation(request, NEUTRAL, username)
     Relation(from_user=request.user.profile, to_user=get_object_or_404(User, username=username).profile, relation=3).create_relation()

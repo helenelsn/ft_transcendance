@@ -1,6 +1,6 @@
 from typing import Any
 from django import forms
-from .models import TournamentPlayer, Tournament
+from .models import Tournament
 
 class TournamentForm(forms.ModelForm):
     class Meta:

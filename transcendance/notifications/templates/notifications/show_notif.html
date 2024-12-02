@@ -1,0 +1,20 @@
+
+{% extends "common/g_base.html" %}
+{% comment %} 
+represent url off an object with redir to with pbj.field as argument
+context ={
+    'object': object_to_get_field_from,
+    'field': field_to_get,
+    'redir': url_to_redir
+    'display': display_name_default_is_object
+} 
+{% endcomment %}
+{% load filters %}
+{% block content %}
+{{ notif }}
+{{ notif_actions }}
+{% for notif_action in notif_actions %}
+    {% include  'common/g_href_by_attr.html' with field='username' object=from_user redir=notif_actions|dict_val:notif_action display=notif_action%} 
+    {{notif_action}}
+{% endfor %}
+{% endblock %}

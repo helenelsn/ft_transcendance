@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from common.utils import get_action_table_context
+from common.utils import get_action_table_context, get_context
 from .models import *
+from relationship.models import FriendInvitation
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index
 
 app_name = 'notifications'
+
+
 
 @login_required
 def index(request):
@@ -39,11 +42,24 @@ def all_notif(request):
     return render(request, f'{app_name}/index.html',context )
 
 
+def get_notif_context(notif:Notification) -> dict:
+    d={'notif':notif}
+    f_notif = FriendInvitation.objects.get(pk=notif.id)
+    if f_notif is not None:
+        d.update({'notif_actions': {
+                        'accept':'relationship:accept_friend_request',
+                        'deny':'relationship:deny_friend_request'
+                }})
+        d.update({'from_user': f_notif.relation.from_user.user})
+        print(f'---------------------{isinstance(notif, FriendInvitation)}')    
+    return d
+
 @login_required
 def show_notif(request, notif_id):
     notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
-    print(f'---------------------{notif}')
-    return redir_to_index(app_name)
+    context = get_context(app_name=app_name, d=get_notif_context(notif))
+    print(f'---------------------{context}')
+    return render(request, f'{app_name}/show_notif.html',context )
 
 @login_required
 def read_notif(request, notif_id):
