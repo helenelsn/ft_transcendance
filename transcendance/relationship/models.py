@@ -9,8 +9,8 @@ REQUEST = 2
 BLOCKED = 3
 
 class Relation(models.Model):
-    from_user = models.ForeignKey(Profile, null=True, on_delete= models.SET_NULL, related_name="from_user")
-    to_user = models.ForeignKey(Profile, null=True, on_delete= models.SET_NULL, related_name="to_user")
+    from_user = models.ForeignKey(Profile, null=True, on_delete= models.CASCADE, related_name="from_user")
+    to_user = models.ForeignKey(Profile, null=True, on_delete= models.CASCADE, related_name="to_user")
     relations = (
                 (NEUTRAL, 'neutral'),
                 (FRIEND, 'friend'),

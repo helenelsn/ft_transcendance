@@ -23,4 +23,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('tournaments/', include('tournaments.urls')),
     path('relationship/', include('relationship.urls')),
+    path('notifs/', include('notifications.urls')),
+
 ]

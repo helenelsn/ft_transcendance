@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <head>
     <title>{% block title %}My amazing site{% endblock %}</title>
@@ -11,12 +12,11 @@
     <div id="sidenav">
 
         {% block sidenav %}
-        {%include "accounts/s_account.html"%}
-            {% comment %} <li><a href="">Home</a></li> {% endcomment %}
-        <a href="{% url 'games:index' %}">Games</a>
-        <a href="{% url 'tournaments:index' %}">Tournaments</a>
-        <a href="{% url 'accounts:index' %}">Account</a>
-        <a href="{% url 'relationship:index' %}">All users</a>
+            {% include "accounts/s_account.html" %}
+            <a href="{% url 'games:index' %}">Games</a>
+            <a href="{% url 'tournaments:index' %}">Tournaments</a>
+            <a href="{% url 'accounts:index' %}">Account</a>
+            <a href="{% url 'relationship:index' %}">All users</a>
         {% endblock %}
     </div>
 

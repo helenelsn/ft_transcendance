@@ -26,6 +26,10 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    # type => defining actions 
+    # base_action : delete, mark as read/unread
+    # invitation : accept /decline => read
     
     def __str__(self):
         return self.message
+    
