@@ -2,18 +2,21 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Relation, FRIEND, NEUTRAL, BLOCKED, REQUEST
+from common.utils import get_table_with_optional_action_context
 # Create your views here.
 app_name = 'relationship'
 
 def index(request):
-    context = {
-        'objects': User.objects.all(),
-        'field': 'username',
-        'redir': 'accounts:profile_page',
-        'action_cond': request.user.is_authenticated,
-        'actions':{'friend' : f'relationship:send_friend_request', 'block' : f'relationship:block_user'},
-    }
-    return render(request, f'{app_name}/all_user.html', context)
+    context = get_table_with_optional_action_context(
+        app_name=app_name,
+        objects=User.objects.all(),
+        field='username',
+        url_to_redir='accounts:profile_page',
+        action_cond=request.user.is_authenticated,
+        actions={'friend' : f'relationship:send_friend_request', 'block' : f'relationship:block_user'},
+    )
+    print(context)
+    return render(request, f'{app_name}/index.html', context)
 
 # def all_user(request):
 #     return render(request, f'{app_name}/all_user.html', context)

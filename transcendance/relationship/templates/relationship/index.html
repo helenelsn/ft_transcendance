@@ -1,2 +1,13 @@
-{% extends "relationship/all_user.html" %}
-
+{% extends "common/g_table_whit_optional_actions.html" %}
+{% include "common/title.html" with app_name=app_name %}
+{% comment %} 
+context = {
+        'objects': object_list_to_treat,
+        'field': field_to_get,
+        'redir': url_to_redir,
+        'display': display_name_default_is_object
+        'action_cond': action_cond_to_add_actions,
+        'actions': {'name': 'redir',},
+        'app_name' : app_name,
+} 
+{% endcomment %}

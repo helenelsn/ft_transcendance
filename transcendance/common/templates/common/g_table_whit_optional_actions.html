@@ -7,10 +7,9 @@ context = {
         'display': display_name_default_is_object
         'action_cond': action_cond_to_add_actions,
         'actions': {'name': 'redir',},
-        
     } 
 {% endcomment %}
-{% load tags %}
+{% load filters %}
 {% block optional_actions_name %}
     {% if action_cond %}
         {% for action in actions%}
