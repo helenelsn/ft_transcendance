@@ -1,16 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from .forms import ProfileChangeForm
-from .models import User, Profile
-from notifications.models import Notification
-from common.utils import get_context, get_form_context
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.contrib.auth import login, logout
+
+from .models import Profile
+from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
 app_name= 'accounts'
@@ -38,7 +33,7 @@ class LoginView(FormView):
         login(self.request, form.get_user())
         return super().form_valid(form)
     
-class ProfileUpdateView(UpdateView):
+class ProfilUpdateView(UpdateView):
     model = Profile
     fields = ['avatar', 'bio']
     template_name = 'common/form.html'

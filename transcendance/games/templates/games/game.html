@@ -1,11 +1,7 @@
 {% extends "common/g_base.html" %}
 
-{% comment %} 
-context = {
-    'app_name' : app_name,
-} 
 {% endcomment %}
-{% block child_content %}
-<p><a href="{% url 'games:lose' 0%}"> Lose  </a></p>
-<p><a href="{% url 'games:win' 0%}"> Win </a></p>
+{% block content %}
+<p><a href="{% url 'games:lose' %}"> Lose  </a></p>
+<p><a href="{% url 'games:win' %}"> Win </a></p>
 {% endblock %}

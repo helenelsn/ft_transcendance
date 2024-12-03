@@ -1,21 +1,22 @@
 from django.shortcuts import render
 from common.utils import get_context, redir_to, redir_to_index
-app_name = 'games'
+from django.views.generic.base import RedirectView, TemplateView
+
 # Create your views here.
 
 def index(request):
-    return render(request, f'{app_name}/index.html', get_context(app_name, ))
+    return render(request, f'games/index.html', {})
 
+class TodoView(RedirectView):
+    pattern_name = 'games:index'
 
-def game(request):
-    return render(request, f'{app_name}/game.html', get_context(app_name, ))
+class SettingsView(RedirectView):
+    pattern_name = 'games:game'
+
+class GameView(TemplateView):
+    template_name = 'games/game.html'
     
-def settings(request):
-    return redir_to(app_name, 'game')
-    return render(request, f'{app_name}/index.html')
-
-def lose(request, game_id):
-    return redir_to_index(app_name)
-
-def win(request, game_id):
-    return redir_to_index(app_name)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    
