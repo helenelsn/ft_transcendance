@@ -1,0 +1,23 @@
+{% extends 'utils/object_table.html' %}
+{% comment %} 
+represent a list of clickable object
+context ={
+    'object_list': object_list,
+    'do_url': redir_to_show_object,
+    'action_names': actions_names
+    'actions' : actions
+} 
+{% endcomment %}
+
+{% block more_col_name %}
+    {% for action_name in action_names %}
+        {{ action_name }}
+    {% endfor %}
+{% endblock %}
+
+{% block more_col_val %}
+{% for action in actions %}
+    {% load filters %}
+   <th> {% include 'utils/object_ref.html' with object=object do_url=actions|dict_val:action %} <th>
+{% endfor %}
+{% endblock %}

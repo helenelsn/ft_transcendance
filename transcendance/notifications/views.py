@@ -3,80 +3,97 @@ from common.utils import get_action_table_context, get_context
 from .models import *
 from relationship.models import FriendInvitation
 from django.contrib.auth.decorators import login_required
-from common.utils import redir_to_index
+from common.utils import redir_to_index, redir_to
+from typing import Any
 
+
+from django.views.generic import ListView, DetailView
 app_name = 'notifications'
 
-
-
-@login_required
-def index(request):
-    context = get_action_table_context(
-        app_name=app_name,
-        objects=Notification.get_user_unreads_notifs(request.user),
-        field='id',
-        url_to_redir='notifications:show_notif',
-        actions={'mark as read' : f'notifications:read_notif', 'delete' : f'notifications:delete_notif'},
-        d={
-            'endredir':'all_notif',
-            'endredir_mess': 'show all',
-        },
-    ) 
-    print(f'{app_name}/index.html')
-    return render(request, f'{app_name}/index.html',context )
-
-@login_required
-def all_notif(request):
-    context = get_action_table_context(
-        app_name=app_name,
-        objects=Notification.get_user_notifs(request.user),
-        field='id',
-        url_to_redir='notifications:show_notif',
-        actions={'mark as read' : f'notifications:read_notif', 'delete' : f'notifications:delete_notif'},
-        d= {
-            'endredir':'index',
-            'endredir_mess': 'mask read',
-        },
-    ) 
-    print(f'{app_name}/index.html')
-    return render(request, f'{app_name}/index.html',context )
-
-
-def get_notif_context(notif:Notification) -> dict:
-    d={'notif':notif}
-    f_notif = FriendInvitation.objects.get(pk=notif.id)
-    if f_notif is not None:
-        d.update({'notif_actions': {
-                        'accept':'relationship:accept_friend_request',
-                        'deny':'relationship:deny_friend_request'
-                }})
-        d.update({'from_user': f_notif.relation.from_user.user})
-        print(f'---------------------{isinstance(notif, FriendInvitation)}')    
-    return d
-
-@login_required
-def show_notif(request, notif_id):
-    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
-    context = get_context(app_name=app_name, d=get_notif_context(notif))
-    print(f'---------------------{context}')
-    return render(request, f'{app_name}/show_notif.html',context )
-
-@login_required
-def read_notif(request, notif_id):
-    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
-    notif.is_read = True
-    notif.save()
-    return redir_to_index(app_name)
+class NotificationsView():
+    model = Notification
     
-@login_required
-def unread_notif(request, notif_id):
-    notif = get_object_or_404(Notification.filter_notif(notif_id, request.user))
-    notif.is_read = False
-    notif.save()
-    return redir_to_index(app_name)
+    @staticmethod
+    def update(request, notif, att : str, val : Any):
+        n : Notification = get_object_or_404(request.user.notification_set.filter(pk = notif))
+        setattr(n, att, val)
+        n.save()
 
-@login_required
-def delete_notif(request, notif_id):
-    Notification.filter_notif(notif_id, request.user).delete()
-    return redir_to_index(app_name)
+    @login_required
+    def read(request, pk):
+        NotificationsView.update(request, pk, 'is_read', True)
+        return redir_to(app_name, 'all')
+        
+    @login_required
+    def unread(request, pk):
+        NotificationsView.update(request, pk, 'is_read', False)
+        return redir_to(app_name, 'all')
+
+    @login_required
+    def delete(request, pk):
+        Notification.delete(pk)
+        return redir_to(app_name, 'all')
+
+    @login_required
+    def read_all(request):
+        for notif in request.user.notification_set.all().filter(user=request.user):
+            NotificationsView.update(request, notif.id, 'is_read', True)
+        return redir_to(app_name, 'all')
+            
+        
+    @login_required
+    def unread_all(request):
+        for notif in request.user.notification_set.all().filter(user=request.user):
+            NotificationsView.update(request, notif.id, 'is_read', False)
+        return redir_to(app_name, 'all')
+        
+    @login_required
+    def delete_all(request):
+        for notif in request.user.notification_set.all().filter(user=request.user):
+            Notification.delete(notif=notif.id)
+        return redir_to(app_name, 'all')
+
+    @staticmethod
+    def get_generic_actions_names():
+        return ["(un)read", "delete"]
+
+    @staticmethod
+    def get_generic_actions(notif):
+        n :Notification = Notification.objects.get(pk = notif)
+        if n.is_read:
+            actions = {'unread' : 'notifications:unread_notif'}
+        else: 
+            actions = {'read' : 'notifications:read_notif'}
+        actions.update({'delete' : 'notifications:delete_notif'})
+        return actions
+
+    @staticmethod
+    def get_global_actions():
+        return {
+            'delete all' : 'notifications:delete_all_notif',
+            'read all' : 'notifications:read_all_notif',
+            'unread all' : 'notifications:unread_all_notif',
+            'show all':'notifications:all',
+            'hide read': 'notifications:index'
+        }
+        
+class NotificationsDetailsView(NotificationsView, DetailView):
+    template_name = f'{app_name}/notification_detail.html'
+    
+
+class NotificationsListView(NotificationsView, ListView):
+    template_name = f'{app_name}/notification_table.html'
+    def get_queryset(self) :
+        queryset = self.model.objects.order_by('-timestamp').filter(user=self.request.user)
+        return queryset
+    
+
+class UnreadsNotificationsListView(NotificationsListView):
+    template_name = f'{app_name}/notification_table.html'
+    def get_queryset(self) :
+        queryset = self.model.objects.order_by('timestamp').filter(user=self.request.user).filter(is_read=False)
+        return queryset
+
+
+
     

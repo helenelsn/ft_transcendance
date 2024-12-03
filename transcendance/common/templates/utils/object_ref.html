@@ -1,0 +1,17 @@
+{% comment %} 
+represent url off an object with redir to with pbj.field as argument
+context ={
+    'object': object,
+    'do_url': redir_to_show_object,
+    'ref_display' : ref_display,
+} 
+{% endcomment %}
+
+{% comment %} {% load tags %} {% endcomment %}
+<a href="{% url do_url object.id %}">
+    {% if ref_display%}
+        {{ref_display}}
+    {% else %}
+        {{object}}
+    {% endif %}
+</a>

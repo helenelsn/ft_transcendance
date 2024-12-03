@@ -25,8 +25,9 @@ class Notification(models.Model):
     def get_user_unreads_notifs(user):
         return Notification.filter_user_notifs(user).filter(is_read=False).all()
     
-    # def get_actions(self):
-    #     return {}
+    @staticmethod
+    def delete(notif):
+        Notification.objects.filter(pk=notif).delete()
     
     def __str__(self):
         return self.message
