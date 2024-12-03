@@ -11,7 +11,7 @@ def index(request):
         app_name=app_name,
         objects=User.objects.all(),
         field='username',
-        url_to_redir='accounts:profile_page',
+        url_to_redir='accounts:profil_detail',
         action_cond=request.user.is_authenticated,
         actions={'friend' : f'relationship:send_friend_request', 'block' : f'relationship:block_user'},
     )

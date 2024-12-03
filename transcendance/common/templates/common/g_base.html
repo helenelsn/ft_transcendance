@@ -21,7 +21,7 @@ context ={
     <div id="sidenav">
 
         {% block sidenav %}
-            {% include "accounts/s_account.html" %}
+            {% include "accounts/snippets/s_account.html" %}
             <a href="{% url 'games:index' %}">Games</a>
             <a href="{% url 'tournaments:index' %}">Tournaments</a>
             <a href="{% url 'accounts:index' %}">Account</a>

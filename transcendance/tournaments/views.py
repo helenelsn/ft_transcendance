@@ -18,7 +18,7 @@ def index(request):
 
 def show_tournament(request, tournament_name):
     tournament = get_object_or_404(Tournament,  name=tournament_name)
-    context = get_table_context(app_name=app_name, objects=tournament.players.all(), url_to_redir='accounts:profile_page', field='username')
+    context = get_table_context(app_name=app_name, objects=tournament.players.all(), url_to_redir='accounts:profil_detail', field='username')
     return render(request, f'{app_name}/tournament.html', context)
 
 

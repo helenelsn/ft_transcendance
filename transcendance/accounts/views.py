@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -8,73 +9,48 @@ from .forms import ProfileChangeForm
 from .models import User, Profile
 from notifications.models import Notification
 from common.utils import get_context, get_form_context
-# Create your views here.
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.views.generic.detail import DetailView
+from django.views.generic.base import RedirectView
+app_name= 'accounts'
 
-app_name = "accounts"
-home = f'{app_name}/index.html'
-
-def index(request):
-    # for i in range(100):
-    #     User.objects.create_user(username=f'user{i}',
-    #                              password=f'ViveLeVent{i}')
-        
+def index(request):        
     if request.user.is_authenticated:
-        return redirect(f'{app_name}:profile_page', request.user.username)
-    return render(request, home, get_context(app_name, ))
+        return redirect('accounts:profil_detail', request.user.id)
+    return render(request, 'accounts/index.html', {})
 
-def back_to_home():
-    return redirect(f'{app_name}:index')
-
-def login_user(request):
-    if request.method == 'POST':
-        user = authenticate(request=request, username=request.POST["username"], password=request.POST["password"])
-        if user is not None:
-            login(request, user)
-            return back_to_home()
-        else:
-            messages.info(request, "Username or password incorret")
-    form = AuthenticationForm()
-    return render(request, f"{app_name}/login.html",  get_form_context(app_name, form))
-
-def logout_user(request):
-    logout(request)
-    return back_to_home()
-
-def register_user(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(f'{app_name}:index')
-        else:
-            messages.info(request, "Username or password incorret")
-    form = UserCreationForm()
-    return render(request, f"{app_name}/register.html", get_form_context(app_name, form))
-
-
-def show_profile(request, username):
-    if not request.user.is_authenticated:
-        raise PermissionDenied("You must be logged in")
-    context = get_context(app_name, {
-            "profile":User.objects.filter(username=username).get(),
-            "objects" : Notification.objects.filter(user=request.user).filter(is_read=False).all(),
-            "field" : "id",
-            "redir" : f"{app_name}:show_notif"
-        })
-    return render(request, f'{app_name}/profile_page.html', context)
+class UserCreateView(FormView):
+    template_name = 'common/form.html'
+    form_class = UserCreationForm
+    success_url = '/accounts/login'
     
-# def show_notif(request, notif_id):
-#     return redirect(f'{app_name}:index')
-    
-    
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        profile_form = ProfileChangeForm(request.POST, instance = Profile.objects.filter(user=request.user).get())
-        if profile_form.is_valid():
-            profile_form.save()
-    else:
-        profile_form = ProfileChangeForm(instance = Profile.objects.filter(user=request.user).get())
-        
-    return render(request, f'{app_name}/edit_profile.html', get_form_context(app_name, profile_form))
+    def form_valid(self, form: UserCreationForm) -> HttpResponse:
+        form.save()
+        return super().form_valid(form)
 
+class LoginView(FormView):
+    template_name = 'common/form.html'
+    form_class = AuthenticationForm
+    success_url =  '/accounts'
+    
+    def form_valid(self, form : AuthenticationForm) -> HttpResponse:
+        login(self.request, form.get_user())
+        return super().form_valid(form)
+    
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    fields = ['avatar', 'bio']
+    template_name = 'common/form.html'
+    success_url =  '/accounts'
+    
+class LogoutView(RedirectView):
+    pattern_name = 'accounts:index'
+
+    def get_redirect_url(self, *args, **kwargs):
+        logout(self.request)
+        return super().get_redirect_url(*args, **kwargs)
+
+class ProfilDetailView(DetailView):
+    model = Profile
+    template_name = 'accounts/profil_detail.html'

@@ -1,0 +1,13 @@
+{% extends "common/g_base.html" %}
+{% load filters %}
+
+{% block content %}
+    {% include 'accounts/snippets/s_profile.html' with object=object %}
+    
+    {% if user.is_authenticated and user.username == object.user.username %}
+        <p><a href="{% url 'accounts:edit_profil' user.id %}"> edit </a></p>
+    {% else %}
+        <p><a href="{% url 'relationship:send_friend_request' object.user.username %}"> friend request </a></p>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% comment %} 
+represent url off an object with redir to with pbj.field as argument
+context ={
+    'forms': [form],
+} 
+{% endcomment %}
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_p }}
+    </table>
+    <button type="submit">
+        {% if submission_name %}
+            {{submission_name}}
+        {% else %}
+            "submit"
+        {% endif %}
+    </button>
+</form>

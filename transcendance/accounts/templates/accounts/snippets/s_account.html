@@ -1,0 +1,8 @@
+
+{% if user.is_authenticated %}
+    {% include 'notifications/snippets/s_notif_preview.html' %}
+    <p>Connected as {{user.username}} | <a href="{% url 'accounts:logout' %}"> logout </a></p>
+{% else %}
+    <p><a href="{% url 'accounts:login' %}"> login </a></p>
+    <p><a href="{% url 'accounts:register' %}"> register </a></p>
+{% endif %}

@@ -5,10 +5,11 @@ app_name = "accounts"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', views.login_user, name='login'),
-    path('logout/', views.logout_user, name='logout'),
-    path('register/', views.register_user, name='register'),
-    path('profile_page/<username>', views.show_profile, name='profile_page'),
-    path('edit/', views.edit_profile, name='edit'),
-    # path('show_notif/<int:notif_id>', views.show_notif, name='show_notif'),
+    
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('register/', views.UserCreateView.as_view(), name='register'),
+    
+    path('profil_detail/(?P<pk>\d+)', views.ProfilDetailView.as_view(), name='profil_detail'),
+    path('edit_profil/(?P<pk>\d+)', views.ProfileUpdateView.as_view(), name='edit_profil'),
 ]
