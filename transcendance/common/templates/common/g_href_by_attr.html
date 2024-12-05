@@ -8,7 +8,7 @@ context ={
 } 
 {% endcomment %}
 
-{% load tags %}
+{% comment %} {% load tags %}
 {% get_obj_attr object field as field%}
 <a href="{% url redir field %}">
 {% if display %}
@@ -16,4 +16,4 @@ context ={
 {% else %}
     {{object}}
 {% endif %}
-</a>
+</a> {% endcomment %}

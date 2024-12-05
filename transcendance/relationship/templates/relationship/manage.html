@@ -1,0 +1,10 @@
+{% extends "common/g_base.html" %}
+
+{% block content %}
+{% load relation_tags %}
+{% relation_index_hyperlink %}
+
+{% load tags_utils %}
+{% include_filter_table table=table filter=filter %}
+
+{% endblock %}

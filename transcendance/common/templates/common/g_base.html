@@ -1,5 +1,6 @@
 {% load static %}
 {% load filters %}
+{% load tags %}
 
 <!DOCTYPE html>
 <head>
@@ -29,12 +30,7 @@
     </script>
     <div id="my_sidenav", class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            {% include 'accounts/snippets/s_account.html'%}
-            <a href="{% url 'games:index' %}">Games</a>
-            <a href="{% url 'tournaments:index' %}">Tournaments</a>
-            <a href="{% url 'accounts:index' %}">Account</a>
-            <a href="{% url 'relationship:index' %}">All users</a>
-            <a href="{% url 'notifications:index' %}">Notif</a>
+            {% sidenav_hyperlinks user %}
     </div>
 
     <div id="main">

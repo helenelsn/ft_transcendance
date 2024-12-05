@@ -1,9 +1,0 @@
-
-{% if user.is_authenticated %}
-    {% include 'notifications/snippets/s_notif_preview.html' %}
-    <a href="{% url 'accounts:profil_detail'  user.id %}">Connected as {{user.username}} </a>
-    <a href="{% url 'accounts:logout' %}"> logout </a>
-{% else %}
-    <a href="{% url 'accounts:login' %}"> login </a></p>
-    <a href="{% url 'accounts:register' %}"> register </a>
-{% endif %}

@@ -1,31 +1,41 @@
 from django import template
 register = template.Library()
 from relationship.tables import RelationTable
-from relationship.models import Relation, FRIEND, OTHER_REQUEST, REQUEST, BLOCKED
+from relationship.models import Relation, FRIEND, OTHER_REQUEST, REQUEST, BLOCKED, NEUTRAL
+from common.templatetags.tags_utils import index_hyperlink, a_hyperlink, include_table, html_list_join
 
+app_name='relationship'
 trs = {
-        'friend' : 0,
-        'request' :1 ,
-        'other_request':2,
-        'neutral':3,
-        'blocked':4,
+        'friend' : FRIEND,
+        'request' : REQUEST,
+        'other_request': OTHER_REQUEST,
+        'neutral': NEUTRAL,
+        'blocked':BLOCKED,
     }
 
 def get_user_relations(request):
     return Relation.objects.filter(from_user=request.user)
 
-@register.simple_tag
-def user_relation_table(request, rel_type):
-    print(rel_type)
-    qs = get_user_relations(request).filter(relation=trs[rel_type])
-    print(qs)
-    if request.user.is_authenticated and len(qs) > 0:
-        return RelationTable(qs, request=request, )
+@register.inclusion_tag('utils/tables.html', takes_context=True, )
+def include_user_relations_tables(context, request):
+    if not request.user.is_authenticated:
+        return
+    tables = {}
+    for rel_type in trs.keys():
+        if trs[rel_type] == NEUTRAL:
+            continue
+        qs = get_user_relations(request).filter(relation=trs[rel_type])
+        if len(qs) > 0 :
+            tables[RelationTable(qs, request=request)] = rel_type
+            
+    context['tables'] = tables
+    return context
+        
 
 @register.simple_tag
-def interesting_relationship():
-    return {'friend':'Friends', 'request':'Pending request', 'other_request' : 'Sent you a friend request', }
-
+def relation_index_hyperlink():
+    return index_hyperlink(app_name)
+    
 @register.simple_tag
-def get_trs():
-    return trs
+def relation_detail_hyperlink():
+    return a_hyperlink(f'{app_name}:detail', 'all relations')

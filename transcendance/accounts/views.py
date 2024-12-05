@@ -8,7 +8,9 @@ from .models import Profile
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
-app_name= 'accounts'
+from .models import User
+from .tables import UserTable
+
 
 def index(request):        
     if request.user.is_authenticated:
@@ -50,4 +52,10 @@ class ProfilDetailView(DetailView):
     model = Profile
     template_name = 'accounts/profil_detail.html'
 
- 
+def render_user_table(request):
+    set = User.objects.exclude(pk=request.user.id)
+    
+    table = UserTable(set.all(), request=request)
+    return render(request, "relationship/all.html", {
+        "table": table
+    })

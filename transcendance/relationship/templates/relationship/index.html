@@ -1,9 +1,8 @@
 {% extends "common/g_base.html" %}
-{% load bootstrap3 %}
 {% block content %}
+{% load relation_tags %}
 
-{% include "relationship/s_relations_tables.html" with blocked=1%}
-
-{% include 'relationship/s_rel_redir_buttons.html' with ref_url='relationship:all' ref_display='see all'%}
+{% relation_detail_hyperlink %}
+{% include_user_relations_tables request %}
 
 {% endblock %}

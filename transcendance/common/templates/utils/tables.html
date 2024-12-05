@@ -1,0 +1,9 @@
+{% load render_table from django_tables2 %}
+{% load filters %}
+{% for table in tables %}
+    <h3> {{ tables|dict_val:table }} :</h3>
+    {% render_table table %}
+{% empty %}
+    <p> {{empty}} </p>
+    {% comment %} reddir a tags {% endcomment %}
+{% endfor %}

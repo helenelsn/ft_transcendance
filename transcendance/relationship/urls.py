@@ -5,16 +5,9 @@ app_name = 'relationship'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    
-    # path('friends/', views.friends, name='friends'),
-    # path('blocked/', views.blocked, name='blocked'),
-    # path('neutral/', views.neutral, name='neutral'),
-    # path('request/', views.request, name='request'),
-    # path('all/', views.all, name='all'),
-    path('detail/<rel_key>', views.render_relation_table, name='detail'),
-    
-    # path('pending_request$/', views.pending_request, name='pending_request'),
-    # path('filter/', views.RelationFilteredListView.as_view(), name='filter'),
+
+    path('detail/', views.RelationListView.as_view(), name='detail'),
+    # path('detail/<rel_key>', views.render_relation_table, name='detail'),
     
     
     path('send_friend_request/<username>', views.RelationView.send_friend_request, name='send_friend_request'),
