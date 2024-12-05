@@ -1,5 +1,13 @@
 {% extends "common/g_base.html" %}
 {% block content %}
-    {% include 'accounts/snippets/s_profile_detail.html' with object=object %}
+   {% load accounts_tags%}
+
+    </p> {% accounts_managment_links user%} <p>
+    
+    <h1> {{object.username|upper}} </h1>
+    <p> Bio: {{object.bio}} </p>
+    {% load relation_tags %}
+    {% include_user_relations_tables request %}
+    {% profil_detail_menu request object.user %}
     
 {% endblock %}

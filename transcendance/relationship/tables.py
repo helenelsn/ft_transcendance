@@ -4,10 +4,8 @@ from .models import Relation
 from django.utils.html import format_html
 from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn
-from .abstract_view import RelationView
 from django.db.models import Count, F, Value
-
-
+from .abstract_view import RelationView
 class RelationTable(tables.Table):
     to_user = tables.Column(verbose_name='User')
     relation = tables.Column(verbose_name='Actions')
@@ -27,8 +25,7 @@ class RelationTable(tables.Table):
         if self.request.user.is_authenticated:
             if self.request.user == record.to_user:
                 return format_html(f"<a href={reverse('accounts:edit_profil', args=[value])}> edit </a>")
-            actions = RelationView.get_relation_actions(Relation.relation_between(from_user=self.request.user.id, to_user=record.to_user))
-            return format_html(' | '.join([f"<a href={reverse(actions[name], args=[record.to_user.username])}> {name} </a>" for name in actions]))
+            return RelationView.get_formated_relation_actions(self.request, record.to_user)
         else:
             return '---'
         

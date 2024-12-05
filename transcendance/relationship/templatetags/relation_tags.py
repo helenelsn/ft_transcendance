@@ -2,7 +2,11 @@ from django import template
 register = template.Library()
 from relationship.tables import RelationTable
 from relationship.models import Relation, FRIEND, OTHER_REQUEST, REQUEST, BLOCKED, NEUTRAL
-from common.templatetags.tags_utils import index_hyperlink, a_hyperlink, include_table, html_list_join
+from relationship.abstract_view import RelationView
+
+from django.utils.html import format_html
+from django.urls import reverse
+from common.templatetags.tags_utils import index_hyperlink, a_hyperlink
 
 app_name='relationship'
 trs = {
@@ -31,11 +35,16 @@ def include_user_relations_tables(context, request):
     context['tables'] = tables
     return context
         
-
 @register.simple_tag
 def relation_index_hyperlink():
     return index_hyperlink(app_name)
     
 @register.simple_tag
 def relation_detail_hyperlink():
-    return a_hyperlink(f'{app_name}:detail', 'all relations')
+    return a_hyperlink(f'{app_name}:detail', 'all users')
+
+
+
+@register.simple_tag
+def relation_actions(request, other):
+    return RelationView.get_formated_relation_actions(request, other)

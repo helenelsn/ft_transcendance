@@ -28,7 +28,6 @@ class Relation(models.Model):
         if not self.is_bloqued():
             self.get_or_create_other_pov().change_relation(OTHER_REQUEST)
             self.send_notif()
-        print('creating request')
         
     def get_or_create_other_pov(self):
         rel, created = Relation.objects.get_or_create(from_user=self.to_user, to_user=self.from_user) 
@@ -87,7 +86,6 @@ class Relation(models.Model):
             rel.neutral()
         
     def __str__(self):
-        print(self.relation)
         if self.relation == REQUEST:
             mess = "want s to be friend with"
         if self.relation == OTHER_REQUEST:

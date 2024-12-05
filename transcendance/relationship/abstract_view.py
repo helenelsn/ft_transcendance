@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from .models import Relation, FRIEND, NEUTRAL, BLOCKED, REQUEST, OTHER_REQUEST
 from accounts.models import User
+from django.utils.html import format_html
+from django.urls import reverse
+from common.templatetags.tags_utils import html_list_join, same_arg_redir_list
+
 
 class RelationView():
     model = Relation
@@ -10,19 +14,19 @@ class RelationView():
     @staticmethod
     def get_relation_actions(relation_between):
         if relation_between == BLOCKED:
-            return {'unblock': 'relationship:unblock_user'}
-        context = {'block': 'relationship:block_user',}
+            return { 'relationship:unblock_user' : 'unblock'}
+        context = { 'relationship:block_user' : 'block',}
         if relation_between == NEUTRAL:
-            context.update({'friend request' : f'relationship:send_friend_request',})
+            context.update({ f'relationship:send_friend_request': 'friend request',})
         if relation_between == REQUEST:
-            context.update({'unsend friend request' : f'relationship:unsend_friend_request',})
+            context.update({f'relationship:unsend_friend_request' : 'unsend friend request',})
         if relation_between == OTHER_REQUEST:
             context.update({
-                'accept friend request' : f'relationship:accept_friend_request',
-                'deny friend request' : f'relationship:deny_friend_request',
+                f'relationship:accept_friend_request':'accept friend request' , 
+                f'relationship:deny_friend_request':'deny friend request' , 
                 })
         if relation_between == FRIEND:
-            context.update({'unfriend' : f'relationship:unfriend_user',})
+            context.update({f'relationship:unfriend_user' : 'unfriend' ,})
         return context
 
     @staticmethod
@@ -30,7 +34,14 @@ class RelationView():
     def update_relation(request, relation_id : int, username : str, ):
         to_user = get_object_or_404(User, username=username)
         Relation().update_relation(from_user=request.user, to_user=to_user, type=relation_id)
-        return redirect(f'relationship:detail', 'all')
+        return redirect(f'relationship:detail')
+ 
+    @staticmethod
+    def get_formated_relation_actions(request, other):
+        
+        actions = RelationView.get_relation_actions(Relation.relation_between(from_user=request.user.id, to_user=other))
+        print(actions)
+        return same_arg_redir_list(actions, sep=' | ', args=[other.username])
  
     @login_required
     def send_friend_request(request, username):

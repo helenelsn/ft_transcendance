@@ -12,7 +12,6 @@ urlpatterns = [
     
     path('send_friend_request/<username>', views.RelationView.send_friend_request, name='send_friend_request'),
     path('unsend_friend_request/<username>', views.RelationView.unsend_friend_request, name='unsend_friend_request'),
-    
     path('accept_friend_request/<username>', views.RelationView.accept_friend_request, name='accept_friend_request'),
     path('deny_friend_request/<username>', views.RelationView.deny_friend_request, name='deny_friend_request'),
     path('unfriend_user/<username>', views.RelationView.unfriend_unser, name='unfriend_user'),

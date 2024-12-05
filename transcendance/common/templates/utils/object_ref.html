@@ -7,7 +7,7 @@ context ={
 } 
 {% endcomment %}
 
-{% comment %} {% load tags %} {% endcomment %}
+{% comment %} {% load tags_utils %} {% endcomment %}
 <a href="{% url do_url object.id %}">
     {% if ref_display%}
         {{ref_display}}

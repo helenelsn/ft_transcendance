@@ -15,27 +15,27 @@ def relation_class(**kwargs):
 
 class UserTable(tables.Table):
     username =  tables.Column(verbose_name='Users')
-    id = tables.Column(verbose_name='Actions')
+    # id = tables.Column(verbose_name='Actions')
 
     class Meta:
         model = User
         row_attrs = {
             "scope": relation_class
         }
-        fields = ( 'username', 'id')
+        fields = ( 'username', )
         
     def render_username(self, value, record):
         return format_html(f"<a href={reverse('accounts:profil_detail', args=[record.id,])}> {value} </a>")
     
-    def render_id(self, value, record):
-        if self.request.user.is_authenticated:
-            if self.request.user.id == value:
-                return format_html(f"<a href={reverse('accounts:edit_profil', args=[value])}> edit </a>")
-            else:
-                actions = RelationView.get_relation_actions(Relation.relation_between(from_user=self.request.user.id, to_user=value))
-                return format_html(' | '.join([f"<a href={reverse(actions[name], args=[record.username])}> {name} </a>" for name in actions]))
-        else:
-            return '---'
+    # def render_id(self, value, record):
+    #     if self.request.user.is_authenticated:
+    #         if self.request.user.id == value:
+    #             return format_html(f"<a href={reverse('accounts:edit_profil', args=[value])}> edit </a>")
+    #         else:
+    #             actions = RelationView.get_relation_actions(Relation.relation_between(from_user=self.request.user.id, to_user=value))
+    #             return format_html(' | '.join([f"<a href={reverse(actions[name], args=[record.username])}> {name} </a>" for name in actions]))
+    #     else:
+    #         return '---'
         
        
         

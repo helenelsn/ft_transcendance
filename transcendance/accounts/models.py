@@ -16,7 +16,6 @@ class Profile(models.Model):
         profile, created = Profile.objects.get_or_create(user=instance)  
         profile.save()
         
-    
 
     def __str__(self):
         return self.user.username

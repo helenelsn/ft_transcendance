@@ -15,7 +15,7 @@ def index(request):
 class RelationListView(SingleTableMixin, FilterView):
     table_class = RelationTable
     model = Relation
-    template_name = "relationship/manage.html"
+    template_name = "relationship/relation_list.html"
 
     filterset_class = RelationFilter
     

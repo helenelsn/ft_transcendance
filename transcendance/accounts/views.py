@@ -12,10 +12,9 @@ from .models import User
 from .tables import UserTable
 
 
-def index(request):        
-    if request.user.is_authenticated:
-        return redirect('accounts:profil_detail', request.user.id)
-    return render(request, 'accounts/index.html', {})
+@login_required
+def index(request):
+    return redirect('accounts:profil_detail', request.user.id)
 
 class UserCreateView(FormView):
     template_name = 'common/form.html'
@@ -56,6 +55,6 @@ def render_user_table(request):
     set = User.objects.exclude(pk=request.user.id)
     
     table = UserTable(set.all(), request=request)
-    return render(request, "relationship/all.html", {
+    return render(request, "utils/table.html", {
         "table": table
     })
