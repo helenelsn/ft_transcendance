@@ -1,39 +1,49 @@
 {% load static %}
 {% load filters %}
-{% comment %} 
-represent url off an object with redir to with pbj.field as argument
-context ={
-    
-} 
-{% endcomment %}
 
 <!DOCTYPE html>
 <head>
-    <title>{% block title %}
+    <title>
+    {% block title %}
         Title
-    {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'common/main.css'%}">
+    {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'styles.css'%}">
+    
 </head>
 
 
 <body>
+   
+    <script>
+        function openNav() {
+            document.getElementById("my_sidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
 
-    <div id="sidenav">
+        function closeNav() {
+            document.getElementById("my_sidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft= "0";
+        }
 
-        {% block sidenav %}
-            {% include "accounts/snippets/s_account.html" %}
+    </script>
+    <div id="my_sidenav", class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            {% include 'accounts/snippets/s_account.html'%}
             <a href="{% url 'games:index' %}">Games</a>
             <a href="{% url 'tournaments:index' %}">Tournaments</a>
             <a href="{% url 'accounts:index' %}">Account</a>
             <a href="{% url 'relationship:index' %}">All users</a>
             <a href="{% url 'notifications:index' %}">Notif</a>
-        {% endblock %}
     </div>
 
-    <div id="content">
+    <div id="main">
+        <span onclick="openNav()">&#9776; open</span>
         {% block child_content %}{% endblock %}
         {% block content %}{% endblock %}
         {% block more_content %}{% endblock %}
     </div>
+
+
 </body>
 </html>

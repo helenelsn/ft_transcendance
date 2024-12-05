@@ -5,11 +5,26 @@ app_name = 'relationship'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('update/<int:relation_id>/<username>', views.update_relation, name='send_friend_request'),
-    path('send_friend_request/<username>', views.send_friend_request, name='send_friend_request'),
-    path('accept_friend_request/<username>', views.accept_friend_request, name='accept_friend_request'),
-    path('deny_friend_request/<username>', views.deny_friend_request, name='deny_friend_request'),
-    path('delete_friend/<username>', views.delete_friend, name='delete_friend'),
-    path('unblock_user/<username>', views.unblock_user, name='unblock_user'),
-    path('block_user/<username>', views.block_user, name='block_user'),
+    
+    # path('friends/', views.friends, name='friends'),
+    # path('blocked/', views.blocked, name='blocked'),
+    # path('neutral/', views.neutral, name='neutral'),
+    # path('request/', views.request, name='request'),
+    # path('all/', views.all, name='all'),
+    path('detail/<rel_key>', views.render_relation_table, name='detail'),
+    
+    # path('pending_request$/', views.pending_request, name='pending_request'),
+    # path('filter/', views.RelationFilteredListView.as_view(), name='filter'),
+    
+    
+    path('send_friend_request/<username>', views.RelationView.send_friend_request, name='send_friend_request'),
+    path('unsend_friend_request/<username>', views.RelationView.unsend_friend_request, name='unsend_friend_request'),
+    
+    path('accept_friend_request/<username>', views.RelationView.accept_friend_request, name='accept_friend_request'),
+    path('deny_friend_request/<username>', views.RelationView.deny_friend_request, name='deny_friend_request'),
+    path('unfriend_user/<username>', views.RelationView.unfriend_unser, name='unfriend_user'),
+    path('delete_friend/<username>', views.RelationView.delete_friend, name='delete_friend'),
+    path('unblock_user/<username>', views.RelationView.unblock_user, name='unblock_user'),
+    path('block_user/<username>', views.RelationView.block_user, name='block_user'),
+
 ]

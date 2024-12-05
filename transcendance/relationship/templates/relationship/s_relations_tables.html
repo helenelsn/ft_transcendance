@@ -1,0 +1,10 @@
+{% load render_table from django_tables2 %}
+
+{% load relation_tags %}
+{% load filters %}
+{% interesting_relationship as rel_types%}
+
+{% for rel_type in  rel_types %}
+{% user_relation_table request rel_type as table %}
+    {% include 'relationship/s_rel_table.html' with table=table table_title=rel_types|dict_val:rel_type%}
+{% endfor %}

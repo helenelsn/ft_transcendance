@@ -1,0 +1,80 @@
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #0a0a0a;
+  color: #fd0707;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 60%;
+  border: 1px solid #ddd;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+/* thead {
+  visibility: collapse;
+} */
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr[scope=neutral] {
+  background-color: #000000;
+}
+tr[scope=friend] {
+  background-color: #024613;
+}
+tr[scope=friend_request] {
+  background-color: #3b6e12;
+}
+tr[scope=other_send_request] {
+  background-color: #c57709a3;
+}
+tr[scope=blocked] {
+  background-color: #730e0e;
+}
+
+
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+

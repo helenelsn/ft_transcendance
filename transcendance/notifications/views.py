@@ -78,18 +78,19 @@ class NotificationsView():
         }
         
 class NotificationsDetailsView(NotificationsView, DetailView):
-    template_name = f'{app_name}/notification_detail.html'
+    # template_name = f'{app_name}/notification_detail.html'
+    pass
     
 
 class NotificationsListView(NotificationsView, ListView):
-    template_name = f'{app_name}/notification_table.html'
+    
     def get_queryset(self) :
         queryset = self.model.objects.order_by('-timestamp').filter(user=self.request.user)
         return queryset
     
 
 class UnreadsNotificationsListView(NotificationsListView):
-    template_name = f'{app_name}/notification_table.html'
+    
     def get_queryset(self) :
         queryset = self.model.objects.order_by('timestamp').filter(user=self.request.user).filter(is_read=False)
         return queryset

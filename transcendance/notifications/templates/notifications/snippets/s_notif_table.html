@@ -11,20 +11,13 @@ context ={
 {% block col_names %}
     <th> notifs </th>
     {% generic_actions_names as action_names %}
-
     {% for action_name in action_names %}
         <th>  {{ action_name }} </th> 
     {% endfor %}
-{% endblock %}
+{% endblock %} 
 
 {% block more_col_val %}
-    {% generic_actions object.id as actions %}
      <th>{% include 'notifications/snippets/s_notif_actions.html' with object=object%} </th>
-    {% comment %} {% for action in actions %}
-        {% load filters %}
-        <th> {% include 'utils/object_ref.html' with object=object do_url=actions|dict_val:action ref_display=action %} <th>
-    {% endfor %} {% endcomment %}
 {% endblock %}
 
-{% include "utils/object_action_table.html" with object_list=object_list do_url='notifications:show_notif' action_names=names actions=actions%} </p>
  

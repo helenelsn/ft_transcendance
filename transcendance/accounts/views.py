@@ -49,3 +49,5 @@ class LogoutView(RedirectView):
 class ProfilDetailView(DetailView):
     model = Profile
     template_name = 'accounts/profil_detail.html'
+
+ 

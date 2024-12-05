@@ -1,0 +1,6 @@
+{% load render_table from django_tables2 %}
+
+{% if table %}
+    <h3> {{table_title}} :</h3>
+    {% render_table table %}
+{% endif %}

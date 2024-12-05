@@ -1,13 +1,9 @@
-{% extends "common/g_optional_actions_table.html" %}
+{% extends "common/g_base.html" %}
+{% load bootstrap3 %}
+{% block content %}
 
-{% comment %} 
-context = {
-        'objects': object_list_to_treat,
-        'field': field_to_get,
-        'redir': url_to_redir,
-        'display': display_name_default_is_object
-        'action_cond': action_cond_to_add_actions,
-        'actions': {'name': 'redir',},
-        'app_name' : app_name,
-} 
-{% endcomment %}
+{% include "relationship/s_relations_tables.html" with blocked=1%}
+
+{% include 'relationship/s_rel_redir_buttons.html' with ref_url='relationship:all' ref_display='see all'%}
+
+{% endblock %}
