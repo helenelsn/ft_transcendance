@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'common',
     'games',
     'tournaments',
-    "relationship",
+    'relationship',
     'notifications'
 ]
 
