@@ -69,12 +69,13 @@ class Relation(models.Model):
         other_pov = self.get_or_create_other_pov()
         return other_pov is not None and other_pov.relation == BLOCKED
         
-    def update_relation(self, from_user, to_user, type):
+    def update_relation(self, from_user, to_user, type=None):
         rel, created = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get_or_create()
         if created:
             rel.to_user = to_user
             rel.from_user = from_user
-        if rel.from_user == rel.to_user:
+            rel.save()
+        if rel.from_user == rel.to_user or type == None:
             return
         if type == REQUEST:
             rel.create_request()

@@ -19,6 +19,7 @@ class Command(BaseCommand):
     def personalised_profil(self):
         for profil in Profile.objects.all():
             profil.bio = f'wonderfull bio of {profil.user.username}'
+            profil.save()
             
     def create_relation(self, from_user, to_user, friend=True):
         # rel = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get()
