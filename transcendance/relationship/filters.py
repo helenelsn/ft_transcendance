@@ -10,4 +10,5 @@ class RelationFilter(FilterSet):
     @property
     def qs(self):
         parent = super().qs
+        
         return parent.filter(from_user=self.request.user.id).order_by('relation')

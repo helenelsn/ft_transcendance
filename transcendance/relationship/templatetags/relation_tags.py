@@ -34,6 +34,16 @@ def include_user_relations_tables(context, request):
             
     context['tables'] = tables
     return context
+
+@register.inclusion_tag('utils/table.html', takes_context=True, )
+def include_other_user_friend_table(context, request, user):
+    qs = Relation.objects.filter(from_user=user).filter(relation=FRIEND)
+    if len(qs) > 0 :
+        table = RelationTable(qs, request=request)
+    context['table'] = table
+    context['table_title'] = f'{user.username} friends:'
+    return context
+
         
 @register.simple_tag
 def relation_index_hyperlink():
