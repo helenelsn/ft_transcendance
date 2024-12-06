@@ -13,6 +13,6 @@ urlpatterns = [
     path('register/', views.UserCreateView.as_view(), name='register'),
     
     # profil managment
-    path('profil_detail/(?P<pk>\d+)', views.ProfilDetailView.as_view(), name='profil_detail'),
-    path('edit_profil/(?P<pk>\d+)', views.ProfilUpdateView.as_view(), name='edit_profil'),
+    path("profil_detail/<int:pk>", views.ProfilDetailView.as_view(), name='profil_detail'),
+    path('edit_profil/<int:pk>', views.ProfilUpdateView.as_view(), name='edit_profil'),
 ]

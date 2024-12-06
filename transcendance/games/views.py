@@ -11,7 +11,9 @@ def index(request):
     return render(request, f'games/index.html', {})
 
 def create_game(request):
-    return redirect()
+    game = Game(user=request.user)
+    game.save()
+    return redirect('games:settings', game.id)
     
 
 class TodoView(RedirectView):
@@ -20,6 +22,9 @@ class TodoView(RedirectView):
     
 
 class SettingsView(UpdateView):
+    #is public
+    #launch
+    #invite/uninvite players
     model = Game
     fields = [ 'players', 'is_public' ]
     template_name = 'utils/form.html'

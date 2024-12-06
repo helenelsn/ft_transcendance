@@ -9,7 +9,6 @@ from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
 from .models import User
-# from .tables import UserTable
 
 
 @login_required
