@@ -34,6 +34,20 @@ class Command(BaseCommand):
         
             
     def create_relationships(self):
+        for k in range( 6, 10):
+            for i in range(10):
+                pi = Profile.objects.filter(user__username=f'user{k}{i}').get()
+                
+                pj = Profile.objects.filter(user__username=f'super').get()
+                self.create_relation(pi, pj, friend=False)
+                pj = Profile.objects.filter(user__username=f'lol').get()
+                self.create_relation(pi, pj, friend=False)
+                
+                for j in range(30):
+                    pj = Profile.objects.filter(user__username=f'user{j}').get()
+                    self.create_relation(pi, pj, friend=False)
+                
+                
         #create friendship relation between all player
         for i in range(10):
             pi = Profile.objects.filter(user__username=f'user{i}').get()
@@ -44,20 +58,9 @@ class Command(BaseCommand):
             self.create_relation(pi, pj)
             
             for j in range(1, 10):
-                pi = Profile.objects.filter(user__username=f'user{j}{i}').get()
+                pj = Profile.objects.filter(user__username=f'user{j}{i}').get()
                 self.create_relation(pi, pj)
-        # #chacun 
-        for i in range(10):
-            pi = Profile.objects.filter(user__username=f'user{9}{i}').get()
-            
-            pj = Profile.objects.filter(user__username=f'super').get()
-            self.create_relation(pi, pj, friend=False)
-            pj = Profile.objects.filter(user__username=f'lol').get()
-            self.create_relation(pi, pj, friend=False)
-            
-            for pj in Relation.objects.all()[:30]:
-                pj = Profile.objects.filter(user__username=f'user{i}').get()
-                
-                self.create_relation(pi, pj, friend=False)
+    
+
                 
         
