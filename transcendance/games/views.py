@@ -6,6 +6,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from .models import Game
+from accounts.models import Profile
 # Create your views here.
 
 def index(request):
@@ -16,11 +17,15 @@ def create_game(request):
     game.save()
     return redirect('games:settings', game.id)
     
-
+def invite_player_in_game(request, pk, player):
+    game = Game.objects.get(pk=pk)
+    game.players.add(Profile.objects.filter(user=player).get())
+    game.save()
+    return redirect('relationship:game_invite_players', game.id)
+    
+    
 class TodoView(RedirectView):
     pattern_name = 'games:index'
-
-    
 
 class SettingsView(UpdateView):
     #is public

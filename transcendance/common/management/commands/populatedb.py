@@ -17,6 +17,7 @@ class Command(BaseCommand):
         User.objects.create_superuser(username='lol',password='lol' )
             
     def personalised_profil(self):
+        
         for profil in Profile.objects.all():
             profil.bio = f'wonderfull bio of {profil.user.username}'
             profil.save()
@@ -62,6 +63,9 @@ class Command(BaseCommand):
                 pj = Profile.objects.filter(user__username=f'user{j}{i}').get()
                 self.create_relation(pi, pj)
     
-
-                
+        for user in User.objects.all():
+            existing_relationhip = Relation.objects.filter(from_user=user)
+            if len(existing_relationhip) < len(User.objects.all()) - 1:
+                for user in User.objects.exclude(id__in=existing_relationhip.select_related('to_user')).all():
+                    Relation().update_relation(from_user=user, to_user=user, )
         

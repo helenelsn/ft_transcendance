@@ -1,4 +1,10 @@
 {% extends 'utils/base.html' %}
 {% block content %}
 {{ object }}
+users 
+invite user
+{% load game_tags %}
+{% show_players request object %}
+{% tag_invite_player object %}
+
 {% endblock %}
