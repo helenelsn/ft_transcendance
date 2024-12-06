@@ -6,6 +6,6 @@ class Game(models.Model):
     players = models.ManyToManyField(Profile, blank=True)
     is_public = models.BooleanField(default=False)
 
-    # def get_absolute_url(self):
-    #     from django.urls import reverse
-    #     return reverse("games:games_detail", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("games:game_detail", kwargs={"pk": self.pk})

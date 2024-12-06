@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from common.utils import get_context, redir_to, redir_to_index
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import UpdateView
+from django.views.generic.detail import DetailView
 from .models import Game
 # Create your views here.
 
@@ -41,6 +42,10 @@ class GameView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+    
+class GameDetailView(DetailView):
+    model = Game
+    template_name = 'games/game_detail.html'
     
 
     
