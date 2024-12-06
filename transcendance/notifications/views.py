@@ -7,8 +7,8 @@ from typing import Any
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.views.generic import ListView, DetailView
-from .models import Notification
 
+from .models import Notification
 from .abstract_views import NotificationsView
 from .tables import NotificationTable
 from .filters import NotificationFilter

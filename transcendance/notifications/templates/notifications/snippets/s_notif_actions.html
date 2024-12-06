@@ -1,6 +1,0 @@
-{% load notif_tags%}
-{% load filters %}
-{% generic_actions object.id as actions %}
-{% for action in actions %}
-    {% include  'utils/g_href_by_attr.html' with field='id' object=object redir=actions|dict_val:action display=action %} 
-{% endfor %} 
