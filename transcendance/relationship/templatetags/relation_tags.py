@@ -6,7 +6,7 @@ from relationship.abstract_view import RelationView
 
 from django.utils.html import format_html
 from django.urls import reverse
-from common.templatetags.tags_utils import index_hyperlink, a_hyperlink
+from common.templatetags.html_utils import index_hyperlink, a_hyperlink
 
 app_name='relationship'
 trs = {

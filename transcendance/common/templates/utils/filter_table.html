@@ -1,11 +1,10 @@
 {% block content %}
-{% load tags_utils %}
+{% load html_utils %}
 
 <form method="get">
     {{ filter.form.as_p }}
     <input type="submit" />
 </form>
-
 {% include_table table%}
 
 {% endblock %}

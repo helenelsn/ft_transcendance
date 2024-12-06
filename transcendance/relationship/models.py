@@ -117,5 +117,8 @@ class FriendInvitation(Notification):
     
     def actions(self):
         return
+    
+    def __str__(self):
+        return f'{self.from_user} want s to be friend you'
 
         

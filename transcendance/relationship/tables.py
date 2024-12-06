@@ -1,11 +1,13 @@
 import django_tables2 as tables
-from accounts.models import Profile, User
 from .models import Relation 
 from django.utils.html import format_html
 from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django.db.models import Count, F, Value
 from .abstract_view import RelationView
+from common.templatetags import html_utils
+
+
 class RelationTable(tables.Table):
     to_user = tables.Column(verbose_name='User')
     relation = tables.Column(verbose_name='Actions')
@@ -24,7 +26,7 @@ class RelationTable(tables.Table):
     def render_relation(self, value, record):
         if self.request.user.is_authenticated:
             if self.request.user == record.to_user:
-                return format_html(f"<a href={reverse('accounts:edit_profil', args=[value])}> edit </a>")
+                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=value)
             return RelationView.get_formated_relation_actions(self.request, record.to_user)
         else:
             return '---'

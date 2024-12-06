@@ -1,14 +1,11 @@
-{% extends "common/g_base.html" %}
-{% load notif_tags %}
-{% load filters %}
+{% extends "utils/base.html" %}
 
 {% block content %}
 
-    {% include "notifications/snippets/s_notif_table.html" with object_list=object_list show_url='notifications:show_notif' %}
-    <p>
-    {% global_actions as actions %}
-    {% for action in actions %}
-        {% include 'utils/href.html' with ref_url=actions|dict_val:action ref_display=action%}
-    {% endfor %}
-    </p>
+{% load html_utils %}
+{% include_filter_table table=table filter=filter %}
+
+{% load notif_tags %}
+{% all_notif_actions %}
+
 {% endblock %}

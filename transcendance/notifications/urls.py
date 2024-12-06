@@ -6,8 +6,7 @@ app_name = 'notifications'
 
 
 urlpatterns = [
-    path('', views.UnreadsNotificationsListView.as_view(), name='index'),
-    path('all/', views.NotificationsListView.as_view(), name='all'),
+    path('', views.NotificationsListView.as_view(), name='index'),
     path('show_notif/(?P<pk>\d+)', views.NotificationsDetailsView.as_view(), name='show_notif'),
     
     #act on notif 

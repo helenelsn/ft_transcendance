@@ -1,4 +1,4 @@
-{% extends "common/g_base.html" %}
+{% extends "utils/base.html" %}
 
 {% comment %} 
 context = {
@@ -9,5 +9,5 @@ context = {
 } 
 {% endcomment %}
 {% block content %}
-{% include 'common/g_hreflist.html' with field=field objects=objects%}
+{% include 'utils/g_hreflist.html' with field=field objects=objects%}
 {% endblock %}

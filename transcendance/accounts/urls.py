@@ -5,7 +5,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('all', views.render_user_table, name='all'),
+    # path('all', views.render_user_table, name='all'),
     
     # authentication
     path('login/', views.LoginView.as_view(), name='login'),

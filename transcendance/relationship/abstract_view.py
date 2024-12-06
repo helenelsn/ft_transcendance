@@ -5,7 +5,7 @@ from .models import Relation, FRIEND, NEUTRAL, BLOCKED, REQUEST, OTHER_REQUEST
 from accounts.models import User
 from django.utils.html import format_html
 from django.urls import reverse
-from common.templatetags.tags_utils import html_list_join, same_arg_redir_list
+from common.templatetags.html_utils import html_list_join, same_arg_redir_list
 
 
 class RelationView():
@@ -40,7 +40,6 @@ class RelationView():
     def get_formated_relation_actions(request, other):
         
         actions = RelationView.get_relation_actions(Relation.relation_between(from_user=request.user.id, to_user=other))
-        print(actions)
         return same_arg_redir_list(actions, sep=' | ', args=[other.username])
  
     @login_required
