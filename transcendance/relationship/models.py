@@ -23,6 +23,7 @@ class Relation(models.Model):
     to_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="to_user")
     relation = models.IntegerField(choices=list(relations.items()), default=NEUTRAL)
     
+    
     def create_request(self):
         self.change_relation(REQUEST)
         if not self.is_bloqued():

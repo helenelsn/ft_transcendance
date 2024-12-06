@@ -14,7 +14,7 @@ from .models import User
 
 @login_required
 def index(request):
-    return redirect('accounts:profil_detail', request.user.id)
+    return redirect(request.user.profile.get_absolute_url())
 
 class UserCreateView(FormView):
     template_name = 'utils/form.html'

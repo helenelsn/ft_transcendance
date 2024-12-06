@@ -19,17 +19,17 @@ class RelationTable(tables.Table):
         }
         fields = ( 'to_user', 'relation')
         
-    def order_to_user(self, queryset, is_descending):
+    def order_to_user(self, queryset, is_descending : bool):
         on= '-relation' if is_descending else 'relation'
         return (queryset.order_by(on), True)
         
-    def render_relation(self, value, record):
+    def render_relation(self, record : Relation):
         if self.request and self.request.user.is_authenticated:
             if self.request.user == record.to_user:
-                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=value)
+                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=record.relation)
             return RelationView.get_formated_relation_actions(self.request, record.to_user)
         else:
             return '---'
         
-    def render_to_user(self, value, record):
-        return format_html(f"<a href={reverse('accounts:profil_detail', args=[record.to_user.id,])}> {value} </a>")
+    def render_to_user(self, value : str, record : Relation):
+        return format_html(f"<a href={record.to_user.profile.get_absolute_url()}> {value} </a>")

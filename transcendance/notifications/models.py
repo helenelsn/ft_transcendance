@@ -24,3 +24,6 @@ class Notification(models.Model):
     def __str__(self):
         return self.message
     
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("notifications:show_notif", kwargs={"pk": self.pk})

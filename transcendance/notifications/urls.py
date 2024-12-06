@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.NotificationsListView.as_view(), name='index'),
     path('show_notif/(?P<pk>\d+)', views.NotificationsDetailsView.as_view(), name='show_notif'),
     
+    
     #act on notif 
     path('read_notif/(?P<pk>\d+)>', views.NotificationsView.read, name='read_notif'),
     path('unread_notif/(?P<pk>\d+)', views.NotificationsView.unread, name='unread_notif'),

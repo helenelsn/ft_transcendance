@@ -16,6 +16,7 @@ class Tournament(models.Model):
     players =models.ManyToManyField(User)
     
     
+    
     def __str__(self) -> str:
         return f"{self.name}"
     # class Meta:
