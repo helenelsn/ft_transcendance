@@ -1,0 +1,9 @@
+{% extends "utils/base.html" %}
+
+{% block content %}
+{% load game_tags %}
+{% load html_utils %}
+
+{% include_filter_table table=table filter=filter %}
+
+{% endblock %}

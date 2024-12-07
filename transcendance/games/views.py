@@ -5,9 +5,13 @@ from common.utils import get_context, redir_to, redir_to_index
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
+from django.views.generic import ListView
 from .models import Game
+from django_tables2.views import SingleTableMixin
+from .filters import GamesFilter
 from accounts.models import Profile
-# Create your views here.
+from .tables import GamesTable
+
 
 def index(request):
     return render(request, f'games/index.html', {})
@@ -53,4 +57,14 @@ class GameDetailView(DetailView):
     template_name = 'games/game_detail.html'
     
 
+# class RelationListView(SingleTableMixin, ListView):
+#     table_class = GamesTable
+#     model = Game
+#     template_name = "relationship/relation_list.html"
+
+
+def games_list_view(request):
+    f = GamesFilter(request.GET, request=request, queryset=Game.objects.all())
+    table = GamesTable(data=f.qs, request=request)
     
+    return render(request, 'games/game_list.html', {'filter': f, 'table':table})
