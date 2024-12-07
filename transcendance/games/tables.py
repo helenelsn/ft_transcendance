@@ -12,7 +12,7 @@ def game_scope(**kwargs):
     if kwargs['table'] is None or kwargs['table'].request is None or not kwargs['table'].request.user.is_authenticated or kwargs['record'] is None:
         return
     r_user = kwargs['table'].request.user
-    if Game.objects.filter(user=r_user):
+    if kwargs['record'].user == r_user:
         return 'owned_game'
     if Game.objects.filter(players__in=[r_user.profile]):
         return 'play_in_game'
@@ -24,16 +24,20 @@ class GamesTable(tables.Table):
     
     class Meta:
         model = Game
-        fields = ( 'name', )
+        fields = ( 'name', 'user__username')
         row_attrs = {
             "scope": game_scope
         }
         
     def render_name(self, record : Game):
         return html_utils.format_hyperlink(link=record.get_absolute_url(), display=record.name)
-        return None
-        # return html_utils.a_hyperlink(redir=record.get_absolute_url(), display=record.name)
-    def render_join(self, record : Game):
-        return record.get_absolute_url()
-        # return None
+    
+    
+    
+    def render_user__username(self, value, record : Game):
+        return html_utils.format_hyperlink(link=record.user.profile.get_absolute_url(), display=value)
         
+    def render_join(self, record : Game):
+        if self.request.user.is_authenticated:
+            return html_utils.a_hyperlink('games:join_game_players', args=[record.id, self.request.user], display='join')
+        return html_utils.format_html('accounts:login', 'login to join')

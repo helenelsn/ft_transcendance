@@ -26,7 +26,7 @@ class RelationTable(tables.Table):
     def render_actions(self, record : Relation):
         if self.request and self.request.user.is_authenticated:
             if self.request.user == record.to_user:
-                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=record.relation)
+                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=record.to_user.pk)
             return RelationView.get_formated_relation_actions(self.request, record.to_user)
         else:
             return '---'

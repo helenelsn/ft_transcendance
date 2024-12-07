@@ -21,6 +21,12 @@ def create_game(request):
     game.save()
     return redirect('games:settings', game.id)
     
+def join_game_players(request, pk, player):
+    game = Game.objects.get(pk=pk)
+    game.players.add(Profile.objects.filter(user=player).get())
+    game.save()
+    return redirect(game.get_absolute_url())
+    
 def invite_player_in_game(request, pk, player):
     game = Game.objects.get(pk=pk)
     game.players.add(Profile.objects.filter(user=player).get())
