@@ -11,6 +11,10 @@ def ref(redir, args=None):
     return format_html(f'href={reverse(f"{redir}", args=args)}')
 
 @register.simple_tag
+def format_hyperlink(link, display, ):
+    return format_html(f'<a href={link}> {display} </a>')
+
+@register.simple_tag
 def a_hyperlink(redir, display, args=None,):
     return format_html(f'<a {ref(redir, args)}> {display} </a>')
 

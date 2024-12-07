@@ -71,6 +71,14 @@ tr[scope=blocked] {
   background-color: #730e0e;
 }
 
+/* games tables */
+tr[scope=owned_game]{
+  background-color:antiquewhite;
+}
+tr[scope=play_in_game]{
+  background-color:darkcyan;
+}
+
 
 
 @media screen and (max-height: 450px) {
