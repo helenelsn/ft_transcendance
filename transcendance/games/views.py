@@ -13,23 +13,26 @@ from accounts.models import Profile
 from .tables import GamesTable
 
 
-def index(request):
-    return render(request, f'games/index.html', {})
-
 def create_game(request):
     game = Game(user=request.user)
+    game.save()
+    game.players.add(game.user.profile)
     game.save()
     return redirect('games:settings', game.id)
     
 def join_game_players(request, pk, player):
     game = Game.objects.get(pk=pk)
-    game.players.add(Profile.objects.filter(user=player).get())
-    game.save()
+    print(game.players)
+    game.add_player(player)
+    print(game.players)
+    print('JOINED !')
     return redirect(game.get_absolute_url())
     
 def invite_player_in_game(request, pk, player):
+    join_game_players(request=request, pk=pk, )
     game = Game.objects.get(pk=pk)
-    game.players.add(Profile.objects.filter(user=player).get())
+    game.save()
+    game.players.add(Profile.objects.filter(user=player.user).get())
     game.save()
     return redirect('relationship:game_invite_players', game.id)
     
@@ -51,12 +54,12 @@ class SettingsView(UpdateView):
         # return redir_to_index("games")
         return super().form_valid(form)
 
-class GameView(TemplateView):
-    template_name = 'games/game.html'
+# class GameView(TemplateView):
+#     template_name = 'games/game.html'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         return context
     
 class GameDetailView(DetailView):
     model = Game

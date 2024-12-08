@@ -110,6 +110,8 @@ class Relation(models.Model):
         rel = Relation.relation_between(from_user, to_user)
         return Relation.relations[rel]
     
+
+    
 class FriendInvitation(Notification):
     relation = models.ForeignKey(Relation, on_delete=models.CASCADE, null=True)
     

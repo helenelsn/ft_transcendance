@@ -39,5 +39,5 @@ class GamesTable(tables.Table):
         
     def render_join(self, record : Game):
         if self.request.user.is_authenticated:
-            return html_utils.a_hyperlink('games:join_game_players', args=[record.id, self.request.user], display='join')
+            return html_utils.a_hyperlink('games:join_game_players', args=[record.id, self.request.user.id], display='join')
         return html_utils.format_html('accounts:login', 'login to join')

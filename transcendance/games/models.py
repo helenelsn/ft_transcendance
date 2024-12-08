@@ -10,3 +10,10 @@ class Game(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse("games:game_detail", kwargs={"pk": self.pk})
+
+    def add_player(self, user):
+        self.players.add(Profile.objects.filter(user=user).get())
+        self.save()
+
+    def __str__(self):
+        return self.name
