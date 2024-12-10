@@ -44,3 +44,4 @@ class FriendGameInviteTable(RelationTable):
     
     def render_invitation(self, record : Relation):
         return html_utils.a_hyperlink('games:join_game_players', display='invite to join game', args=[self.game, record.to_user.id])
+    
