@@ -8,7 +8,6 @@ urlpatterns = [
 
     path('detail/', views.RelationListView.as_view(), name='detail'),
     path('game_invite_players/<int:game>', views.game_invite_view, name='game_invite_players'),
-    # path('detail/<rel_key>', views.render_relation_table, name='detail'),
     
     
     path('send_friend_request/<username>', views.RelationView.send_friend_request, name='send_friend_request'),

@@ -18,6 +18,10 @@ def format_hyperlink(link, display, ):
 def a_hyperlink(redir, display, args=None,):
     return format_html(f'<a {ref(redir, args)}> {display} </a>')
 
+def format_p(content):
+    return format_html(f'<p>{content}</p>')
+
+
 def index_hyperlink(app_name, display=None):
     if display==None:
         display = app_name

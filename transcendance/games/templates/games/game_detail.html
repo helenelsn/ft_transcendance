@@ -3,7 +3,7 @@
 {{ object }}
 
 {% load game_tags %}
-{% show_players request object %}
-{% tag_invite_player object %}
+{% show_players object %}
+{% game_actions user object%}
 
 {% endblock %}

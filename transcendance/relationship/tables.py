@@ -43,4 +43,4 @@ class FriendGameInviteTable(RelationTable):
         super().__init__(data, order_by, orderable, empty_text, exclude, attrs, row_attrs, pinned_row_attrs, sequence, prefix, order_by_field, page_field, per_page_field, template_name, default, request, show_header, show_footer, extra_columns)
     
     def render_invitation(self, record : Relation):
-        return html_utils.a_hyperlink('games:invite_player', display='invite to join game', args=[self.game, record.to_user.id])
+        return html_utils.a_hyperlink('games:join_game_players', display='invite to join game', args=[self.game, record.to_user.id])

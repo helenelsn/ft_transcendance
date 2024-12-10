@@ -23,20 +23,13 @@ class Command(BaseCommand):
             profil.save()
             
     def create_relation(self, from_user, to_user, friend=True):
-        # rel = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get()
-        # if rel is None:
-        #     rel = Relation.objects.create(from_user=from_user, to_user=to_user)
         if friend:
             Relation().update_relation(from_user=from_user.user, to_user=to_user.user, type=FRIEND)
-            # rel.becaming_f
-            # riend()
         else:
             Relation().update_relation(from_user=from_user.user, to_user=to_user.user, type=REQUEST)
-            # rel.create_request()
-        
             
     def create_relationships(self):
-        for k in range( 6, 10):
+        for k in range( 8, 10):
             for i in range(10):
                 pi = Profile.objects.filter(user__username=f'user{k}{i}').get()
                 

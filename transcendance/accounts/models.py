@@ -16,12 +16,11 @@ class Profile(models.Model):
         profile, created = Profile.objects.get_or_create(user=instance)  
         profile.save()
         
-
-    def __str__(self):
-        return self.user.username
-
+        
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse("accounts:profil_detail", kwargs={"pk": self.pk})
 
+    def __str__(self):
+        return self.user.username
         

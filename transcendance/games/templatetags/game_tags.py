@@ -1,20 +1,39 @@
 from django import template
+
 from common.templatetags import html_utils
+from accounts.templatetags import accounts_tags
+
 from games.models import Game
 from relationship.tables import RelationTable, Relation
-
 register = template.Library()
 app_name='games'
 
-from notifications.templatetags import notif_tags
-@register.inclusion_tag(filename='utils/table.html', takes_context=True)
-def show_players(context, request, game : Game):
-    players = [p.user for p in game.players.all()]
-    qs = Relation.objects.filter(to_user__in=players).filter(from_user=request.user)
-    context['table'] = RelationTable(qs, request=request)
-    return context
 
 @register.simple_tag
-def tag_invite_player(object):
-    return html_utils.a_hyperlink('relationship:game_invite_players', display='invite players', args=object.id)
+def show_players(game : Game):
+    if game.player_count == 2:
+        return html_utils.format_p(f'{accounts_tags.profil_detail_link(game.left_player)} vs {accounts_tags.profil_detail_link(game.right_player)}')
+    elif game.player_count == 1:
+        player = game.left_player if game.left_player is not None else game.right_player
+        return html_utils.format_p(f'{accounts_tags.profil_detail_link(player)} is waiting for an brave opponent ...')
+    else:
+        return html_utils.format_p(f'No players yet')
+            
+@register.simple_tag
+def game_actions(user, game:Game):
+    if not game.is_full and not game.user_is_player(user):
+        return html_utils.a_hyperlink('games:join_game_players', args=[game.id, user.id], display='join')
+    if not game.user_in_game(user):
+        return
+    lst = []
+    if not game.is_full:
+        lst.append(html_utils.a_hyperlink('relationship:game_invite_players', args=game.id, display='invite player'))
+        
+    if game.user_is_player(user):
+        lst.append(html_utils.a_hyperlink('games:unjoin_game_players', args=[game.id, user.id], display='unjoin'))
+        
+    if game.owner==user:
+        lst.append(html_utils.a_hyperlink('games:delete_game', args=game.id, display='delete'))
+    return html_utils.html_list_join(lst, sep=' | ')
+        
     

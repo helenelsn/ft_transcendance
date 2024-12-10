@@ -9,7 +9,7 @@ menu_redir_authenticate = {
             # 'accounts:index': 'my profile',
             'notifications:index': 'notif',
             'relationship:index': 'relations',
-            'tournaments:index': 'tournaments',
+            # 'tournaments:index': 'tournaments',
         }
 
 menu_redir_glob = {

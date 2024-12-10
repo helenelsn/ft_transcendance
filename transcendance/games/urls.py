@@ -5,15 +5,16 @@ app_name = "games"
 
 urlpatterns = [
     path('', views.games_list_view, name='index'),
-    # path('game/', views.GameView.as_view(), name='game'),
     path('game_detail/<int:pk>', views.GameDetailView.as_view(), name='game_detail'),
     
-    path('invite_player/<int:pk>/<int:player>', views.invite_player_in_game, name='invite_player'),
-    path('join_game_players/<int:pk>/<int:player>', views.join_game_players, name='join_game_players'),
-    
+    path('create_game/', views.create_game, name='create_game'),
+    path('delete_game/<int:pk>', views.delete_game, name='delete_game'),
     path('settings/<int:pk>', views.SettingsView.as_view(), name='settings'),
     
-    path('create_game/', views.create_game, name='create_game'),
+    #actions
+    path('join_game_players/<int:pk>/<int:player_pk>', views.join_game_players, name='join_game_players'),
+    path('unjoin_game_players/<int:pk>/<int:player_pk>', views.unjoin_game_players, name='unjoin_game_players'),
+    
     path('lose/', views.TodoView.as_view(), name='lose'),
     path('win/', views.TodoView.as_view(), name='win'),
     

@@ -7,11 +7,7 @@
     <h1> {{object.username|upper}} </h1>
     <p> Bio: {{object.bio}} </p>
     {% load relation_tags %}
-    {% if request.user == object.user %}
-        {% include_user_relations_tables request %}
-    {% else %}
-        {% include_other_user_friend_table request object.user %}
-    {% endif %}
+    {% include_user_friend_table request object.user %}
     {% profil_detail_menu request object.user %}
     
 {% endblock %}

@@ -10,12 +10,11 @@ class GamesFilter(django_filters.FilterSet):
     @property
     def qs(self):   
         parent = super().qs
-        pub = parent.filter(is_public=True)
+        visible_games = parent.filter(is_public=True)
         if self.request.user.is_authenticated:
-            in_player = parent.filter(players__in=[self.request.user.profile])
-            is_user =  parent.filter(user=self.request.user)
-            visible_games = in_player.union(is_user.union(pub),)
-        else:
-            visible_games = pub
+            is_owner = parent.filter(owner=self.request.user)
+            is_left = parent.filter(left_player=self.request.user)
+            is_right = parent.filter(right_player=self.request.user)
+            visible_games = is_right.union(is_left.union(is_owner.union(visible_games)))
             
         return  visible_games
