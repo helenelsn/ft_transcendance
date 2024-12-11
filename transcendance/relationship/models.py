@@ -115,13 +115,6 @@ class Relation(models.Model):
 class FriendInvitation(Notification):
     relation = models.ForeignKey(Relation, on_delete=models.CASCADE, null=True)
     
-    def accept(self):
-        pass
-        
-    
-    def actions(self):
-        return
-    
     def __str__(self):
         return f'{self.from_user} want s to be friend you'
 

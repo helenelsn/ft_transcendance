@@ -25,4 +25,4 @@ class NotificationFilter(django_filters.FilterSet):
     @property
     def qs(self):
         parent = super().qs
-        return parent.filter(user=self.request.user).order_by('is_read')
+        return parent.filter(user=self.request.user).order_by('is_read').order_by('-timestamp')

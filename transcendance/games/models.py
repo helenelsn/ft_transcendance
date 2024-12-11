@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User, Profile
+from notifications.models import Notification
 
 class Game(models.Model):
     name = models.CharField(max_length=30, default='Game!')
@@ -17,7 +18,8 @@ class Game(models.Model):
     def add_player(self, user_pk):
         user = User.objects.get(pk=user_pk)
         if self.left_player == user or self.right_player == user:
-            raise Exception('trying to add a player who s already in game')
+            return
+            # raise Exception('trying to add a player who s already in game')
         if self.left_player is None:
             self.left_player = user
         elif self.right_player is None:
@@ -58,3 +60,11 @@ class Game(models.Model):
 
     def __str__(self):
         return self.name
+
+        
+        
+class GameInvitation(Notification):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return f'You re invited to game {self.game.name}'

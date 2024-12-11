@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from common.utils import get_action_table_context, get_context
 from relationship.models import FriendInvitation
+from games.models import GameInvitation
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index, redir_to
 from typing import Any
@@ -80,6 +81,8 @@ class NotificationsView():
     def notif_react_action(notif):
         if len(FriendInvitation.objects.filter(pk=notif.id)) > 0:
             return FriendInvitationView.notif_react_action(FriendInvitation.objects.get(pk=notif.id))
+        if len(GameInvitation.objects.filter(pk=notif.id)) > 0:
+            return GameInvitationView.notif_react_action(GameInvitation.objects.get(pk=notif.id))
         return format_html(': )')
     
     @staticmethod
@@ -94,8 +97,17 @@ class NotificationsView():
     
 class FriendInvitationView(NotificationsView):
     @staticmethod
-    def notif_react_action(notif):
+    def notif_react_action(notif : FriendInvitation):
         return html_utils.same_arg_redir_list(redirs={
             'relationship:accept_friend_request' : 'accept' ,
             'relationship:deny_friend_request' : 'deny' ,
         }, args=[notif.relation.from_user.username], sep= ' | ')
+
+        
+class GameInvitationView(NotificationsView):
+    @staticmethod
+    def notif_react_action(notif : GameInvitation):
+        return html_utils.same_arg_redir_list(redirs={
+            'games:join_game_players' : 'accept' ,
+            # 'games:deny_friend_request' : 'deny' ,
+        }, args=[notif.game.id, notif.user.id], sep= ' | ')

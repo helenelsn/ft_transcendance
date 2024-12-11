@@ -12,6 +12,7 @@ urlpatterns = [
     path('settings/<int:pk>', views.SettingsView.as_view(), name='settings'),
     
     #actions
+    path('invite_player/<int:pk>/<int:player_pk>', views.invite_player, name='invite_player'),
     path('join_game_players/<int:pk>/<int:player_pk>', views.join_game_players, name='join_game_players'),
     path('unjoin_game_players/<int:pk>/<int:player_pk>', views.unjoin_game_players, name='unjoin_game_players'),
     

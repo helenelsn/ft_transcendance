@@ -6,11 +6,10 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
-from .models import Game
-from django_tables2.views import SingleTableMixin
+from .models import Game, GameInvitation
 from .filters import GamesFilter
-from accounts.models import Profile
 from .tables import GamesTable
+from accounts.models import User
 
 
 def create_game(request):
@@ -26,6 +25,16 @@ def join_game_players(request, pk, player_pk):
     game = Game.objects.get(pk=pk)
     game.add_player(player_pk)
     return redirect(game.get_absolute_url())
+
+def invite_player(request, pk, player_pk):
+    game = Game.objects.get(pk=pk)
+    user = User.objects.get(pk=player_pk)
+    message = f'user {request.user.username} invited you to join game {game.name}'
+    
+    notif = GameInvitation(user=user, game=game, message=message)
+    notif.save()
+    return redirect(game.get_absolute_url())
+
 
 def unjoin_game_players(request, pk, player_pk):
     game = Game.objects.get(pk=pk)

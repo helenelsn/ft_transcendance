@@ -41,7 +41,6 @@ class ProfilUpdateView(UpdateView):
     
 class LogoutView(RedirectView):
     pattern_name = 'accounts:index'
-
     def get_redirect_url(self, *args, **kwargs):
         logout(self.request)
         return super().get_redirect_url(*args, **kwargs)
@@ -49,11 +48,3 @@ class LogoutView(RedirectView):
 class ProfilDetailView(DetailView):
     model = Profile
     template_name = 'accounts/profil_detail.html'
-
-# def render_user_table(request):
-#     set = User.objects.exclude(pk=request.user.id)
-    
-#     table = UserTable(set.all(), request=request)
-#     return render(request, "utils/table.html", {
-#         "table": table
-#     })

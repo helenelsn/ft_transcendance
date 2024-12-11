@@ -38,7 +38,6 @@ class RelationView():
  
     @staticmethod
     def get_formated_relation_actions(request, other):
-        
         actions = RelationView.get_relation_actions(Relation.relation_between(from_user=request.user, to_user=other))
         return same_arg_redir_list(actions, sep=' | ', args=[other.username])
  
