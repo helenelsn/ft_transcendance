@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from common.utils import get_action_table_context, get_context
 from relationship.models import FriendInvitation
-from games.models import GameInvitation
+from games.models import GameInvitation, GameLaunching, GameHistory
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index, redir_to
 from typing import Any
@@ -83,6 +83,8 @@ class NotificationsView():
             return FriendInvitationView.notif_react_action(FriendInvitation.objects.get(pk=notif.id))
         if len(GameInvitation.objects.filter(pk=notif.id)) > 0:
             return GameInvitationView.notif_react_action(GameInvitation.objects.get(pk=notif.id))
+        if len(GameLaunching.objects.filter(pk=notif.id)) > 0:
+            return GameLaunchingView.notif_react_action(GameLaunching.objects.get(pk=notif.id))
         return format_html(': )')
     
     @staticmethod
@@ -101,7 +103,7 @@ class FriendInvitationView(NotificationsView):
         return html_utils.same_arg_redir_list(redirs={
             'relationship:accept_friend_request' : 'accept' ,
             'relationship:deny_friend_request' : 'deny' ,
-        }, args=[notif.relation.from_user.username], sep= ' | ')
+        }, args=[notif.relation.from_user.id], sep= ' | ')
 
         
 class GameInvitationView(NotificationsView):
@@ -111,3 +113,16 @@ class GameInvitationView(NotificationsView):
             'games:join_game_players' : 'accept' ,
             # 'games:deny_friend_request' : 'deny' ,
         }, args=[notif.game.id, notif.user.id], sep= ' | ')
+
+        
+class GameLaunchingView(NotificationsView):
+    @staticmethod
+    def notif_react_action(notif : GameLaunching):
+        history = GameHistory.objects.get(game=notif.game)
+        if history is None:
+            history.game = notif.game
+            history.save()
+        return html_utils.same_arg_redir_list(redirs={
+            'games:game' : 'open game!' ,
+        }, args=[history.id], sep= ' | ')
+        

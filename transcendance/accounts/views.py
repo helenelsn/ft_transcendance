@@ -8,6 +8,7 @@ from .models import Profile
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
+from django.forms import ModelForm
 from .models import User
 
 

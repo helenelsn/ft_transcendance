@@ -28,7 +28,7 @@ def game_invite_view(request, game):
     return render(request, 'relationship/relation_list.html', {'filter': f, 'table':table})
 
 
-class FriendGameInviteListView(RelationListView):
+class FriendGameIviteListView(RelationListView):
     
     filterset_class = FriendFilter
     table_class = FriendGameInviteTable

@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import User, Profile
 from notifications.models import Notification
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Game(models.Model):
     name = models.CharField(max_length=30, default='Game!')
@@ -8,7 +10,6 @@ class Game(models.Model):
     left_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='left_player', null=True)
     right_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='right_player', null=True)
     is_public = models.BooleanField(default=False)
-    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner', null=True)
     max_players = 2
 
     def get_absolute_url(self):
@@ -43,13 +44,19 @@ class Game(models.Model):
     
     def user_is_player(self, user):
         return user==self.left_player or user==self.right_player
+        
+        
+    def get_other_player(self, user):
+        if self.left_player==user:
+            return self.right_player
+        return self.left_player
 
     @property
-    def is_full(self):
+    def is_full(self) -> bool:
         return self.player_count == 2
     
     @property
-    def player_count(self):
+    def player_count(self) -> int :
         count = 0
         if self.left_player is not None:
             count += 1
@@ -57,14 +64,44 @@ class Game(models.Model):
             count += 1
         return count
         
+    @property
+    def is_over(self) -> bool:
+        return self.gamehistory.over
 
     def __str__(self):
-        return self.name
+        return f'{self.name} {self.id}'
 
         
+class GameHistory(models.Model):
+    game = models.OneToOneField(Game, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(null=True)
+    duration = models.DurationField(null=True)
+    over = models.BooleanField(default=False)
+    left_score = models.PositiveIntegerField(default=0)
+    right_score = models.PositiveIntegerField(default=0)
+    
+    @receiver(post_save, sender=Game)
+    def create_or_update_game_history(sender, instance, created, **kwargs):
+        history, created = GameHistory.objects.get_or_create(game=instance)
+        history.save()
+        
+    def __str__(self):
+        return f'{self.game}'
+        
+        
+    
+    
         
 class GameInvitation(Notification):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return f'You re invited to game {self.game.name}'
+        
+class GameLaunching(Notification):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return f'Game {self.game.name} is beginning!'
+
+

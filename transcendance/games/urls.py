@@ -8,6 +8,9 @@ urlpatterns = [
     path('game_detail/<int:pk>', views.GameDetailView.as_view(), name='game_detail'),
     
     path('create_game/', views.create_game, name='create_game'),
+    path('launch_game/<int:pk>', views.launch_game, name='launch_game'),
+    path('game/<int:pk>', views.game, name='game'),
+    # path('play_game/<int:pk>', views.TmpGameView.as_view(), name='play_game'),
     path('delete_game/<int:pk>', views.delete_game, name='delete_game'),
     path('settings/<int:pk>', views.SettingsView.as_view(), name='settings'),
     

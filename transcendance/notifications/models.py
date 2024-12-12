@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 # add type 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_read = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=True)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     # def get_actions(self):

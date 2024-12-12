@@ -31,44 +31,44 @@ class RelationView():
 
     @staticmethod
     @login_required
-    def update_relation(request, relation_id : int, username : str, ):
-        to_user = get_object_or_404(User, username=username)
+    def update_relation(request, relation_id : int, pk : int, ):
+        to_user = get_object_or_404(User, pk=pk)
         Relation().update_relation(from_user=request.user, to_user=to_user, type=relation_id)
         return redirect(f'relationship:detail')
  
     @staticmethod
     def get_formated_relation_actions(request, other):
         actions = RelationView.get_relation_actions(Relation.relation_between(from_user=request.user, to_user=other))
-        return same_arg_redir_list(actions, sep=' | ', args=[other.username])
+        return same_arg_redir_list(actions, sep=' | ', args=[other.id])
  
     @login_required
-    def send_friend_request(request, username):
-        return RelationView.update_relation(request, REQUEST, username)
+    def send_friend_request(request, pk):
+        return RelationView.update_relation(request, REQUEST, pk)
 
     @login_required
-    def unsend_friend_request(request, username):
-        return RelationView.update_relation(request, NEUTRAL, username)
+    def unsend_friend_request(request, pk):
+        return RelationView.update_relation(request, NEUTRAL, pk)
     
     @login_required
-    def unfriend_unser(request, username):
-        return RelationView.update_relation(request, NEUTRAL, username)
+    def unfriend_unser(request, pk):
+        return RelationView.update_relation(request, NEUTRAL, pk)
 
     @login_required
-    def accept_friend_request(request, username):
-        return RelationView.update_relation(request, FRIEND, username)
+    def accept_friend_request(request, pk):
+        return RelationView.update_relation(request, FRIEND, pk)
 
     @login_required
-    def deny_friend_request(request, username):
-        return RelationView.update_relation(request, NEUTRAL, username)
+    def deny_friend_request(request, pk):
+        return RelationView.update_relation(request, NEUTRAL, pk)
 
     @login_required
-    def delete_friend(request, username):
-        return RelationView.update_relation(request, NEUTRAL, username)
+    def delete_friend(request, pk):
+        return RelationView.update_relation(request, NEUTRAL, pk)
 
     @login_required
-    def unblock_user(request, username):
-        return RelationView.update_relation(request, NEUTRAL, username)
+    def unblock_user(request, pk):
+        return RelationView.update_relation(request, NEUTRAL, pk)
 
     @login_required
-    def block_user(request, username):
-        return RelationView.update_relation(request, BLOCKED, username)
+    def block_user(request, pk):
+        return RelationView.update_relation(request, BLOCKED, pk)

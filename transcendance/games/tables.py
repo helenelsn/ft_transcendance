@@ -17,6 +17,8 @@ def game_scope(**kwargs):
         return 'owned_game'
     if kwargs['record'].left_player == r_user  or kwargs['record'].right_player == r_user :
         return 'play_in_game'
+
+    
     return 'neutral_game'
 
 class GamesTable(tables.Table):
