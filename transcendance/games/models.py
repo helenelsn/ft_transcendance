@@ -114,6 +114,14 @@ class GameHistory(models.Model):
             return self.game.left_player
         return self.game.right_player
         
+    @property
+    def winner_score(self):
+        return self.left_score if self.left_score > self.right_score else self.right_score
+    
+    @property
+    def loser_score(self):
+        return self.left_score if self.left_score < self.right_score else self.right_score
+        
     def __str__(self):
         return f'{self.game}'
         

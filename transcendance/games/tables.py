@@ -51,7 +51,7 @@ class GamesTable(tables.Table):
         return html_utils.format_hyperlink(link=record.right_player.profile.get_absolute_url(), display=value)
         
     def render_action(self, record : Game):
-        return GameView.game_actions(game=record, user=self.request.user)
+        return GameView(game=record).game_actions(user=self.request.user)
 
 
 class GamesHistoryTable(tables.Table):
@@ -69,14 +69,9 @@ class GamesHistoryTable(tables.Table):
         return html_utils.format_hyperlink(link=record.game.get_absolute_url(), display=record.game.name)
         
     def render_winner(self, record : GameHistory):
-        winner = record.winner
-        if isinstance(winner, list):
-            return html_utils.html_list_join([html_utils.format_hyperlink(link=w.profile.get_absolute_url(), display=w.username) for w in winner], sep = ' | ') 
-        return html_utils.format_hyperlink(link=winner.profile.get_absolute_url(), display=winner.username)
+        return GameView(record.game).winner_links
     
     def render_loser(self, record: GameHistory):
-        loser = record.loser
-        if loser is not None:   
-            return html_utils.format_hyperlink(link=loser.profile.get_absolute_url(), display=loser.username)
-        return 'x'
+        link = GameView(record.game).loser_links
+        return link if link is not None else 'x'
         

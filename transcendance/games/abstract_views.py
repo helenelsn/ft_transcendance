@@ -8,8 +8,13 @@ from django.contrib.auth.decorators import login_required
 from common.templatetags import html_utils
 
 class GameView():
-    def __init__(self, game : Game):
-        self.game = game
+    def __init__(self, game):
+        if isinstance(game, Game):
+            self.game : Game = game
+            self.history : GameHistory = game.gamehistory
+        else:
+            self.history : GameHistory = game
+            self.game : Game = self.history.game
         
     def get_actions(self, user):
         actions = {}
@@ -21,17 +26,41 @@ class GameView():
             actions.update({ reverse('games:launch_game', args=[self.game.id]): 'launch'})
         else:
             actions.update({ reverse('relationship:game_invite_players', args=[self.game.id]): 'invite player'})
-        
         actions.update({
                         reverse('games:unjoin_game_players', args=[self.game.id, user.id]) : 'unjoin',
                         reverse('games:delete_game', args=[self.game.id]) : 'delete',
                        })
         return actions
-
-    @staticmethod
-    def game_actions(game, user):
-        actions = GameView(game).get_actions(user)
+    
+    @property
+    def winner_links(self):
+        if not self.game.is_over:
+            return
+        winner = self.game.gamehistory.winner
+        if isinstance(winner, list):
+            return html_utils.html_list_join([html_utils.format_hyperlink(link=w.profile.get_absolute_url(), display=w.username) for w in winner], sep = ' | ') 
+        return html_utils.format_hyperlink(link=winner.profile.get_absolute_url(), display=winner.username)
+    
+    @property
+    def loser_links(self):
+        if not self.game.is_over:
+            return
+        loser = self.game.gamehistory.loser
+        if loser is not None:   
+            return html_utils.format_hyperlink(link=loser.profile.get_absolute_url(), display=loser.username)
+        
+    def game_actions(self, user):
+        actions = GameView(self.game).get_actions(user)
         return html_utils.html_list_join([html_utils.format_hyperlink(key, val) for key, val in actions.items()], sep = ' | ')
+    
+    def game_over_view(self):
+        if not self.game.is_over:
+            return
+        if self.history.equality:
+            return html_utils.format_html(f'<p> equality between {self.winner_links} with {self.history.left_score} points each</p>')
+        return html_utils.html_list_join([f'{self.winner_links} win this game with {self.history.winner_score}',
+                                          f'{self.loser_links} lose with  {self.history.loser_score}',], as_p=True)
+        
     
     @login_required
     def create(request):

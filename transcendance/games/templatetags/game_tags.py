@@ -22,28 +22,17 @@ def show_players(game : Game):
             
 @register.simple_tag
 def game_actions(user, game:Game):
-    # if not game.is_full and not game.user_is_player(user) and not game.is_over and game.is_public:
-    #     return html_utils.a_hyperlink('games:join_game_players', args=[game.id, user.id], display='join')
-    # if not game.user_in_game(user):
-    #     return
-    # lst = []
-    # if not game.is_over:
-    #     if not game.is_full:
-    #         lst.append(html_utils.a_hyperlink('relationship:game_invite_players', args=game.id, display='invite player'))
-    #     if game.user_is_player(user):
-    #         lst.append(html_utils.a_hyperlink('games:launch_game', args=game.id, display='launch'))
-    #         lst.append(html_utils.a_hyperlink('games:unjoin_game_players', args=[game.id, user.id], display='unjoin'))
-    #         lst.append(html_utils.a_hyperlink('games:delete_game', args=game.id, display='delete'))
-
-    return GameView.game_actions(game=game, user=user)
+    return GameView(game=game).game_actions(user=user)
     
 
         
-def game_result(user, game : Game):
-    # if g
-    history = game.gamehistory
-    if not history.over:
-        return
+@register.simple_tag
+def game_result(game : Game):
+    return GameView(game=game).game_over_view()
+    # # if g
+    # history = game.gamehistory
+    # if not history.over:
+    #     return
     
 
     
