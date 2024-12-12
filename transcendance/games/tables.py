@@ -7,6 +7,7 @@ from django_tables2.columns.linkcolumn import BaseLinkColumn, LinkColumn
 from relationship.models import FriendInvitation
 from common.templatetags import html_utils
 from games.templatetags import game_tags
+from .abstract_views import GameView
 
 def game_scope(**kwargs):
     if kwargs['table'] is None or kwargs['table'].request is None or not kwargs['table'].request.user.is_authenticated or kwargs['record'] is None:
@@ -50,9 +51,7 @@ class GamesTable(tables.Table):
         return html_utils.format_hyperlink(link=record.right_player.profile.get_absolute_url(), display=value)
         
     def render_action(self, record : Game):
-        if self.request.user.is_authenticated:
-            return game_tags.game_actions(self.request.user, record)
-        return html_utils.format_html('accounts:login', 'login to join')
+        return GameView.game_actions(game=record, user=self.request.user)
 
 
 class GamesHistoryTable(tables.Table):

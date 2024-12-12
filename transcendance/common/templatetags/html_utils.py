@@ -46,11 +46,7 @@ def include_table(context, table, table_title=''):
             'table_title':table_title})
     return context
 
-# @register.inclusion_tag('utils/table.html', takes_context=True)
-# def include_table(context, table, table_title=''):
-#     context.update({'table':table,
-#             'table_title':table_title})
-#     return context
+
 
 @register.inclusion_tag('utils/filter_table.html', takes_context=True)
 def include_filter_table(context, table, table_title='', filter=None):
