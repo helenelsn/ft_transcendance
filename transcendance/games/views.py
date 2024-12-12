@@ -6,16 +6,18 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.urls import reverse
-
+from django.forms import Form
+from django import forms
+from django.views.generic.edit import UpdateView
 from common.utils import redir_to, redir_to_index
 from .models import Game, GameInvitation, GameLaunching, GameHistory
-from .filters import GamesFilter
-from .tables import GamesTable
+from .filters import FurtherGamesFilter, GameHistoryFilter
+from .tables import GamesTable, GamesHistoryTable
 from accounts.models import User
 
 
 def create_game(request):
-    game = Game(owner=request.user, left_player=request.user)
+    game = Game(left_player=request.user)
     game.save()
     return redirect('games:settings', game.id)
     
@@ -56,32 +58,6 @@ def launch_game(request, pk):
     print('redirecting')
     return redirect(reverse("games:game", args=[history.pk]))
     
-
-# from django.forms import ModelForm
-
-# class GameForm(ModelForm):
-#     class Meta:
-#         model = GameHistory
-#         fields = ['left_score', 'right_score']
-        
-        
-
-from django.forms import Form
-from django import forms
-from django.views.generic.edit import UpdateView
-# class TmpGameView(UpdateView):
-#     model = GameHistory
-#     fields = ['left_score', 'right_score']
-#     template_name = 'utils/form.html'
-#     success_url = '/games'
-    
-    # def form_valid(self, form):
-    #     history = self.get_object()
-    #     history.over = True
-    #     print('saving history', history.over, history.game.id)
-    #     history.save()
-    #     return super().form_valid(form)
-
 def game(request, pk):
     history = GameHistory.objects.get(pk=pk)
     if history.over:
@@ -91,7 +67,7 @@ def game(request, pk):
         form = Form(request.POST)
         if form.is_valid():
             history.over = True
-            score = abs(form.data['score'])
+            score = abs(int(form.data['score']))
             if history.game.right_player == request.user:
                 history.right_score = score
             else:
@@ -106,9 +82,7 @@ def game(request, pk):
     f.fields.update({'score' : score})
     return render(request=request, template_name='games/game.html', context={'form':f})
     
-    
-class TodoView(RedirectView):
-    pattern_name = 'games:index'
+
 
 class SettingsView(UpdateView):
     model = Game
@@ -125,8 +99,14 @@ class GameDetailView(DetailView):
     model = Game
     template_name = 'games/game_detail.html'
     
-def games_list_view(request):
-    f = GamesFilter(request.GET, request=request, queryset=Game.objects.all())
+def further_games_list_view(request):
+    f = FurtherGamesFilter(request.GET, request=request, queryset=Game.objects.all())
     table = GamesTable(data=f.qs, request=request)
-    
     return render(request, 'games/game_list.html', {'filter': f, 'table':table})
+
+
+def game_history_list_view(request):
+    f = GameHistoryFilter(request.GET, request=request, queryset=GameHistory.objects.all())
+    table = GamesHistoryTable(data=f.qs, request=request)
+    return render(request, 'games/game_list.html', {'filter': f, 'table':table})
+

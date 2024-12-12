@@ -68,7 +68,7 @@ class Command(BaseCommand):
             #5 lose
             for against in User.objects.all()[45:50]:
                 game = Game()
-                game.owner = user
+                # game.owner = user
                 game.left_player = user
                 game.right_player = against
                 game.name = f'{game.left_player} vs {game.right_player} populatedb lose'
@@ -84,7 +84,7 @@ class Command(BaseCommand):
             i = 5
             for against in User.objects.all()[45:50]:
                 game = Game()
-                game.owner = user
+                # game.owner = user
                 game.left_player = user
                 game.right_player = against
                 game.name = f'{game.left_player} vs {game.right_player} populatedb win'
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             i = 5
             for against in User.objects.all()[45:50]:
                 game = Game()
-                game.owner = user
+                # game.owner = user
                 game.left_player = user
                 game.right_player = against
                 game.name = f'{game.left_player} vs {game.right_player} populatedb equality'
@@ -109,12 +109,13 @@ class Command(BaseCommand):
                 history = GameHistory.objects.get(game__id=game.id)
                 history.over = True
                 history.left_score = 10 + i
-                history.right_score =10 - i
+                history.right_score =10 + i
                 history.save()
                 i += 1
+
             for against in User.objects.all()[30:45]:
                 game = Game()
-                game.owner = user
+                # game.owner = user
                 game.left_player = user
                 game.right_player = against
                 game.name = f'{game.left_player} vs {game.right_player} unfinished'
@@ -122,7 +123,7 @@ class Command(BaseCommand):
                 
             for j in range(5):
                 game = Game()
-                game.owner = user
+                # game.owner = user
                 game.left_player = user
                 game.name = f'{game.left_player} nobody yet'
                 game.save()

@@ -21,7 +21,7 @@ def show_players(game : Game):
             
 @register.simple_tag
 def game_actions(user, game:Game):
-    if not game.is_full and not game.user_is_player(user) and not game.is_over:
+    if not game.is_full and not game.user_is_player(user) and not game.is_over and game.is_public:
         return html_utils.a_hyperlink('games:join_game_players', args=[game.id, user.id], display='join')
     if not game.user_in_game(user):
         return
@@ -29,14 +29,13 @@ def game_actions(user, game:Game):
     if not game.is_over:
         if not game.is_full:
             lst.append(html_utils.a_hyperlink('relationship:game_invite_players', args=game.id, display='invite player'))
-            
         if game.user_is_player(user):
-            if game.is_full:    
-                lst.append(html_utils.a_hyperlink('games:launch_game', args=game.id, display='launch'))
+            lst.append(html_utils.a_hyperlink('games:launch_game', args=game.id, display='launch'))
             lst.append(html_utils.a_hyperlink('games:unjoin_game_players', args=[game.id, user.id], display='unjoin'))
-            
-        if game.owner==user:
             lst.append(html_utils.a_hyperlink('games:delete_game', args=game.id, display='delete'))
+
     return html_utils.html_list_join(lst, sep=' | ')
         
+
+
     

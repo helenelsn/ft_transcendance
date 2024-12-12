@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 class Game(models.Model):
     name = models.CharField(max_length=30, default='Game!')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     left_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='left_player', null=True)
     right_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='right_player', null=True)
     is_public = models.BooleanField(default=False)
@@ -25,8 +25,8 @@ class Game(models.Model):
             self.left_player = user
         elif self.right_player is None:
             self.right_player = user
-        else:
-            raise Exception('Trying to add player to a full game')
+        # else:
+        #     raise Exception('Trying to add player to a full game')
         self.save()
 
     def remove_player(self, user_pk):
@@ -40,7 +40,7 @@ class Game(models.Model):
         self.save()
         
     def user_in_game(self, user):
-        return user==self.owner or self.user_is_player(user)
+        return self.user_is_player(user)
     
     def user_is_player(self, user):
         return user==self.left_player or user==self.right_player
@@ -84,6 +84,35 @@ class GameHistory(models.Model):
     def create_or_update_game_history(sender, instance, created, **kwargs):
         history, created = GameHistory.objects.get_or_create(game=instance)
         history.save()
+        
+    @property
+    def equality(self):
+        return self.left_score == self.right_score
+    
+    def is_winner(self, user):
+        return (user==self.game.left_player and self.left_score > self.right_score) or (user==self.game.right_player and self.right_score > self.left_score)
+        
+    def is_loser(self, user):
+        return not self.is_winner(user) and not self.equality
+        
+    
+    @property
+    def winner(self):
+        if not self.over:
+            return 
+        if self.equality:
+            return [self.game.left_player, self.game.right_player]
+        if self.left_score > self.right_score:
+            return self.game.left_player
+        return self.game.right_player
+    
+    @property
+    def loser(self):
+        if not self.over or self.equality:
+            return 
+        if self.left_score < self.right_score:
+            return self.game.left_player
+        return self.game.right_player
         
     def __str__(self):
         return f'{self.game}'
