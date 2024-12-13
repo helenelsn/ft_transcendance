@@ -28,6 +28,8 @@ def game_actions(user, game:Game):
         
 @register.simple_tag
 def game_result(game : Game):
+    if not game.is_over:
+        return html_utils.format_html('')
     return GameView(game=game).game_over_view()
     # # if g
     # history = game.gamehistory

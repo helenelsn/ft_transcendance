@@ -4,6 +4,7 @@
 {% load game_tags %}
 {% load html_utils %}
 <p> <a href="{% url 'games:create_game' %}"> Create game </a> </p>
+<p> <a href="{% url 'games:open_games' %}"> open games </a> </p>
 <p> <a href="{% url 'games:index' %}"> games </a> </p>
 <p> <a href="{% url 'games:game_history' %}"> history </a> </p>
 {% include_filter_table table=table filter=filter %}

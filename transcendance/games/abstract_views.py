@@ -19,9 +19,9 @@ class GameView():
     def get_actions(self, user):
         actions = {}
         if self.game.is_over or not self.game.user_in_game(user):
+            if not self.game.is_full and self.game.is_public:
+                actions.update({ reverse('games:join_game_players', args=[self.game.id, user.id]): 'join'})
             return actions
-        if not self.game.is_full and self.game.is_public:
-            actions.update({ reverse('games:join_game_players', args=[self.game.id, user.id]): 'join'})
         if self.game.is_full:
             actions.update({ reverse('games:launch_game', args=[self.game.id]): 'launch'})
         else:

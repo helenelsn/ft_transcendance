@@ -7,7 +7,7 @@ from django.forms import Form
 from django import forms
 from django.views.generic.edit import UpdateView
 from .models import Game, GameHistory
-from .filters import FurtherGamesFilter, GameHistoryFilter
+from .filters import FurtherGamesFilter, GameHistoryFilter, OpenGamesFilter
 from .tables import GamesTable, GamesHistoryTable
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -65,3 +65,8 @@ def game(request, pk):
     f.fields.update({'score' : score})
     return render(request=request, template_name='games/game.html', context={'form':f})
     
+
+def open_games(request):
+    f = OpenGamesFilter(request.GET, request=request, queryset=Game.objects.all())
+    table = GamesTable(data=f.qs, request=request)
+    return render(request, 'games/game_list.html', {'filter': f, 'table':table})

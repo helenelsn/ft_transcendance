@@ -5,6 +5,7 @@ from games.models import Game, GameHistory
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
+        # self.some_public_games()
         self.populate_user()
         self.personalised_profil()
         self.create_relationships()
@@ -60,6 +61,7 @@ class Command(BaseCommand):
         #     if len(existing_relationhip) < len(User.objects.all()) - 1:
         #         for to_user in User.objects.exclude(id__in=existing_relationhip.select_related('to_user')).all():
         #             Relation().update_relation(from_user=user, to_user=to_user, )
+
         
     def populate_games(self):
         for user in User.objects.all()[:22]:
@@ -123,7 +125,7 @@ class Command(BaseCommand):
                 
             for j in range(5):
                 game = Game()
-                # game.owner = user
                 game.left_player = user
                 game.name = f'{game.left_player} nobody yet'
+                game.is_public = True
                 game.save()
