@@ -5,11 +5,14 @@ from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn, LinkColumn
 from relationship.models import FriendInvitation
 from common.templatetags import html_utils
+from tournaments.abstract_views import TournamentView
 
 
 class TournamentTable(tables.Table):
-    react = tables.Column(empty_values=[])
     
     class Meta:
         model = Tournament
         fields = ( 'name', 'number_players', 'players')
+
+    def render_name(self, record):
+        return TournamentView(record).linked_name

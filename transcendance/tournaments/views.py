@@ -12,14 +12,9 @@ from django.views.generic.edit import UpdateView
 from .filters import TournamentFilter
 from .tables import TournamentTable
 from django.urls import reverse
-app_name = 'tournaments'
+from tournaments.abstract_views import TournamentView
 
-class TournamentView():
-    def __init__(self, tournament : Tournament):
-        self.tournament=tournament
-        
-    def get_edit_url(self):
-        return reverse('tournaments:tournament_settings', args=[self.tournament.pk])
+app_name = 'tournaments'
 
 def index(request):
     context = get_table_context(
@@ -46,7 +41,6 @@ class TournamentSettingsView(UpdateView):
     fields = ['name', 'public', 'number_players']
     template_name = 'utils/form.html'
     
-    
 class TournamentDetailView(DetailView):
     model = Tournament
     template_name = 'tournaments/tournament_detail.html'
@@ -55,10 +49,9 @@ class TournamentDetailView(DetailView):
 def create_tournament(request):
     t = Tournament.create_tournament(request.user)
     return redirect(TournamentView(t).get_edit_url())
-    return render(request, f'{app_name}/create_tournament.html', get_form_context(app_name, form))
-
+    
 class TournamentListView(SingleTableMixin, FilterView):
     table_class = TournamentTable
     model = Tournament
-    template_name = "notifications/notification_list.html"
+    template_name = "tournaments/tournament_list.html"
     filterset_class = TournamentFilter

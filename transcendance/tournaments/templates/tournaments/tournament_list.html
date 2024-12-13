@@ -1,0 +1,9 @@
+{% extends "utils/base.html" %}
+
+{% block content %}
+<p> <a href="{% url 'tournaments:create_tournament' %}"> Create tournament </a> </p>
+
+{% load html_utils %}
+{% include_filter_table table=table filter=filter %}
+
+{% endblock %}
