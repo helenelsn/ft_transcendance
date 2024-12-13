@@ -14,7 +14,7 @@ urlpatterns = [
     path('game/<int:pk>', views.game, name='game'),
     # path('play_game/<int:pk>', views.TmpGameView.as_view(), name='play_game'),
     path('delete_game/<int:pk>', abstract_views.GameView.delete_game, name='delete_game'),
-    path('settings/<int:pk>', views.SettingsView.as_view(), name='settings'),
+    path('settings/<int:pk>', views.GameSettingsView.as_view(), name='settings'),
     
     #actions
     path('invite_player/<int:pk>/<int:player_pk>', abstract_views.GameView.invite_player, name='invite_player'),

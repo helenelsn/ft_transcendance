@@ -8,10 +8,18 @@ from typing import Any
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import UpdateView
 from .filters import TournamentFilter
 from .tables import TournamentTable
-
+from django.urls import reverse
 app_name = 'tournaments'
+
+class TournamentView():
+    def __init__(self, tournament : Tournament):
+        self.tournament=tournament
+        
+    def get_edit_url(self):
+        return reverse('tournaments:tournament_settings', args=[self.tournament.pk])
 
 def index(request):
     context = get_table_context(
@@ -30,14 +38,23 @@ def show_tournament(request, tournament_name):
     return render(request, f'{app_name}/tournament.html', context)
 
 
+
+
+# @login_required
+class TournamentSettingsView(UpdateView):
+    model = Tournament
+    fields = ['name', 'public', 'number_players']
+    template_name = 'utils/form.html'
+    
+    
+class TournamentDetailView(DetailView):
+    model = Tournament
+    template_name = 'tournaments/tournament_detail.html'
+    
+@login_required
 def create_tournament(request):
-    if request.method == 'POST':
-        form = TournamentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(f"{app_name}:index")
-    else:
-        form = TournamentForm()
+    t = Tournament.create_tournament(request.user)
+    return redirect(TournamentView(t).get_edit_url())
     return render(request, f'{app_name}/create_tournament.html', get_form_context(app_name, form))
 
 class TournamentListView(SingleTableMixin, FilterView):

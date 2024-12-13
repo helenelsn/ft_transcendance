@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
-class SettingsView(UpdateView):
+class GameSettingsView(UpdateView):
     model = Game
     fields = ['name', 'is_public' ]
     template_name = 'utils/form.html'
