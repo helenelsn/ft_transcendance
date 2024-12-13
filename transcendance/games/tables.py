@@ -8,7 +8,7 @@ from relationship.models import FriendInvitation
 from common.templatetags import html_utils
 from games.templatetags import game_tags
 from .abstract_views import GameView
-
+from accounts.views import ProfileView
 def game_scope(**kwargs):
     if kwargs['table'] is None or kwargs['table'].request is None or not kwargs['table'].request.user.is_authenticated or kwargs['record'] is None:
         return
@@ -42,13 +42,14 @@ class GamesTable(tables.Table):
         }
         
     def render_name(self, record : Game):
+        return GameView(record).linked_name
         return html_utils.format_hyperlink(link=record.get_absolute_url(), display=record.name)
     
     def render_left_player__username(self, value, record : Game):
-        return html_utils.format_hyperlink(link=record.left_player.profile.get_absolute_url(), display=value)
+        return ProfileView(record.left_player.profile).linked_name
     
     def render_right_player__username(self, value, record : Game):
-        return html_utils.format_hyperlink(link=record.right_player.profile.get_absolute_url(), display=value)
+        return ProfileView(record.right_player.profile).linked_name
         
     def render_action(self, record : Game):
         return GameView(game=record).game_actions(user=self.request.user)

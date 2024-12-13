@@ -4,13 +4,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 
-from .models import Profile
+from .models import Profile, User
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
 from django.forms import ModelForm
-from .models import User
+from common.templatetags import html_utils
 
+class ProfileView():
+    def __init__(self, profil : Profile):
+        self.profil = profil
+    @property
+    def linked_name(self):
+        return html_utils.format_hyperlink(link=self.profil.get_absolute_url(), display=self.profil.user.username)        
 
 @login_required
 def index(request):

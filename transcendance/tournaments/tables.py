@@ -8,9 +8,8 @@ from common.templatetags import html_utils
 
 
 class TournamentTable(tables.Table):
-    delete = tables.Column(empty_values=[])
     react = tables.Column(empty_values=[])
     
     class Meta:
         model = Tournament
-        fields = ( 'name', 'number_players', 'players' 'begin')
+        fields = ( 'name', 'number_players', 'players')

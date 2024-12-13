@@ -33,6 +33,10 @@ class GameView():
         return actions
     
     @property
+    def linked_name(self):
+        return html_utils.format_hyperlink(self.game.get_absolute_url(), display=self.game.name)
+    
+    @property
     def winner_links(self):
         if not self.game.is_over:
             return

@@ -21,6 +21,14 @@ class Tournament(models.Model):
         t.save()
         return t
 
+    @property
+    def player_count(self):
+        return len(self.players)
+    @property
+    def is_full(self):
+        return self.player_count == self.number_players
+    
+
     def get_absolute_url(self):
         return reverse('tournaments:tournament_detail', args=[self.pk])
     
