@@ -6,6 +6,8 @@
     
     <h1> {{object.username|upper}} </h1>
     <p> Bio: {{object.bio}} </p>
+    {% load game_tags %}
+    {% user_games_resume object.user %}
     {% load relation_tags %}
     {% include_user_friend_table request object.user %}
     {% profil_detail_menu request object.user %}

@@ -60,6 +60,27 @@ class GameView():
             return html_utils.format_html(f'<p> equality between {self.winner_links} with {self.history.left_score} points each</p>')
         return html_utils.html_list_join([f'{self.winner_links} win this game with {self.history.winner_score}',
                                           f'{self.loser_links} lose with  {self.history.loser_score}',], as_p=True)
+    
+    @staticmethod
+    def user_resume(user):
+        games = Game.objects.filter(left_player=user).filter(gamehistory__over = True)
+        is_left = games.filter(left_player=user)
+        is_right = games.filter(right_player=user)
+        games = is_right.union(is_left)
+        games = games.all()
+        equality = 0
+        wins = 0
+        lose = 0
+        for game in games:
+            hist : GameHistory = game.gamehistory
+            if hist.equality:
+                equality += 1
+            elif hist.is_winner(user):
+                wins += 1
+            elif hist.is_loser(user):
+                lose += 1
+        return html_utils.html_list_join([f'Wins : {wins}', f'equality : {equality}', f'lose : {lose}'], as_p=True)
+        
         
     
     @login_required
