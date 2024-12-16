@@ -5,14 +5,15 @@ from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django.db.models import Count, F, Value
 from .model_view import RelationView
+from common.views import ActionModelView
 from common.templatetags import html_utils
+from common.view_getter import get_view
 from accounts.model_view import ProfileView
-
+from common.tables import ActionsColumn, LinkedDetailNameColumn
 
 class RelationTable(tables.Table):
-    to_user = tables.Column(verbose_name='User')
-    actions = tables.Column(verbose_name='Actions', empty_values=[])
-    
+    to_user = LinkedDetailNameColumn()
+    actions = ActionsColumn()
     class Meta:
         model = Relation
         row_attrs = {
@@ -20,16 +21,8 @@ class RelationTable(tables.Table):
         }
         fields = ( 'to_user',)
         
-    def order_to_user(self, queryset, is_descending : bool):
-        on= '-relation' if is_descending else 'relation'
-        return (queryset.order_by(on), True)
-
-    def render_actions(self, record : Relation):
-            return RelationView(object=record).actions_links()
-        
-    def render_to_user(self, value : str, record : Relation):
-        return ProfileView(record.to_user).detail_linked_name
-
+    
+    
 class FriendGameInviteTable(RelationTable):
     invitation = tables.Column(empty_values=[])
     

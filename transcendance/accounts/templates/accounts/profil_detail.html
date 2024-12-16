@@ -9,7 +9,7 @@
     {% load game_tags %}
     {% comment %} {% user_games_resume object.user %} {% endcomment %}
     {% load relation_tags %}
-    {% comment %} {% include_user_friend_table request object.user %} {% endcomment %}
-    {% profil_detail_menu request object.user %}
-    
+    {% if request.user == object.user%}
+        {% include_user_friend_table request %}
+    {% endif %}
 {% endblock %}

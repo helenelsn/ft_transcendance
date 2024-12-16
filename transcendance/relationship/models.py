@@ -23,6 +23,11 @@ class Relation(models.Model):
     to_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="to_user")
     relation = models.IntegerField(choices=list(relations.items()), default=NEUTRAL)
     
+    @staticmethod
+    def get_user_relations_qs(user : User, rel_type=None):
+        if rel_type is not None:
+            return Relation.objects.filter(from_user=user).filter(relation=rel_type)  
+        return Relation.objects.filter(from_user=user)
     
     def create_request(self):
         self.change_relation(REQUEST)
