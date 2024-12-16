@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from common.utils import get_action_table_context, get_context
 from relationship.models import FriendInvitation
-from games.models import GameInvitation, GameLaunching, GameHistory
+from games.models import GameInvitation, GameLaunching
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index, redir_to
 from typing import Any
@@ -109,6 +109,7 @@ class FriendInvitationView(NotificationsView):
 class GameInvitationView(NotificationsView):
     @staticmethod
     def notif_react_action(notif : GameInvitation):
+        return ""
         return html_utils.same_arg_redir_list(redirs={
             'games:join_game_players' : 'accept' ,
             # 'games:deny_friend_request' : 'deny' ,
@@ -118,11 +119,12 @@ class GameInvitationView(NotificationsView):
 class GameLaunchingView(NotificationsView):
     @staticmethod
     def notif_react_action(notif : GameLaunching):
-        history = GameHistory.objects.get(game=notif.game)
-        if history is None:
-            history.game = notif.game
-            history.save()
-        return html_utils.same_arg_redir_list(redirs={
-            'games:game' : 'open game!' ,
-        }, args=[history.id], sep= ' | ')
+        return ""
+        # history = GameHistory.objects.get(game=notif.game)
+        # if history is None:
+        #     history.game = notif.game
+        #     history.save()
+        # return html_utils.same_arg_redir_list(redirs={
+        #     'games:game' : 'open game!' ,
+        # }, args=[history.id], sep= ' | ')
         

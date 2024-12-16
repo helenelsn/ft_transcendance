@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'accounts',
     'common',
+    'event',
     'games',
     'tournaments',
     'relationship',

@@ -1,15 +1,14 @@
 from accounts.models import User, Profile
 from relationship.models import Relation, FRIEND, REQUEST
 from django.core.management.base import BaseCommand, CommandError
-from games.models import Game, GameHistory
+from games.models import Game
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        # self.some_public_games()
         self.populate_user()
         self.personalised_profil()
         self.create_relationships()
-        self.populate_games()
+        # self.populate_games()
     
     def populate_user(self):
         User.objects.create_superuser(username='super', password='super')
@@ -63,69 +62,73 @@ class Command(BaseCommand):
         #             Relation().update_relation(from_user=user, to_user=to_user, )
 
         
-    def populate_games(self):
-        for user in User.objects.all()[:22]:
+    # def populate_games(self):
+    #     for user in User.objects.all()[:22]:
             
-            i = 5
-            #5 lose
-            for against in User.objects.all()[45:50]:
-                game = Game()
-                # game.owner = user
-                game.left_player = user
-                game.right_player = against
-                game.name = f'{game.left_player} vs {game.right_player} populatedb lose'
-                game.save()
-                history = GameHistory.objects.get(game=game)
-                history.over = True
-                history.left_score = 10 - i
-                history.right_score =10 + i
-                history.save()
-                i += 1
+    #         i = 5
+    #         #5 lose
+    #         for against in User.objects.all()[45:50]:
+    #             game = Game()
+    #             # game.owner = user
+    #             game.left_player = user
+    #             game.right_player = against
+    #             game.name = f'{game.left_player} vs {game.right_player} populatedb lose'
+    #             game.save()
+    #             # history = GameHistory.objects.get(game=game)
+    #             # history.over = True
+    #             # history.left_score = 10 - i
+    #             # history.right_score =10 + i
+    #             # history.save()
+    #             i += 1
                 
-            #5 win
-            i = 5
-            for against in User.objects.all()[45:50]:
-                game = Game()
-                # game.owner = user
-                game.left_player = user
-                game.right_player = against
-                game.name = f'{game.left_player} vs {game.right_player} populatedb win'
-                game.save()
-                history = GameHistory.objects.get(game=game)
-                history.over = True
-                history.left_score = 10 + i
-                history.right_score =10 - i
-                history.save()
-                i += 1
+    #         #5 win
+    #         i = 5
+    #         for against in User.objects.all()[45:50]:
+    #             game = Game()
+    #             # game.owner = user
+    #             game.left_player = user
+    #             game.right_player = against
+    #             game.name = f'{game.left_player} vs {game.right_player} populatedb win'
+    #             game.save()
+    #             # history = GameHistory.objects.get(game=game)
+    #             # history.over = True
+    #             # history.left_score = 10 + i
+    #             # history.right_score =10 - i
+    #             # history.save()
+    #             i += 1
                 
             
-            #5 equaliry
-            i = 5
-            for against in User.objects.all()[45:50]:
-                game = Game()
-                # game.owner = user
-                game.left_player = user
-                game.right_player = against
-                game.name = f'{game.left_player} vs {game.right_player} populatedb equality'
-                game.save()
-                history = GameHistory.objects.get(game__id=game.id)
-                history.over = True
-                history.left_score = 10 + i
-                history.right_score =10 + i
-                history.save()
-                i += 1
+    #         #5 equaliry
+    #         i = 5
+    #         for against in User.objects.all()[45:50]:
+    #             game = Game()
+    #             # game.owner = user
+    #             game.left_player = user
+    #             game.right_player = against
+    #             game.name = f'{game.left_player} vs {game.right_player} populatedb equality'
+    #             game.save()
+    #             # history = GameHistory.objects.get(game__id=game.id)
+    #             # history.over = True
+    #             # history.left_score = 10 + i
+    #             # history.right_score =10 + i
+    #             # history.save()
+    #             i += 1
 
-            for against in User.objects.all()[30:45]:
-                game = Game()
-                # game.owner = user
-                game.left_player = user
-                game.right_player = against
-                game.name = f'{game.left_player} vs {game.right_player} unfinished'
-                game.save()
+    #         for against in User.objects.all()[30:45]:
+    #             game = Game()
+    #             # game.owner = user
+    #             game.left_player = user
+    #             game.right_player = against
+    #             game.name = f'{game.left_player} vs {game.right_player} unfinished'
+    #             game.save()
                 
-            for j in range(5):
-                game = Game()
-                game.left_player = user
-                game.name = f'{game.left_player} nobody yet'
-                game.is_public = True
-                game.save()
+    #         for j in range(5):
+    #             game = Game()
+    #             game.left_player = user
+    #             game.name = f'{game.left_player} nobody yet'
+    #             game.is_public = True
+    #             game.save()
+                
+                
+                
+                

@@ -3,7 +3,7 @@ from django import template
 from common.templatetags import html_utils
 from accounts.templatetags import accounts_tags
 
-from games.models import Game, GameHistory
+from games.models import Game
 from relationship.tables import RelationTable, Relation
 from games.abstract_views import GameView
 register = template.Library()

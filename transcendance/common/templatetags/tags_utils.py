@@ -13,7 +13,7 @@ menu_redir_authenticate = {
         }
 
 menu_redir_glob = {
-    'games:index':  'games',
+    # 'games:index':  'games',
 }
 
 

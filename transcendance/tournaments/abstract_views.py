@@ -15,3 +15,7 @@ class TournamentView():
     @property
     def linked_name(self):
         return html_utils.format_hyperlink(link=self.tournament.get_absolute_url(), display=self.tournament.name)
+
+    def get_actions(self, user):
+        actions = {}
+        # if not self.tournament.is
