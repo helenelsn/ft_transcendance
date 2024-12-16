@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load relation_tags %}
-{% relation_index_hyperlink %}
+{% comment %} {% relation_index_hyperlink %} {% endcomment %}
 
 {% load html_utils %}
 {% include_filter_table table=table filter=filter %}

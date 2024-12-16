@@ -14,6 +14,9 @@ def ref(redir, args=None):
 def format_hyperlink(link, display, ):
     return format_html(f'<a href={link}> {display} </a>')
 
+def format_dict_hyperlink_display(redirs : dict, sep='', as_p=False, as_li=False):
+    return html_list_join([format_hyperlink(key, val) for key, val in redirs.items()], as_p=as_p, as_li=as_li, sep=sep)
+
 @register.simple_tag
 def a_hyperlink(redir, display, args=None,):
     return format_html(f'<a {ref(redir, args)}> {display} </a>')
@@ -27,8 +30,8 @@ def index_hyperlink(app_name, display=None):
         display = app_name
     return a_hyperlink(f'{app_name}:index', display)
 
-def simple_redir_list(redirs, as_p=False):
-    return html_list_join([a_hyperlink(key, redirs[key]) for key in redirs], as_p=as_p)
+def simple_redir_list(redirs, as_p=False, sep='',as_li=False):
+    return html_list_join([a_hyperlink(key, redirs[key]) for key in redirs], as_p=as_p, as_li=as_li, sep=sep)
 
 def same_arg_redir_list(redirs, args, sep='', as_p=False):
     return html_list_join([a_hyperlink(key, redirs[key], args=args) for key in redirs], sep=sep, as_p=as_p)
@@ -45,8 +48,6 @@ def include_table(context, table, table_title=''):
     context.update({'table':table,
             'table_title':table_title})
     return context
-
-
 
 @register.inclusion_tag('utils/filter_table.html', takes_context=True)
 def include_filter_table(context, table, table_title='', filter=None):

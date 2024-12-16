@@ -1,6 +1,6 @@
 import django_tables2 as tables
 from relationship.models import Relation 
-from relationship.abstract_view import RelationView
+from transcendance.relationship.model_view import RelationView
 from .models import User
 from django.utils.html import format_html
 from django.urls import reverse

@@ -5,4 +5,4 @@ from .models import *
 admin.site.register(Game)
 # admin.site.register(GameHistory)
 admin.site.register(GameLaunching)
-admin.site.register(GameInvitation)
+# admin.site.register(GameInvitation)

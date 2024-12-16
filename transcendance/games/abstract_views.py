@@ -2,18 +2,19 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from common.utils import redir_to, redir_to_index
-from .models import Game, GameInvitation, GameLaunching #, GameHistory
+from .models import Game, GameLaunching #, GameHistory
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from common.templatetags import html_utils
 from event.views import EventView
 
 class GameView(EventView):
-    def __init__(self, object, app_name='games'):
-        super().__init__(object, 'games')
+    app_name = 'games'
+    def __init__(self, object):
+        super().__init__(object)
         
-    def get_actions(self, user):
-        actions = {}
+    # def get_actions(self, user):
+    #     actions = {}
         # if self.game.is_over or not self.game.user_in_game(user):
         #     if not self.game.is_full and self.game.is_public:
         #         actions.update({ reverse('games:join_game_players', args=[self.game.id, user.id]): 'join'})
@@ -26,7 +27,7 @@ class GameView(EventView):
         #                 reverse('games:unjoin_game_players', args=[self.game.id, user.id]) : 'unjoin',
         #                 reverse('games:delete_game', args=[self.game.id]) : 'delete',
         #                })
-        return actions
+        # return actions
     
 
     @property

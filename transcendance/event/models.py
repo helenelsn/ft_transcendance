@@ -16,14 +16,17 @@ class Event(models.Model):
     max_player = 1
     start_time = models.DateTimeField(null=True)
     over = models.BooleanField(default=False)
+    absolute_url = 'event:detail'
     
-    
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse(self.absolute_url, kwargs={"pk": self.pk})
 
 
-    def get_index_url(self):
+    def get_index_url(self) -> str:
         return reverse(self.index_url,)
+
+    def joinable(self, user : User) -> bool:
+        return not self.over and (self.user_is_owner(user=user) or (not self.user_registerd(user) and not self.is_full and self.is_public))
 
     @property
     def is_full(self) -> bool:
@@ -31,14 +34,14 @@ class Event(models.Model):
     
     @property
     def player_count(self) -> int :
-        return len(self.players)
+        return self.players.count()
         
     @property
     def is_over(self) -> bool:
         return self.over
 
-    def register_player(self, user_pk):
-        user = User.objects.get(pk=user_pk)
+    def register_player(self, user : User) -> None:
+        user = User.objects.get(pk=user.pk)
         if not self.is_full:
             self.players.add(user)
             self.save()
@@ -46,18 +49,18 @@ class Event(models.Model):
             # todo=> send alreadry full message
             pass
         
-    def remove_player(self, user_pk):
-        to_del = self.players.filter(players__in=[user_pk])
+    def remove_player(self, user : User) -> None:
+        to_del = self.players.filter(players__in=[user.pk])
         if to_del is None:
             #todo => raise exp
             return
         self.players.remove(to_del)
         
-    def user_registerd(self, user_pk):
-        return len(self.players.filter(players__in=[user_pk])) > 0
+    def user_registerd(self, user : User) -> None:
+        return self.players.filter(players__in=[user.pk]).count() > 0
 
-    def user_is_owner(self, user_pk):
-        return self.owner.pk == user_pk
+    def user_is_owner(self, user : User) -> None:
+        return self.owner == user
     
     def __str__(self):
         return f'{self.name} {self.id}'

@@ -4,7 +4,7 @@ from common.templatetags import html_utils
 from accounts.templatetags import accounts_tags
 
 from games.models import Game
-from relationship.tables import RelationTable, Relation
+# from relationship.tables import RelationTable, Relation
 from games.abstract_views import GameView
 register = template.Library()
 app_name='games'
@@ -22,7 +22,8 @@ def show_players(game : Game):
             
 @register.simple_tag
 def game_actions(user, game:Game):
-    return GameView(game=game).game_actions(user=user)
+    
+    return GameView(object=game).get_actions(user=user)
         
 @register.simple_tag
 def game_result(game : Game):

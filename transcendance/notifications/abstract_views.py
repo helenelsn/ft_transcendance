@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from common.utils import get_action_table_context, get_context
 from relationship.models import FriendInvitation
-from games.models import GameInvitation, GameLaunching
+from games.models import GameLaunching
+from event.models import EventInvitation
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index, redir_to
 from typing import Any
@@ -10,8 +11,6 @@ from common.templatetags import html_utils
 from django.utils.html import format_html
 
 app_name = 'notifications'
-
-
 
 class NotificationsView():
     model = Notification
@@ -81,8 +80,8 @@ class NotificationsView():
     def notif_react_action(notif):
         if len(FriendInvitation.objects.filter(pk=notif.id)) > 0:
             return FriendInvitationView.notif_react_action(FriendInvitation.objects.get(pk=notif.id))
-        if len(GameInvitation.objects.filter(pk=notif.id)) > 0:
-            return GameInvitationView.notif_react_action(GameInvitation.objects.get(pk=notif.id))
+        if len(EventInvitation.objects.filter(pk=notif.id)) > 0:
+            return EventInvitationView.notif_react_action(EventInvitationView.objects.get(pk=notif.id))
         if len(GameLaunching.objects.filter(pk=notif.id)) > 0:
             return GameLaunchingView.notif_react_action(GameLaunching.objects.get(pk=notif.id))
         return format_html(': )')
@@ -106,9 +105,9 @@ class FriendInvitationView(NotificationsView):
         }, args=[notif.relation.from_user.id], sep= ' | ')
 
         
-class GameInvitationView(NotificationsView):
+class EventInvitationView(NotificationsView):
     @staticmethod
-    def notif_react_action(notif : GameInvitation):
+    def notif_react_action(notif : EventInvitation):
         return ""
         return html_utils.same_arg_redir_list(redirs={
             'games:join_game_players' : 'accept' ,
@@ -120,11 +119,5 @@ class GameLaunchingView(NotificationsView):
     @staticmethod
     def notif_react_action(notif : GameLaunching):
         return ""
-        # history = GameHistory.objects.get(game=notif.game)
-        # if history is None:
-        #     history.game = notif.game
-        #     history.save()
-        # return html_utils.same_arg_redir_list(redirs={
-        #     'games:game' : 'open game!' ,
-        # }, args=[history.id], sep= ' | ')
+
         

@@ -10,17 +10,12 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import RedirectView
 from django.forms import ModelForm
 from common.templatetags import html_utils
+from .model_view import ProfileView
 
-class ProfileView():
-    def __init__(self, profil : Profile):
-        self.profil = profil
-    @property
-    def linked_name(self):
-        return html_utils.format_hyperlink(link=self.profil.get_absolute_url(), display=self.profil.user.username)        
 
 @login_required
 def index(request):
-    return redirect(request.user.profile.get_absolute_url())
+    return ProfileView(request).detail_view()
 
 class UserCreateView(FormView):
     template_name = 'utils/form.html'

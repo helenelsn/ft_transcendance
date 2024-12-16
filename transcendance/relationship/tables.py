@@ -4,8 +4,9 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django.db.models import Count, F, Value
-from .abstract_view import RelationView
+from .model_view import RelationView
 from common.templatetags import html_utils
+from accounts.model_view import ProfileView
 
 
 class RelationTable(tables.Table):
@@ -24,16 +25,10 @@ class RelationTable(tables.Table):
         return (queryset.order_by(on), True)
 
     def render_actions(self, record : Relation):
-        if self.request and self.request.user.is_authenticated:
-            if self.request.user == record.to_user:
-                return html_utils.a_hyperlink('accounts:edit_profil', display='edit', args=record.to_user.pk)
-            return RelationView.get_formated_relation_actions(self.request, record.to_user)
-        else:
-            return '---'
-       
+            return RelationView(object=record).actions_links()
         
     def render_to_user(self, value : str, record : Relation):
-        return format_html(f"<a href={record.to_user.profile.get_absolute_url()}> {value} </a>")
+        return ProfileView(record.to_user).detail_linked_name
 
 class FriendGameInviteTable(RelationTable):
     invitation = tables.Column(empty_values=[])

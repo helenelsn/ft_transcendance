@@ -3,7 +3,7 @@
 {{ object }}
 
 {% load game_tags %}
-{% show_players object %}
+{% comment %} {% show_players object %} {% endcomment %}
 {% game_actions user object%}
-{% game_result object %}
+{% comment %} {% game_result object %} {% endcomment %}
 {% endblock %}

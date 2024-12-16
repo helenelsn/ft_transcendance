@@ -70,22 +70,17 @@ class Relation(models.Model):
         other_pov = self.get_or_create_other_pov()
         return other_pov is not None and other_pov.relation == BLOCKED
         
-    def update_relation(self, from_user, to_user, type=None):
-        rel, created = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get_or_create()
-        if created:
-            rel.to_user = to_user
-            rel.from_user = from_user
-            rel.save()
-        if rel.from_user == rel.to_user or type == None:
+    def update_relation(self, type=None):
+        if self.from_user == self.to_user or type == None:
             return
         if type == REQUEST:
-            rel.create_request()
+            self.create_request()
         elif type == FRIEND:
-            rel.becaming_friend()
+            self.becaming_friend()
         elif type == BLOCKED:
-            rel.block_user()
+            self.block_user()
         elif type == NEUTRAL:
-            rel.neutral()
+            self.neutral()
         
     def __str__(self):
         if self.relation == REQUEST:
@@ -101,14 +96,17 @@ class Relation(models.Model):
         return f'{self.from_user} {mess} {self.to_user}'
     
     @staticmethod
-    def relation_between(from_user, to_user):
-        rel, created = Relation.objects.get_or_create(from_user=from_user, to_user=to_user)
-        return rel.relation    
-    
-    @staticmethod
-    def str_relation_between(from_user, to_user):
-        rel = Relation.relation_between(from_user, to_user)
-        return Relation.relations[rel]
+    def get(obj = None, from_user = None, to_user = None):
+        if from_user is not None and to_user is not None:
+            rel, created = Relation.objects.filter(from_user=from_user).filter(to_user=to_user).get_or_create()
+            if created:
+                rel.to_user = to_user
+                rel.from_user = from_user
+                rel.save()
+            return rel
+        elif obj is not None and isinstance(obj, Relation):
+            return obj
+        raise Exception(f'Invalid relation get')
     
 
     

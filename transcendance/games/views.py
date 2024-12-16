@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.forms import Form
 from django import forms
 from django.views.generic.edit import UpdateView
-# from .models import Game, GameHistory
+from .models import Game
 # from .filters import FurtherGamesFilter, GameHistoryFilter, OpenGamesFilter
 # from .tables import GamesTable, GamesHistoryTable
 from django.urls import reverse
@@ -22,9 +22,9 @@ from django.contrib.auth.decorators import login_required
         
 #         return super().form_valid(form)
 
-# class GameDetailView(DetailView):
-#     model = Game
-#     template_name = 'games/game_detail.html'
+class GameDetailView(DetailView):
+    model = Game
+    template_name = 'games/game_detail.html'
 
 # @login_required
 # def further_games_list_view(request):
