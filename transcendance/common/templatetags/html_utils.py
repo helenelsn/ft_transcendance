@@ -14,7 +14,7 @@ def ref(redir, args=None):
 def format_hyperlink(link, display, ):
     return format_html(f'<a href={link}> {display} </a>')
 
-def format_dict_hyperlink_display(redirs : dict, sep='', as_p=False, as_li=False):
+def render_redir_dict(redirs : dict, sep='', as_p=False, as_li=False):
     return html_list_join([format_hyperlink(key, val) for key, val in redirs.items()], as_p=as_p, as_li=as_li, sep=sep)
 
 @register.simple_tag

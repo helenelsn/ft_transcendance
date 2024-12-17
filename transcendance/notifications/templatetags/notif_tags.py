@@ -13,8 +13,8 @@ def get_unreads(user):
 from notifications.views  import NotificationsView
 
 @register.simple_tag
-def all_notif_actions():
-    return NotificationsView.all_notif_managment_actions()
+def all_notif_actions(user):
+    return NotificationsView(user=user).get_actions_on_all()
 
 @register.simple_tag
 def notif_actions(notif):

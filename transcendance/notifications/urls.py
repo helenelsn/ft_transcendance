@@ -7,16 +7,11 @@ app_name = 'notifications'
 
 urlpatterns = [
     path('', views.NotificationsListView.as_view(), name='index'),
+    path('all/', views.NotificationsListView.as_view(), name='all'),
     path('show_notif/<int:pk>', views.NotificationsDetailsView.as_view(), name='show_notif'),
     
     
     #act on notif 
-    path('read_notif/<int:pk>>', views.NotificationsView.read, name='read_notif'),
-    path('unread_notif/<int:pk>', views.NotificationsView.unread, name='unread_notif'),
-    path('delete_notif/<int:pk>', views.NotificationsView.delete, name='delete_notif'),
-    
-    path('read_all_notif/', views.NotificationsView.read_all, name='read_all_notif'),
-    path('unread_all_notif/', views.NotificationsView.unread_all, name='unread_all_notif'),
-    path('delete_all_notif/', views.NotificationsView.delete_all, name='delete_all_notif'),
+    path('notif_act/<str:action>/<int:pk>', views.notif_act, name='notif_act'),
     
 ]

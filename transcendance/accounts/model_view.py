@@ -19,21 +19,19 @@ class AccountsAppView(BaseAppView):
     def logout_viewname(self):
         return self.get_viewname('logout')
 
-    def get_menu_redirs(self, user) -> dict:
-        user_view = ProfileView(user)
+    def get_app_redirs(self, user : User) -> RedirDict:
         if user.is_authenticated:
-            redirs = {
-                'accounts:index': f'{user.username}',
-                'accounts:logout': 'logout',
-            }
+            return ProfileView(user).action_dict()
         else:
-            for page in ['login', 'register']:
-                redirs[self.rev(page)] = page,
-            redirs[self.rev(self.register_viewname)] = 'register'
+            ProfileView.unloged_actions()
 
 class ProfileView(ActionModelView):
     
     app_view = AccountsAppView()
+    
+    @staticmethod
+    def unloged_actions() -> RedirDict:
+        return RedirDict().add_page_list(['login', 'register'])
     
     def __init__(self, object):
         if isinstance(object, Profile):
@@ -43,12 +41,23 @@ class ProfileView(ActionModelView):
         else:
             super().__init__(object.user.profile)
         
-    def get_actions(self, user : User) -> dict:
+    def action_dict(self, index: bool = True, index_display : str = None, edit=True, logout = True) -> RedirDict:
+        d = RedirDict()
+        if index:
+            index_display = f'{self.object.user.username}' if index_display is None else index_display
+            d.add_page(app_view=self.app_view, page=('index', index_display), main_key=True)
+        if edit:
+            self.add_object_actions(actions=('edit', 'edit profile'), d = d)
+        if logout:
+            d.add_page(app_view=self.app_view, page='logout')
+        return d
+        
+    def get_actions(self, user : User) -> RedirDict:
         if user == self.object.user:
-            return {self.edit_url : 'edit'}
+            return self.action_dict(index_display='my account', logout=False)
         else:
             return RelationView(from_user=self.object.user, to_user=user).get_actions()
-        
+            
     @staticmethod
     def get_user(user):
         if isinstance(user, int):

@@ -43,6 +43,7 @@ class ProfilUpdateView(UpdateView):
     
 class LogoutView(RedirectView):
     pattern_name = 'accounts:index'
+    
     def get_redirect_url(self, *args, **kwargs):
         logout(self.request)
         return super().get_redirect_url(*args, **kwargs)

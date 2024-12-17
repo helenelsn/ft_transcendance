@@ -15,6 +15,24 @@ from .filters import NotificationFilter
 from common.templatetags import html_utils
 app_name = 'notifications'
 
+def notif_act(request, action, pk ):
+    print(f'------------------------------------------{action}')
+    user=request.user
+    if pk == 0:
+        view = NotificationsView(user=user)
+    else:
+        view = NotificationsView(user=user, pk=pk)
+    if action == 'read':
+        view.read(is_read=True)
+    elif action == 'unread':
+        view.read(is_read=False)
+    elif action == 'delete':
+        view.delete()
+    return view.index_view()
+    
+
+        
+
 class NotificationsDetailsView(DetailView):
     model = Notification
     template_name = "notifications/notification_detail.html"

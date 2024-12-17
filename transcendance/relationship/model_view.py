@@ -7,10 +7,13 @@ from accounts.models import User, Profile
 from django.urls import reverse
 # from common.templatetags.html_utils import html_list_join, same_arg_redir_list
 from common.views import ActionModelView
-from common.views import BaseAppView
+from common.views import BaseAppView, RedirDict
 
 class RelationAppView(BaseAppView):
     app_name = 'relationship'
+
+    def get_app_redirs(self, user : User) -> RedirDict:
+        return RedirDict().add_page(self, page=('index','my realtions'), main_key=True).add_page(self, 'all', 'all users')
 
 
 class RelationView(ActionModelView):
@@ -30,25 +33,27 @@ class RelationView(ActionModelView):
         self.object : Relation = object
         
     def reverse_to_userid(self, viewname):
-        return reverse(self.app_view.get_viewname(viewname), kwargs={"pk": self.object.to_user.pk})
+        return self.rev(viewname, object = self.object.to_user)
             
-    def get_actions(self, user = None):
-        actions = {}
+    
+            
+    def get_actions(self, user = None) -> RedirDict:
+        actions = []
         relation_between = self.object.relation
         if relation_between == BLOCKED:
-            actions[self.reverse_to_userid('unblock_user')] = 'unblock'
+            actions.append(('unblock_user', 'unblock'))
         else:
-            actions[self.reverse_to_userid('block_user')] = 'block'
+            actions.append(('block_user', 'block'))
             if relation_between == NEUTRAL:
-                actions[self.reverse_to_userid('send_friend_request')] = 'friend request'
+                actions.append(('send_friend_request','friend request'))
             if relation_between == REQUEST:
-                actions[self.reverse_to_userid('unsend_friend_request')] = 'unsend friend request'
+                actions.append(('unsend_friend_request','unsend friend request'))
             if relation_between == OTHER_REQUEST:
-                actions[self.reverse_to_userid('accept_friend_request')] = 'accept friend request'  
-                actions[self.reverse_to_userid('deny_friend_request')] = 'deny friend request' 
+                actions.append(('accept_friend_request','accept friend request')) 
+                actions.append(('deny_friend_request','deny friend request') )
             if relation_between == FRIEND:
-                actions[self.reverse_to_userid('unfriend_user')] = 'unfriend'
-        return actions
+                actions.append(('unfriend_user','unfriend'))
+        return self.add_object_actions(actions=actions, object=self.object.to_user)
 
     def update_relation(self, relation_id : int):
         self.object.update_relation(type=relation_id)

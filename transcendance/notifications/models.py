@@ -10,11 +10,11 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     # def get_actions(self):
     @staticmethod
-    def filter_user_notifs(user):
+    def filter_user_notifs(user : User):
         return Notification.objects.filter(user=user).order_by('timestamp')
     
     @staticmethod
-    def get_user_unreads_notifs(user):
+    def get_user_unreads_notifs(user : User):
         return Notification.filter_user_notifs(user).filter(is_read=False)
     
     @staticmethod
