@@ -9,8 +9,12 @@ from typing import Any
 from .models import Notification
 from common.templatetags import html_utils
 from django.utils.html import format_html
+from common.views import ActionModelView
+from common.views import BaseAppView
 
-app_name = 'notifications'
+class NotificationsAppView(BaseAppView):
+    app_name = 'notifications'
+
 
 class NotificationsView():
     model = Notification

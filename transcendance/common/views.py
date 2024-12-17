@@ -6,28 +6,58 @@ from django.urls import reverse
 from abc import ABC, abstractmethod
 from accounts.models import User, models
 
-class BaseAppView():
-    app_name='app_name'
-    # editable = True
+class RedirDict():
+    def __init__(self):
+        self.dict = {}
 
-    def get_viewname(self, arg : str):
+    def init_from_page_list(self, app_view, pages : list, object = None):
+        for page in pages:
+            self.dict[app_view.rev(page, object)] = page,
+        return self
+            
+    def init_app_views_index(self, app_views):
+        for app in app_views:
+            self.dict[app.rev(viewname='index')] = app.index_display
+        return self
+            
+    def get_hyperlink(self, page) -> str:
+        return html_utils.format_hyperlink(link=page, display=self.dict[page])
+            
+    @property
+    def get(self):
+        return self.dict
+    
+    @property
+    def get_html(self):
+        return html_utils.html_list_join([self.get_hyperlink(page) for page in self.get])
+
+class BaseAppView(ABC):
+    app_name='app_name'
+
+    def get_viewname(self, arg : str) -> str:
         return f'{self.app_name}:{arg}'
 
     @property
-    def index_viewname(self):
+    def index_display(self):
+        return self.app_name
+
+    @property
+    def index_viewname(self) -> str:
         return self.get_viewname('index')
         
     @property
-    def edit_viename(self):
+    def edit_viename(self) -> str:
         return self.get_viewname('edit')
     
-    def rev(self, viewname='index', object=None):
+    def rev(self, viewname='index', object=None) -> str:
         args = [object.pk] if object is not None else [] 
         return reverse(self.get_viewname(viewname), args=args)
         
-    def get_hyperlink(self, display, viewname='index', object=None):
-        html_utils.format_hyperlink(self.rev(viewname=viewname, object=object), display=display)
+    def get_menu_redirs(self, user) -> dict:
+        raise Exception('get_menu_redirs should have been override')
     
+    def get_user_menu_hyperlinks(self, user):
+        return self.get_menu_redirs()
 
 class BasicModelView(ABC):
     app_view=BaseAppView()

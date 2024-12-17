@@ -6,7 +6,7 @@ from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn, LinkColumn
 from relationship.models import FriendInvitation
 from common.templatetags import html_utils
-from .abstract_views import NotificationsView
+from .model_view import NotificationsView
 
 
 class NotificationTable(tables.Table):

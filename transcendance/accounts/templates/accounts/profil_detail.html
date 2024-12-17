@@ -7,6 +7,7 @@
     <h1> {{object.username|upper}} </h1>
     <p> Bio: {{object.bio}} </p>
     {% load game_tags %}
+    
     {% comment %} {% user_games_resume object.user %} {% endcomment %}
     {% load relation_tags %}
     {% if request.user == object.user%}

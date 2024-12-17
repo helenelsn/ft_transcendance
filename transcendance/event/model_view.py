@@ -18,6 +18,7 @@ class EventAppView(BaseAppView):
     @property
     def unregister_viewname(self):
         return self.get_viewname('unregister')
+    
     @property
     def delete_viewname(self):
         return self.get_viewname('delete')
@@ -30,7 +31,6 @@ class EventView(ActionModelView):
         if isinstance(object, int):
             object = Event.objects.get(pk=object)
         super().__init__(object)
-        # self.object : Event = object
         if self.object is None:
             raise Exception("object is none after eventview init")
     

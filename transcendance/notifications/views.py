@@ -9,7 +9,7 @@ from django_tables2.views import SingleTableMixin
 from django.views.generic import ListView, DetailView
 
 from .models import Notification
-from .abstract_views import NotificationsView
+from .model_view import NotificationsView
 from .tables import NotificationTable
 from .filters import NotificationFilter
 from common.templatetags import html_utils
