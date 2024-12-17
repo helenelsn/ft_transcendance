@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from common.view_getter import get_view
+from common.global_view_mananger import get_view
 
 class ActionsColumn(tables.Column):
     empty_values=[]

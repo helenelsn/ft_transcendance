@@ -7,3 +7,5 @@ def get_view(object ) -> BasicModelView:
         return RelationView(object=object)
     if isinstance(object, User) or isinstance(object, Profile):
         return ProfileView(object)
+
+

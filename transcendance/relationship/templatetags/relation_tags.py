@@ -1,5 +1,6 @@
 from django import template
 register = template.Library()
+
 from relationship.models import Relation, FRIEND, OTHER_REQUEST, REQUEST, BLOCKED, NEUTRAL
 from relationship.tables import RelationTable
 # from transcendance.relationship.model_view import RelationView
@@ -16,9 +17,6 @@ trs = {
         'blocked':BLOCKED,
     }
 
-# def get_user_relations(request):
-#     return Relation.objects.filter(from_user=request.user)
-
 @register.inclusion_tag('utils/tables.html', takes_context=True, )
 def include_user_relations_tables(context, request):
     tables = {}
@@ -31,7 +29,6 @@ def include_user_relations_tables(context, request):
     context['tables'] = tables
     return context
 
-# @register.simple_tag
 @register.inclusion_tag('utils/table.html', takes_context=True, )
 def include_user_friend_table(context, request):
     qs = Relation.get_user_relations_qs(request.user, rel_type=FRIEND)

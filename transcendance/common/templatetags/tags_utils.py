@@ -16,7 +16,10 @@ menu_redir_glob = {
     # 'games:index':  'games',
 }
 
-
+# @register.simple_tag
+# def apps_indexs_hyperlinks(user, as_p=False):
+#     indexes = {f'{app_name}:index' : display for app_name, display in {'accounts': 'my profile', 'notifications' : 'notifs', 'relationship' : 'relations',}}
+        
 
 @register.simple_tag
 def menu_hyperlinks(user, as_p=False):

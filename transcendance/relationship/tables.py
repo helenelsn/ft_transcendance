@@ -1,13 +1,14 @@
 import django_tables2 as tables
-from .models import Relation 
 from django.utils.html import format_html
 from django.urls import reverse
 from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django.db.models import Count, F, Value
+
+from .models import Relation 
 from .model_view import RelationView
 from common.views import ActionModelView
 from common.templatetags import html_utils
-from common.view_getter import get_view
+from common.global_view_mananger import get_view
 from accounts.model_view import ProfileView
 from common.tables import ActionsColumn, LinkedDetailNameColumn
 

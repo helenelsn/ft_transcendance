@@ -3,19 +3,19 @@
 {% load tags_utils %}
 {% load html_utils %}
 
+
 <!DOCTYPE html>
 <head>
     <title>
-    {% block title %}
-        Title
-    {% endblock %}
+        {% block title %}
+            Title
+        {% endblock %}
     </title>
     <link rel="stylesheet" href="{% static 'styles.css'%}">
 </head>
 
 
 <body>
-   
     <script>
         function openNav() {
             document.getElementById("my_sidenav").style.width = "250px";
@@ -26,8 +26,8 @@
             document.getElementById("my_sidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-
     </script>
+
     <div id="my_sidenav", class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             {% load accounts_tags%}
@@ -36,7 +36,11 @@
     </div>
 
     <div id="main">
-        <span onclick="openNav()">&#9776; open</span>
+        <div class="topnav">
+            <a> heyy </a>
+            <a> heyy </a>
+        </div>
+        <span onclick="openNav()">&#9776; menu</span>
         {% block child_content %}{% endblock %}
         {% block content %}{% endblock %}
         {% block more_content %}{% endblock %}

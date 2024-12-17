@@ -6,8 +6,31 @@ from django.urls import reverse
 from abc import ABC, abstractmethod
 from accounts.models import User, models
 
-class BasicModelView(ABC):
+class BaseAppView():
     app_name='app_name'
+    # editable = True
+
+    def get_viewname(self, arg : str):
+        return f'{self.app_name}:{arg}'
+
+    @property
+    def index_viewname(self):
+        return self.get_viewname('index')
+        
+    @property
+    def edit_viename(self):
+        return self.get_viewname('edit')
+    
+    def rev(self, viewname='index', object=None):
+        args = [object.pk] if object is not None else [] 
+        return reverse(self.get_viewname(viewname), args=args)
+        
+    def get_hyperlink(self, display, viewname='index', object=None):
+        html_utils.format_hyperlink(self.rev(viewname=viewname, object=object), display=display)
+    
+
+class BasicModelView(ABC):
+    app_view=BaseAppView()
     
     def __init__(self, object : models.Model):
         self.object : models.Model = object
@@ -16,7 +39,7 @@ class BasicModelView(ABC):
         return html_utils.format_hyperlink(url, display=self.object.name)
     
     def reverse_objectid(self, viewname):
-        return reverse(viewname, kwargs={"pk": self.object.pk})
+        return self.app_view.rev(viewname, self.object)
     
     @property
     def detail_linked_name(self):
@@ -24,7 +47,7 @@ class BasicModelView(ABC):
     
     @property
     def edit_url(self):
-        return self.reverse_objectid(f"{self.app_name}:edit")
+        return self.reverse_objectid(self.app_view.edit_viename)
     
     @property
     def absolute_url(self):
@@ -37,7 +60,7 @@ class BasicModelView(ABC):
         return redirect(self.edit_url)
         
     def index_view(self):
-        return redirect(f'{self.app_name}:index')
+        return redirect(self.app_view.index_viewname)
     
 class ActionModelView(BasicModelView):
     @abstractmethod

@@ -5,11 +5,26 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from abc import ABC, abstractmethod
 from .models import Event, models, User, EventInvitation
-from common.views import ActionModelView
+from common.views import ActionModelView, BasicModelView
+from common.views import BaseAppView
 
+class EventAppView(BaseAppView):
+    app_name='event'
+    
+    @property
+    def register_viewname(self):
+        return self.get_viewname('register')
+    
+    @property
+    def unregister_viewname(self):
+        return self.get_viewname('unregister')
+    @property
+    def delete_viewname(self):
+        return self.get_viewname('delete')
 
 class EventView(ActionModelView):
-    app_name='event'
+    app_view=EventAppView()
+    
     
     def __init__(self, object):
         if isinstance(object, int):
@@ -21,15 +36,15 @@ class EventView(ActionModelView):
     
     @property
     def register_url(self) -> str:
-        return self.reverse_objectid('event:register')
+        return self.reverse_objectid(self.app_view.register_viewname)
     
     @property
     def unregister_url(self) -> str:
-        return self.reverse_objectid('event:unregister')
+        return self.reverse_objectid(self.app_view.unregister_viewname)
     
     @property
     def delete_url(self) -> str:
-        return self.reverse_objectid('event:delete')
+        return self.reverse_objectid(self.app_view.delete_viewname)
 
     @staticmethod
     def create(user : User):
@@ -55,7 +70,7 @@ class EventView(ActionModelView):
     def invite_player(self, user_pk : int):
         user = User.objects.get(pk=user_pk)
         EventInvitation().create(user=user, event=self.object)
-        return redirect(self.detail_view())
+        return self.detail_view()
     
     #overriding actions
     def get_actions(self, user : User) -> dict:

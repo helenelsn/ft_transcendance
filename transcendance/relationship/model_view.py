@@ -7,10 +7,14 @@ from accounts.models import User, Profile
 from django.urls import reverse
 # from common.templatetags.html_utils import html_list_join, same_arg_redir_list
 from common.views import ActionModelView
+from common.views import BaseAppView
+
+class RelationAppView(BaseAppView):
+    app_name = 'relationship'
+
 
 class RelationView(ActionModelView):
-    model = Relation
-    app_name = 'relationship'
+    app_view = RelationAppView()
     
     def detail_view(self):
         return redirect(Profile.objects.get(user=self.object.to_user))
@@ -26,7 +30,7 @@ class RelationView(ActionModelView):
         self.object : Relation = object
         
     def reverse_to_userid(self, viewname):
-        return reverse(f'{self.app_name}:{viewname}', kwargs={"pk": self.object.to_user.pk})
+        return reverse(self.app_view.get_viewname(viewname), kwargs={"pk": self.object.to_user.pk})
             
     def get_actions(self, user = None):
         actions = {}
