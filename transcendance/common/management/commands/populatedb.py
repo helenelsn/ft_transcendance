@@ -1,12 +1,12 @@
 from accounts.models import User, Profile
-from relationship.models import Relation, FRIEND, REQUEST
+from relationship.model_view import RelationView, Relation, FRIEND, REQUEST
 from django.core.management.base import BaseCommand, CommandError
 from games.models import Game
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        self.populate_user()
-        self.personalised_profil()
+        # self.populate_user()
+        # self.personalised_profil()
         self.create_relationships()
         # self.populate_games()
     
@@ -25,9 +25,9 @@ class Command(BaseCommand):
             
     def create_relation(self, from_user, to_user, friend=True):
         if friend:
-            Relation().update_relation(from_user=from_user.user, to_user=to_user.user, type=FRIEND)
+            RelationView(from_user=from_user.user, to_user=to_user.user).object.update_relation(type=FRIEND)
         else:
-            Relation().update_relation(from_user=from_user.user, to_user=to_user.user, type=REQUEST)
+            RelationView(from_user=from_user.user, to_user=to_user.user).object.update_relation(type=REQUEST)
             
     def create_relationships(self):
         for k in range( 8, 10):

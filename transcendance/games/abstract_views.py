@@ -13,7 +13,6 @@ class GameView(EventView):
     def __init__(self, object):
         super().__init__(object)
         
-    # def get_actions(self, user):
     #     actions = {}
         # if self.game.is_over or not self.game.user_in_game(user):
         #     if not self.game.is_full and self.game.is_public:

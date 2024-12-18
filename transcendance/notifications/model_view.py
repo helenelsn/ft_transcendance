@@ -6,7 +6,7 @@ from event.models import EventInvitation
 from django.contrib.auth.decorators import login_required
 from common.utils import redir_to_index, redir_to
 from typing import Any
-from .models import Notification
+from .models import Notification, Invitation
 from common.templatetags import html_utils
 from django.utils.html import format_html
 from common.views import ActionModelView
@@ -19,6 +19,13 @@ class NotificationsAppView(BaseAppView):
     def get_app_redirs(self, user : User) -> RedirDict:
         return RedirDict().add_page(self, page=('index','my realtions'), main_key=True).add_page(self, 'all', 'all users')
 
+    def get_notif_view(self, object = None, user : User = None, pk : int = 0):
+        notif_views = [FriendInvitationView, EventInvitationView, InvitationView, NotificationsView, ]
+        
+        for notif_view in notif_views:
+            view : NotificationsView = notif_view(object=object, user=user, pk=pk)
+            if view.object is not None:
+                break
 
 class NotificationsView(ActionModelView):
     app_view = NotificationsAppView()
@@ -28,8 +35,8 @@ class NotificationsView(ActionModelView):
             object = get_object_or_404(user.notification_set.filter(pk=pk))
         super().__init__(object)
         self.user = user
-        self.object : Notification = object
-    
+        # self.object : Notification = object
+     
     @property
     def user_notifs(self):
         return Notification.filter_user_notifs(self.user).all()
@@ -57,10 +64,15 @@ class NotificationsView(ActionModelView):
             Notification.delete(self.object.pk)
         return self.index_view()
     
-    def get_actions(self, user: User) -> RedirDict:
-        return super().get_actions(user)
+    def get_user_actions_on_obj(self, user:User=None, all=False) -> RedirDict:
+        d = RedirDict()
+        d.add_dict(InvitationView(object=self.object).get_user_actions_on_obj(user))
+        if all:
+            d.add_dict(self.is_read_action())
+            d.add_dict(self.delete_action())
+        return d
     
-    def add_action(self, action : str, d = None) -> RedirDict:
+    def add_action_to_dict(self, action : str, d = None) -> RedirDict:
         d = RedirDict() if d is None else d
         kwargs={'action' : action}
         display = action
@@ -71,80 +83,52 @@ class NotificationsView(ActionModelView):
             kwargs.update({'pk':0})
         return d.add(url=reverse(viewname=self.app_view.get_viewname('notif_act'), kwargs=kwargs), display=display)
             
-    def add_actions(self, actions : list, d = None) -> RedirDict:
+    def add_actions_to_dict(self, actions : list, d = None) -> RedirDict:
         d = RedirDict() if d is None else d
         for action in actions:
-            self.add_action(action=action, d=d)
+            self.add_action_to_dict(action=action, d=d)
         return d
             
     def is_read_action(self, ) -> RedirDict:
         if self.user_view:
-            return self.add_actions(['read', 'unread'])
+            return self.add_actions_to_dict(['read', 'unread'])
         if self.object.is_read :
-            return self.add_action('unread')
+            return self.add_action_to_dict('unread')
         else:
-            return self.add_action('read')
+            return self.add_action_to_dict('read')
         
     def delete_action(self) -> RedirDict:
-        return self.add_action('delete')
+        return self.add_action_to_dict('delete')
     
     def get_actions_on_all(self) -> RedirDict:
         if not self.user_view:
             raise('Should be a user notification view to cal this')
         return RedirDict(self.is_read_action()).add_dict(self.delete_action())
+
+
+class InvitationView(NotificationsView):
+    model = Invitation
+    def __init__(self, object=None, user = None, pk = 0):
+        super().__init__(object, user, pk)
+        if self.object is not None:
+            if self.model.objects.filter(pk=self.object.pk).count() > 0:
+                self.object = self.model.objects.get(pk=self.object.pk)
+            else:
+                self.object = None
         
-    # @staticmethod
-    # def notif_is_read_action(notif):
-    #     actions = [
-    #         ('read_notif' , 'mark read'),
-    #         ('unread_notif' , 'mark unread')
-    #     ]
-    #     args=[notif.id]
-    #     return NotificationsView(object=notif).is_read_action().get_html
-    
-    # @staticmethod
-    # def notif_delete_action(notif):
-    #     return html_utils.a_hyperlink(redir=f'notifications:delete_notif', display='delete', args=[notif.id])
-    
-    # @staticmethod
-    # def notif_react_action(notif):
-    #     if len(FriendInvitation.objects.filter(pk=notif.id)) > 0:
-    #         return FriendInvitationView.notif_react_action(FriendInvitation.objects.get(pk=notif.id))
-    #     if len(EventInvitation.objects.filter(pk=notif.id)) > 0:
-    #         return EventInvitationView.notif_react_action(EventInvitationView.objects.get(pk=notif.id))
-    #     if len(GameLaunching.objects.filter(pk=notif.id)) > 0:
-    #         return GameLaunchingView.notif_react_action(GameLaunching.objects.get(pk=notif.id))
-    #     return format_html(': )')
-    
-    # @staticmethod
-    # def notif_actions(notif, as_p=False):
-    #     return html_utils.html_list_join([NotificationsView.notif_is_read_action(notif),
-    #                                  NotificationsView.notif_delete_action(notif),
-    #                                   NotificationsView.notif_react_action(notif),], as_p=as_p)
+    def get_user_actions_on_obj(self, user = None) -> RedirDict:
+        if self.object is not None:
+            return self.add_actions_to_dict(['accept', 'deny'])
+        return RedirDict()
+        
         
 
+class FriendInvitationView(InvitationView):
+    model = FriendInvitation
     
-        
+class EventInvitationView(InvitationView):
+    model = EventInvitation
     
-class FriendInvitationView(NotificationsView):
-    @staticmethod
-    def notif_react_action(notif : FriendInvitation):
-        return html_utils.same_arg_redir_list(redirs={
-            'relationship:accept_friend_request' : 'accept' ,
-            'relationship:deny_friend_request' : 'deny' ,
-        }, args=[notif.relation.from_user.id], sep= ' | ')
-
-        
-class EventInvitationView(NotificationsView):
-    @staticmethod
-    def notif_react_action(notif : EventInvitation):
-        return ""
-        return html_utils.same_arg_redir_list(redirs={
-            'games:join_game_players' : 'accept' ,
-            # 'games:deny_friend_request' : 'deny' ,
-        }, args=[notif.game.id, notif.user.id], sep= ' | ')
-
-        
 class GameLaunchingView(NotificationsView):
     @staticmethod
     def notif_react_action(notif : GameLaunching):

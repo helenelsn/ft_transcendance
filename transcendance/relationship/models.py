@@ -1,7 +1,7 @@
 from typing import Any
 from django.db import models
 from accounts.models import Profile, User
-from notifications.models import Notification
+from notifications.models import Notification, Invitation
 # Create your models here.
 
 
@@ -43,7 +43,8 @@ class Relation(models.Model):
         if not self.is_bloqued():
             message=f'{self}'
             if self.relation == REQUEST:
-                notif = FriendInvitation(user=self.to_user, message=message, relation=self)
+                
+                notif = FriendInvitation.create(user=self.to_user, relation=self)
             else:
                 notif = Notification(user=self.to_user, message=message)
             notif.save()
@@ -115,10 +116,14 @@ class Relation(models.Model):
     
 
     
-class FriendInvitation(Notification):
+class FriendInvitation(Invitation):
     relation = models.ForeignKey(Relation, on_delete=models.CASCADE, null=True)
     
-    def __str__(self):
-        return f'{self.from_user} want s to be friend you'
+    @staticmethod
+    def create(user, relation):
+        return FriendInvitation.objects.create(user=user, relation=relation, message=f'{relation.from_user} want s to be friend you')
+        
+        
+    
 
         

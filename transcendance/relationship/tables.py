@@ -10,10 +10,10 @@ from common.views import ActionModelView
 from common.templatetags import html_utils
 from common.global_view_mananger import get_view
 from accounts.model_view import ProfileView
-from common.tables import ActionsColumn, LinkedDetailNameColumn
+from common.tables import ActionsColumn, ProfilDetailNameColumn
 
 class RelationTable(tables.Table):
-    to_user = LinkedDetailNameColumn()
+    to_user = ProfilDetailNameColumn()
     actions = ActionsColumn()
     class Meta:
         model = Relation

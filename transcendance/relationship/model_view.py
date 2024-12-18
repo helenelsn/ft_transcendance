@@ -37,7 +37,7 @@ class RelationView(ActionModelView):
             
     
             
-    def get_actions(self, user = None) -> RedirDict:
+    def get_user_actions_on_obj(self, user = None) -> RedirDict:
         actions = []
         relation_between = self.object.relation
         if relation_between == BLOCKED:

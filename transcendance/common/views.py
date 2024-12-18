@@ -143,8 +143,8 @@ class BasicModelView(ABC):
     
 class ActionModelView(BasicModelView):
     @abstractmethod
-    def get_actions(self, user : User) -> RedirDict:
-        return {}
+    def get_user_actions_on_obj(self, user : User) -> RedirDict:
+        return RedirDict()
     
-    def actions_links(self, user = None):
-        return self.get_actions(user).html_one_line
+    def col_actions_links(self, user = None):
+        return self.get_user_actions_on_obj(user).html_one_line

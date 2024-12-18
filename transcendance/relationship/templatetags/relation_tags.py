@@ -3,11 +3,6 @@ register = template.Library()
 
 from relationship.models import Relation, FRIEND, OTHER_REQUEST, REQUEST, BLOCKED, NEUTRAL
 from relationship.tables import RelationTable
-# from transcendance.relationship.model_view import RelationView
-
-# from django.utils.html import format_html
-# from django.urls import reverse
-# from common.templatetags.html_utils import index_hyperlink, a_hyperlink
 
 trs = {
         'friend' : FRIEND,
@@ -38,17 +33,3 @@ def include_user_friend_table(context, request):
         context['table_title'] = f'friends:'
     return context
 
-        
-# @register.simple_tag
-# def relation_index_hyperlink():
-#     return index_hyperlink(app_name)
-    
-# @register.simple_tag
-# def relation_detail_hyperlink():
-#     return a_hyperlink(f'{app_name}:detail', 'all users')
-
-
-
-# @register.simple_tag
-# def relation_actions(request, other):
-#     return RelationView.get_formated_relation_actions(request, other)

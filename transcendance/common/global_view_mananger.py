@@ -2,7 +2,7 @@ from relationship.model_view import RelationView, Relation
 from relationship.model_view import RelationAppView
 from accounts.model_view import ProfileView, Profile, User
 from notifications.model_view import NotificationsAppView
-from notifications.model_view import NotificationsView
+from notifications.model_view import NotificationsView, Notification, Invitation, InvitationView
 from accounts.model_view import AccountsAppView
 from event.model_view import EventAppView
 
@@ -15,6 +15,12 @@ def get_view(object ) -> BasicModelView:
         return RelationView(object=object)
     if isinstance(object, User) or isinstance(object, Profile):
         return ProfileView(object)
+    
+    if isinstance(object, Notification):
+        return NotificationsAppView().get_notif_view(object=object)
+        if InvitationView(object=object).object is not None:
+            return InvitationView(object=object)
+        return NotificationsView(object=object)
 
 def get_apps_topnav_hyperlinks() -> str:
     app_views = [AccountsAppView(), RelationAppView(), NotificationsAppView()]#, EventAppView()]

@@ -6,7 +6,8 @@ from django.urls import reverse
 from abc import ABC, abstractmethod
 from .models import Event, models, User, EventInvitation
 from common.views import ActionModelView, BasicModelView
-from common.views import BaseAppView
+from common.views import BaseAppView, RedirDict
+from relationship.model_view import RelationAppView
 
 class EventAppView(BaseAppView):
     app_name='event'
@@ -73,17 +74,18 @@ class EventView(ActionModelView):
         return self.detail_view()
     
     #overriding actions
-    def get_actions(self, user : User) -> dict:
-        actions = {}
+    def get_user_actions_on_obj(self, user : User) -> RedirDict:
+        actions = RedirDict()
         if self.object.over: 
             return actions #raise?
         if self.object.user_registerd(user):
-            actions[self.unregister_url] = 'unregister'
+            self.add_object_actions(actions='unregister', d=actions)
         elif self.object.joinable(user):
-            actions[self.register_url] = 'register'
-        if not self.object.is_full and (self.object.user_is_owner(user) or self.object.user_registerd(user)):
-            actions[reverse('relationship:game_invite_players', args=[self.object.pk])] = 'invite players'
+            self.add_object_actions(actions='register', d=actions)
+        # if not self.object.is_full and (self.object.user_is_owner(user) or self.object.user_registerd(user)):
+        #     RelationAppView.get_invite_url(self.object)
+            
         if self.object.user_is_owner(user):
-            actions[self.delete_url] = 'delete'
+            self.add_object_actions(actions='delete', d=actions)
         return actions
 

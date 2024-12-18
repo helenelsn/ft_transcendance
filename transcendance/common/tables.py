@@ -4,9 +4,9 @@ from common.global_view_mananger import get_view
 class ActionsColumn(tables.Column):
     empty_values=[]
     def render(self, record):
-        return get_view(record).actions_links()
+        return get_view(record).col_actions_links()
     
-class LinkedDetailNameColumn(tables.Column):
+class ProfilDetailNameColumn(tables.Column):
     def render(self, value):
         return get_view(value).detail_linked_name
 

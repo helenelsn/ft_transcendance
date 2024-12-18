@@ -52,7 +52,7 @@ class ProfileView(ActionModelView):
             d.add_page(app_view=self.app_view, page='logout')
         return d
         
-    def get_actions(self, user : User) -> RedirDict:
+    def get_user_actions_on_obj(self, user : User) -> RedirDict:
         if user == self.object.user:
             return self.action_dict(index_display='my account', logout=False)
         else:

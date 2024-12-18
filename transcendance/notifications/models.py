@@ -8,7 +8,12 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=True)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    # def get_actions(self):
+    
+    
+    @property
+    def name(self):
+        return self.message if len(self.message) < 20 else self.message[:17] + '...'
+    
     @staticmethod
     def filter_user_notifs(user : User):
         return Notification.objects.filter(user=user).order_by('timestamp')
@@ -26,4 +31,10 @@ class Notification(models.Model):
     
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse("notifications:show_notif", kwargs={"pk": self.pk})
+        return reverse("notifications:detail", kwargs={"pk": self.pk})
+
+class Invitation(Notification):
+    @property
+    def valid():
+        return True
+    pass

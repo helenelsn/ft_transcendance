@@ -9,25 +9,23 @@ from django_tables2.views import SingleTableMixin
 from django.views.generic import ListView, DetailView
 
 from .models import Notification
-from .model_view import NotificationsView
+from .model_view import NotificationsView, InvitationView, FriendInvitationView, EventInvitationView, NotificationsAppView
 from .tables import NotificationTable
 from .filters import NotificationFilter
 from common.templatetags import html_utils
 app_name = 'notifications'
 
+@login_required
 def notif_act(request, action, pk ):
-    print(f'------------------------------------------{action}')
-    user=request.user
-    if pk == 0:
-        view = NotificationsView(user=user)
-    else:
-        view = NotificationsView(user=user, pk=pk)
+    view = NotificationsAppView().get_notif_view(user=request.user, pk=pk)
     if action == 'read':
         view.read(is_read=True)
     elif action == 'unread':
         view.read(is_read=False)
     elif action == 'delete':
         view.delete()
+    # elif action == 'accept':
+    # elif action == 'deny':
     return view.index_view()
     
 
